@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, Menus;
+  Dialogs, StdCtrls, Menus, ComCtrls, DBCtrls, ExtCtrls, pngimage;
 
 type
   TfrmPrincipal = class(TForm)
@@ -17,7 +17,10 @@ type
     MenMovimentos: TMenuItem;
     menVendas: TMenuItem;
     menSair: TMenuItem;
+    stbBarraStatus: TStatusBar;
+    imgLogo: TImage;
     procedure menSairClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
   private
     { Private declarations }
   public
@@ -34,6 +37,11 @@ implementation
 procedure TfrmPrincipal.menSairClick(Sender: TObject);
 begin
   Close; //Fecha o sistema
+end;
+
+procedure TfrmPrincipal.FormShow(Sender: TObject);
+begin
+  stbBarraStatus.Panels[0].Text := 'Teste';
 end;
 
 end.

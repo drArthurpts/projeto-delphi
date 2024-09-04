@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, Menus;
+  Dialogs, StdCtrls, Menus, ComCtrls, DBCtrls, ExtCtrls;
 
 type
   TfrmPrincipal = class(TForm)
@@ -17,6 +17,8 @@ type
     MenMovimentos: TMenuItem;
     menVendas: TMenuItem;
     menSair: TMenuItem;
+    stbBarraStatus: TStatusBar;
+    Image1: TImage;
     procedure menSairClick(Sender: TObject);
   private
     { Private declarations }

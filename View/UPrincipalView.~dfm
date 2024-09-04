@@ -10,10 +10,26 @@ object frmPrincipal: TfrmPrincipal
   Font.Height = -11
   Font.Name = 'MS Sans Serif'
   Font.Style = []
+  FormStyle = fsMDIForm
   Menu = MainCadastro
   OldCreateOrder = False
+  Position = poScreenCenter
+  WindowState = wsMaximized
   PixelsPerInch = 96
   TextHeight = 13
+  object Image1: TImage
+    Left = 416
+    Top = 192
+    Width = 105
+    Height = 105
+  end
+  object stbBarraStatus: TStatusBar
+    Left = 0
+    Top = 402
+    Width = 912
+    Height = 19
+    Panels = <>
+  end
   object MainCadastro: TMainMenu
     Left = 32
     Top = 376
