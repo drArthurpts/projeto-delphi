@@ -37,13 +37,22 @@ type
     btnExcluir: TBitBtn;
     btnConsultar: TBitBtn;
     btnListar: TBitBtn;
-    BitBtn1: TBitBtn;
+    btnPesquisar: TBitBtn;
     btnConfirmar: TBitBtn;
     btnCancelar: TBitBtn;
     btnSair: TBitBtn;
     procedure FormKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure btnIncluirClick(Sender: TObject);
+    procedure btnAlterarClick(Sender: TObject);
+    procedure btnExcluirClick(Sender: TObject);
+    procedure btnConsultarClick(Sender: TObject);
+    procedure btnListarClick(Sender: TObject);
+    procedure btnPesquisarClick(Sender: TObject);
+    procedure btnConfirmarClick(Sender: TObject);
+    procedure btnCancelarClick(Sender: TObject);
+    procedure btnSairClick(Sender: TObject);
   private
     { Private declarations }
     vKey : Word;
@@ -159,8 +168,10 @@ begin
    btnConsultar.Enabled := (vEstadoTela in [etPadrao]);
    btnListar.Enabled    := (vEstadoTela in [etPadrao]);
    btnPesquisar.Enabled := (vEstadoTela in [etPadrao]);
+
    btnConfirmar.Enabled :=
       vEstadoTela in [etIncluir, etAlterar, etExcluir, etConsultar];
+
    btnCancelar.Enabled :=
       vEstadoTela in [etIncluir, etAlterar, etExcluir, etConsultar];
 
@@ -170,8 +181,8 @@ begin
          CamposEnabled(False);
          LimpaTela;
 
-         stbBaraStatus.Panels[0] := EmptyStr;
-         stbBaraStatus.Panels[1] := EmptyStr;
+         stbBaraStatus.Panels[0].Text := EmptyStr;
+         stbBaraStatus.Panels[1].Text := EmptyStr;
 
          if (frmClientes <> nil) and
          (frmClientes.Active) and
@@ -180,7 +191,80 @@ begin
 
          Application.ProcessMessages;    
       end;
+      etIncluir:
+      begin
+         stbBaraStatus.Panels[0].Text := 'Inclusão';
+         CamposEnabled(True);
+
+         editCodigo.Enabled := False;
+
+         chkAtivo.Checked := True;
+
+         if edtNome.CanFocus then
+            edtNome.SetFocus; 
+      end;
    end;
+end;
+
+procedure TfrmClientes.btnIncluirClick(Sender: TObject);
+begin
+   vEstadoTela := etIncluir;
+   DefineEstadoTela;
+end;
+
+procedure TfrmClientes.btnAlterarClick(Sender: TObject);
+begin
+   vEstadoTela := etAlterar;
+   DefineEstadoTela;
+end;
+
+procedure TfrmClientes.btnExcluirClick(Sender: TObject);
+begin
+   vEstadoTela := etExcluir;
+   DefineEstadoTela;
+end;
+
+procedure TfrmClientes.btnConsultarClick(Sender: TObject);
+begin
+   vEstadoTela := etConsultar;
+   DefineEstadoTela;
+end;
+
+procedure TfrmClientes.btnListarClick(Sender: TObject);
+begin
+   vEstadoTela := etListar;
+   DefineEstadoTela;
+end;
+
+procedure TfrmClientes.btnPesquisarClick(Sender: TObject);
+begin
+   vEstadoTela := etPesquisar;
+   DefineEstadoTela;
+end;
+
+procedure TfrmClientes.btnConfirmarClick(Sender: TObject);
+begin
+   //Confirmar
+end;
+
+procedure TfrmClientes.btnCancelarClick(Sender: TObject);
+begin
+   vEstadoTela := etPadrao;
+   DefineEstadoTela;
+end;
+
+procedure TfrmClientes.btnSairClick(Sender: TObject);
+begin
+   if (vEstadoTela <> etPadrao) then
+   begin
+      if (TMessageUtil.Pergunta('Deseja realmente abortar essa operação?')) then
+      begin
+         vEstadoTela := etPadrao;
+         DefineEstadoTela;
+      end;
+   end
+   else
+      Close;
 end;
 
 end.

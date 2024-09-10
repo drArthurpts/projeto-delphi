@@ -38,7 +38,6 @@ object frmClientes: TfrmClientes
     Width = 611
     Height = 71
     Align = alBottom
-    Enabled = False
     TabOrder = 1
     object btnIncluir: TBitBtn
       Left = 30
@@ -47,6 +46,7 @@ object frmClientes: TfrmClientes
       Height = 25
       Caption = '&Incluir'
       TabOrder = 0
+      OnClick = btnIncluirClick
       Glyph.Data = {
         36030000424D3603000000000000360000002800000010000000100000000100
         18000000000000030000C40E0000C40E00000000000000000000FFFFFFFFFFFF
@@ -82,6 +82,7 @@ object frmClientes: TfrmClientes
       Height = 25
       Caption = '&Alterar'
       TabOrder = 1
+      OnClick = btnAlterarClick
       Glyph.Data = {
         36030000424D3603000000000000360000002800000010000000100000000100
         18000000000000030000C40E0000C40E000000000000000000000A2B95062082
@@ -117,6 +118,7 @@ object frmClientes: TfrmClientes
       Height = 25
       Caption = '&Excluir'
       TabOrder = 2
+      OnClick = btnExcluirClick
       Glyph.Data = {
         36030000424D3603000000000000360000002800000010000000100000000100
         18000000000000030000C40E0000C40E00000000000000000000FFFFFFFFFFFF
@@ -152,6 +154,7 @@ object frmClientes: TfrmClientes
       Height = 25
       Caption = '&Consultar'
       TabOrder = 3
+      OnClick = btnConsultarClick
       Glyph.Data = {
         36030000424D3603000000000000360000002800000010000000100000000100
         18000000000000030000C40E0000C40E00000000000000000000FFFFFFFFFFFF
@@ -187,6 +190,7 @@ object frmClientes: TfrmClientes
       Height = 25
       Caption = '&Listar'
       TabOrder = 4
+      OnClick = btnListarClick
       Glyph.Data = {
         36030000424D3603000000000000360000002800000010000000100000000100
         18000000000000030000C40E0000C40E00000000000000000000FFFFFFFFFFFF
@@ -215,13 +219,14 @@ object frmClientes: TfrmClientes
         FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFE6DCCCEFE8DBEFE8DBEF
         E8DBEFE8DBEFE8DBEFE8DBE8DFD0FFFFFFFFFFFFFFFFFFFFFFFF}
     end
-    object BitBtn1: TBitBtn
+    object btnPesquisar: TBitBtn
       Left = 210
       Top = 40
       Width = 75
       Height = 25
       Caption = '&Pesquisar'
       TabOrder = 5
+      OnClick = btnPesquisarClick
       Glyph.Data = {
         36030000424D3603000000000000360000002800000010000000100000000100
         18000000000000030000C40E0000C40E00000000000000000000FFFFFFFFFFFF
@@ -258,6 +263,7 @@ object frmClientes: TfrmClientes
       Caption = 'C&onfirmar'
       Enabled = False
       TabOrder = 6
+      OnClick = btnConfirmarClick
       Glyph.Data = {
         36030000424D3603000000000000360000002800000010000000100000000100
         18000000000000030000C40E0000C40E00000000000000000000FFFFFFFFFFFF
@@ -294,6 +300,7 @@ object frmClientes: TfrmClientes
       Caption = '&Cancelar'
       Enabled = False
       TabOrder = 7
+      OnClick = btnCancelarClick
       Glyph.Data = {
         36030000424D3603000000000000360000002800000010000000100000000100
         18000000000000030000C40E0000C40E00000000000000000000FFFFFF5B57D9
@@ -329,6 +336,7 @@ object frmClientes: TfrmClientes
       Height = 25
       Caption = '&Sair'
       TabOrder = 8
+      OnClick = btnSairClick
       Glyph.Data = {
         36030000424D3603000000000000360000002800000010000000100000000100
         18000000000000030000C40E0000C40E00000000000000000000FFFFFFFFFFFF
