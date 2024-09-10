@@ -11,9 +11,11 @@ object frmClientes: TfrmClientes
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   FormStyle = fsMDIChild
+  KeyPreview = True
   OldCreateOrder = False
   Position = poScreenCenter
   Visible = True
+  OnKeyDown = FormKeyDown
   PixelsPerInch = 96
   TextHeight = 13
   object stbBaraStatus: TStatusBar

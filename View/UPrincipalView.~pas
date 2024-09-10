@@ -21,6 +21,7 @@ type
     imgLogo: TImage;
     procedure menSairClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure menClienteClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -42,6 +43,11 @@ end;
 procedure TfrmPrincipal.FormShow(Sender: TObject);
 begin
   stbBarraStatus.Panels[0].Text := 'Teste';
+end;
+
+procedure TfrmPrincipal.menClienteClick(Sender: TObject);
+begin
+// 
 end;
 
 end.

@@ -41,8 +41,11 @@ type
     btnConfirmar: TBitBtn;
     btnCancelar: TBitBtn;
     btnSair: TBitBtn;
+    procedure FormKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
   private
     { Private declarations }
+    vKey : Word;
   public
     { Public declarations }
   end;
@@ -52,6 +55,30 @@ var
 
 implementation
 
+uses
+  uMessageUtil;
+  
 {$R *.dfm}
+
+procedure TfrmClientes.FormKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+      vKey := Key;
+
+      case vKey of
+         VK_RETURN:
+         begin
+           Perform(WM_NEXTDLGCTL, 0, 0);
+         end;
+
+         VK_ESCAPE:
+         begin
+           if (TMessageUtil.Pergunta(
+           'Deseja realmente abortar essa operação?')) then
+              Close;
+         end;  
+
+      end;
+end;
 
 end.

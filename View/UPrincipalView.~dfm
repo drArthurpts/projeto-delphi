@@ -866,6 +866,7 @@ object frmPrincipal: TfrmPrincipal
       Caption = 'Cadastros'
       object menCliente: TMenuItem
         Caption = 'Clientes'
+        OnClick = menClienteClick
       end
       object MenProdutos: TMenuItem
         Caption = 'Produtos'
