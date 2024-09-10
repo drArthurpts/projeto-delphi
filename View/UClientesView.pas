@@ -167,7 +167,18 @@ begin
    case vEstadoTela of
       etPadrao:
       begin
-      
+         CamposEnabled(False);
+         LimpaTela;
+
+         stbBaraStatus.Panels[0] := EmptyStr;
+         stbBaraStatus.Panels[1] := EmptyStr;
+
+         if (frmClientes <> nil) and
+         (frmClientes.Active) and
+         (frmClientes.CanFocus) then
+         btnIncluir.SetFocus;
+
+         Application.ProcessMessages;    
       end;
    end;
 end;
