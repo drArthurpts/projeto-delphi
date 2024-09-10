@@ -15,6 +15,7 @@ object frmClientes: TfrmClientes
   OldCreateOrder = False
   Position = poScreenCenter
   Visible = True
+  OnClose = FormClose
   OnKeyDown = FormKeyDown
   PixelsPerInch = 96
   TextHeight = 13
@@ -425,8 +426,8 @@ object frmClientes: TfrmClientes
     object lblNome: TStaticText
       Left = 34
       Top = 72
-      Width = 52
-      Height = 18
+      Width = 36
+      Height = 17
       Caption = 'Nome'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText

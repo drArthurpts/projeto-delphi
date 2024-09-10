@@ -33,6 +33,9 @@ var
 
 implementation
 
+uses
+  UConexao, UClientesView;
+
 {$R *.dfm}
 
 procedure TfrmPrincipal.menSairClick(Sender: TObject);
@@ -47,7 +50,18 @@ end;
 
 procedure TfrmPrincipal.menClienteClick(Sender: TObject);
 begin
-// 
+  try
+      Screen.Cursor := crHourGlass;
+
+      if frmClientes = nil then
+      frmClientes := TfrmClientes.Create(Application);
+
+  frmClientes.Show;
+
+
+  finally
+      Screen.Cursor := crDefault;
+  end;
 end;
 
 end.

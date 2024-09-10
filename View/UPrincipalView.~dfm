@@ -857,7 +857,10 @@ object frmPrincipal: TfrmPrincipal
     Top = 402
     Width = 912
     Height = 19
-    Panels = <>
+    Panels = <
+      item
+        Width = 50
+      end>
   end
   object MainCadastro: TMainMenu
     Left = 32
