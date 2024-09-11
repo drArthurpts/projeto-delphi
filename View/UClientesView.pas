@@ -55,6 +55,8 @@ type
     procedure btnSairClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure FormKeyUp(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
   private
     { Private declarations }
     vKey : Word;
@@ -65,6 +67,9 @@ type
     procedure CamposEnabled(pOpcao : Boolean);
     procedure LimpaTela;
     procedure DefineEstadoTela;
+    function ProcessaConfirmacao : Boolean;
+    function ProcessaInclusao  : Boolean;
+    function ProcessaCliente : Boolean;
   public
     { Public declarations }
 
@@ -105,7 +110,7 @@ begin
          else
          begin
            if (TMessageUtil.Pergunta(
-           'Deseja sair da rottina? ')) then
+           'Deseja sair da rotina? ')) then
               Close;
               end;
          end;
@@ -257,7 +262,7 @@ end;
 
 procedure TfrmClientes.btnConfirmarClick(Sender: TObject);
 begin
-   //Confirmar
+   ProcessaConfirmacao;
 end;
 
 procedure TfrmClientes.btnCancelarClick(Sender: TObject);
@@ -288,6 +293,69 @@ end;
 procedure TfrmClientes.FormShow(Sender: TObject);
 begin
    DefineEstadoTela;
+end;
+
+procedure TfrmClientes.FormKeyUp(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+   vKey := VK_CLEAR;
+end;
+
+function TfrmClientes.ProcessaConfirmacao: Boolean;
+begin
+   Result: False;
+
+      try
+        case vEstadoTela of
+            etIncluir : Result := ProcessaInclusao;
+
+        end;
+        if not Result then
+         Exit;
+      except
+         on E : Exception do
+         TMessageUtil.Alerta(E.Message);
+      end;
+
+      Result: True;
+end;
+
+function TfrmClientes.ProcessaInclusao: Boolean;
+begin
+   try
+      Result := False;
+
+      if ProcessaCliente then
+      begin
+         TMessageUtil.Informacao('Cliente cadastrado com sucesso! ' #13 +
+                                 'Código cadastrado: ');
+         vEstadoTela := etPadrao;
+         DefineEstadoTela;
+
+         Result := True;
+      end;
+   except
+       on E : Exception do
+       begin
+          Raise Exception.Create(
+          'Falha ao incluir os dados do cliente [View]: '#13 +
+          e.Message);
+       end;
+   end;
+end;
+
+function TfrmClientes.ProcessaCliente: Boolean;
+begin
+   try
+
+   except
+     on E : Exception do
+     begin
+         Raise  Exception.Create(
+         'Falha ao gavar os dados dos clientes [View]: '#13 +
+         e.Message);
+     end;
+   end;  
 end;
 
 end.
