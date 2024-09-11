@@ -53,6 +53,8 @@ type
     procedure btnConfirmarClick(Sender: TObject);
     procedure btnCancelarClick(Sender: TObject);
     procedure btnSairClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure FormShow(Sender: TObject);
   private
     { Private declarations }
     vKey : Word;
@@ -91,11 +93,22 @@ begin
 
          VK_ESCAPE:
          begin
+         if (vEstadoTela <> etPadrao) then
+         begin
+         if (TMessageUtil.Pergunta(
+         'Deseja realmente abortar essa operação?')) then
+         begin
+            vEstadoTela := etPadrao;
+            DefineEstadoTela;
+            end;
+         end
+         else
+         begin
            if (TMessageUtil.Pergunta(
-           'Deseja realmente abortar essa operação?')) then
+           'Deseja sair da rottina? ')) then
               Close;
-         end;  
-
+              end;
+         end;
       end;
 end;
 
@@ -265,6 +278,16 @@ begin
    end
    else
       Close;
+end;
+
+procedure TfrmClientes.FormCreate(Sender: TObject);
+begin
+   vEstadoTela := etPadrao;
+end;
+
+procedure TfrmClientes.FormShow(Sender: TObject);
+begin
+   DefineEstadoTela;
 end;
 
 end.

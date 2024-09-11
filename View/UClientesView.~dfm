@@ -16,7 +16,9 @@ object frmClientes: TfrmClientes
   Position = poScreenCenter
   Visible = True
   OnClose = FormClose
+  OnCreate = FormCreate
   OnKeyDown = FormKeyDown
+  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object stbBaraStatus: TStatusBar
@@ -38,7 +40,6 @@ object frmClientes: TfrmClientes
     Width = 611
     Height = 71
     Align = alBottom
-    Enabled = False
     TabOrder = 1
     object btnIncluir: TBitBtn
       Left = 30
