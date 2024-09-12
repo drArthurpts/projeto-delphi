@@ -70,6 +70,9 @@ type
     function ProcessaConfirmacao : Boolean;
     function ProcessaInclusao  : Boolean;
     function ProcessaCliente : Boolean;
+
+    function ProcessaPessoa : Boolean;
+    function ProcessaEndereco : Boolean;
   public
     { Public declarations }
 
@@ -303,7 +306,7 @@ end;
 
 function TfrmClientes.ProcessaConfirmacao: Boolean;
 begin
-   Result: False;
+   Result:= False;
 
       try
         case vEstadoTela of
@@ -317,7 +320,7 @@ begin
          TMessageUtil.Alerta(E.Message);
       end;
 
-      Result: True;
+      Result := True;
 end;
 
 function TfrmClientes.ProcessaInclusao: Boolean;
@@ -327,7 +330,7 @@ begin
 
       if ProcessaCliente then
       begin
-         TMessageUtil.Informacao('Cliente cadastrado com sucesso! ' #13 +
+         TMessageUtil.Informacao('Cliente cadastrado com sucesso! ' + #13 +
                                  'Código cadastrado: ');
          vEstadoTela := etPadrao;
          DefineEstadoTela;
@@ -347,7 +350,13 @@ end;
 function TfrmClientes.ProcessaCliente: Boolean;
 begin
    try
+      if (ProcessaPessoa) and
+         (ProcessaEndereco) then
+      begin
+         //Gravação no banco
 
+         Result := True;
+      end;
    except
      on E : Exception do
      begin
@@ -355,7 +364,43 @@ begin
          'Falha ao gavar os dados dos clientes [View]: '#13 +
          e.Message);
      end;
-   end;  
+   end;
+end;
+
+function TfrmClientes.ProcessaPessoa: Boolean;
+begin
+   try
+      Result := False;
+
+//      if not ValidaCliente then
+//         Exit;
+
+      Result := True
+   except
+       on E : Exception do
+       begin
+
+          Raise Exception.Create(
+          'Falha ao processar os dados da Pessoa [View]: ' + #13 + e.Message);
+       end
+   end;
+end;
+
+function TfrmClientes.ProcessaEndereco: Boolean;
+begin
+   try
+       Result := True;
+   except
+      on E : Exception do
+      begin
+         Raise Exception.Create(
+            'Falha ao preencher os dados de endereço do cliente [View]' + #13  +
+            e.Message);
+
+      end;
+   end;
+
 end;
 
 end.
+
