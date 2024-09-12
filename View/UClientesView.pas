@@ -389,6 +389,8 @@ end;
 function TfrmClientes.ProcessaEndereco: Boolean;
 begin
    try
+       Result := False;
+
        Result := True;
    except
       on E : Exception do
@@ -397,6 +399,7 @@ begin
             'Falha ao preencher os dados de endereço do cliente [View]' + #13  +
             e.Message);
 
+            
       end;
    end;
 

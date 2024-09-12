@@ -1,0 +1,91 @@
+unit UPessoa;
+
+interface
+
+uses SysUtils, Classes;
+
+type
+   TPessoa = Class(TPersistent)
+
+      private
+         vId                  : Integer;
+         vTipo_Pessoa         : Integer;
+         vNome                : String;
+         vFisica_Juridica     : Integer;
+         vIdentificadorPessoa : String;
+         vAtivo               : Boolean;
+    Fisica_Juridica: Integer;
+    function Ativo: Boolean;
+    function IdentificadorPessoa: String;
+    function Nome: String;
+    function Tipo_Pessoa: Integer;
+
+         public
+            constructor Create;
+         published
+            property  Id                   : Integer  read vId write vId;
+            property  Tipo_Pessoa          : Integer  read Tipo_Pessoa write Tipo_Pessoa;
+            property  Nome                 : String   read Nome  write Nome ;
+            property  Fisica_Juridica      : Integer  read Fisica_Juridica write Fisica_Juridica;
+            property  IdentificadorPessoa  : String   read IdentificadorPessoa write IdentificadorPessoa;
+            property  Ativo                : Boolean  read Ativo write Ativo;
+
+      end;
+
+      TColPessoa = class(TList)
+         public
+            function Retorna(pIndex : Integer) : TPessoa;
+            procedure Adiciona (pPessoa : TPessoa);
+
+       end;
+
+implementation
+
+
+
+{ TPessoa }
+
+function TPessoa.Ativo: Boolean;
+begin
+
+end;
+
+constructor TPessoa.Create;
+begin
+   Self.vId                  := 0;
+   Self.vTipo_Pessoa         := 0;
+   Self.vNome                := EmptyStr;
+   Self.vFisica_Juridica     := 0;
+   Self.vIdentificadorPessoa := EmptyStr;
+   Self.vAtivo               := False;
+end;
+
+function TPessoa.IdentificadorPessoa: String;
+begin
+
+end;
+
+function TPessoa.Nome: String;
+begin
+
+end;
+
+function TPessoa.Tipo_Pessoa: Integer;
+begin
+
+end;
+
+{ TColPessoa }
+
+procedure TColPessoa.Adiciona(pPessoa: TPessoa);
+begin
+       Self.Add(pPessoa(pPessoa));
+end;
+
+function TColPessoa.Retorna(pIndex: Integer): TPessoa;
+begin
+   Result := TPessoa(Self[pIndex]);
+end;
+
+end.
+ 

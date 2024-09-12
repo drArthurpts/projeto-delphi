@@ -11,7 +11,8 @@ uses
   UClientesView in 'View\UClientesView.pas' {frmClientes},
   uMessageUtil in 'Model\Util\uMessageUtil.pas',
   Consts in 'Model\Util\Consts.pas',
-  UEnumerationUtil in 'Model\Util\UEnumerationUtil.pas';
+  UEnumerationUtil in 'Model\Util\UEnumerationUtil.pas',
+  UPessoa in 'Model\UPessoa.pas';
 
 {$R *.res}
 
