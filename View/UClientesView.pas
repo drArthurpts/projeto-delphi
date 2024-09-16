@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, ComCtrls, StdCtrls, ExtCtrls, Mask, Buttons, UEnumerationUtil;
+  Dialogs, ComCtrls, StdCtrls, ExtCtrls, Mask, Buttons, UEnumerationUtil, UCliente;
 
 type
   TfrmClientes = class(TForm)
@@ -61,8 +61,9 @@ type
     { Private declarations }
     vKey : Word;
 
-    //VAriaveis de classes
+    //Variaveis de classes
     vEstadoTela : TEstadoTela;
+    vObjCliente : TCliente;
 
     procedure CamposEnabled(pOpcao : Boolean);
     procedure LimpaTela;
@@ -374,6 +375,26 @@ begin
 
 //      if not ValidaCliente then
 //         Exit;
+
+      if vEstadoTela = etIncluir then
+      begin
+         if vObjCliente = nil then
+            vObjCliente := TCliente.Create
+      end
+      else
+      if vEstadoTela = etAlterar then
+      begin
+           if vObjCliente = nil then
+              Exit;
+
+      end;
+      if vObjCliente = nil then
+              Exit;
+
+      vObjCliente.Tipo_Pessoa := 0;
+      vObjCliente.Nome := edtNome.Text;
+      vObjCliente.Fisica_Juridica := 
+
 
       Result := True
    except
