@@ -396,7 +396,7 @@ object frmClientes: TfrmClientes
       Height = 13
       Caption = 'CPF/CNPJ'
     end
-    object editCodigo: TEdit
+    object edtCodigo: TEdit
       Left = 72
       Top = 31
       Width = 67
