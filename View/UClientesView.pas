@@ -68,12 +68,16 @@ type
     procedure CamposEnabled(pOpcao : Boolean);
     procedure LimpaTela;
     procedure DefineEstadoTela;
-    function ProcessaConfirmacao : Boolean;
-    function ProcessaInclusao  : Boolean;
-    function ProcessaCliente : Boolean;
+    function ProcessaConfirmacao   : Boolean;
+    function ProcessaInclusao      : Boolean;
+    function ProcessaCliente       : Boolean;
 
-    function ProcessaPessoa : Boolean;
-    function ProcessaEndereco : Boolean;
+    function ProcessaPessoa        : Boolean;
+    function ProcessaEndereco      : Boolean;
+    function ValidaCliente         : Boolean;
+
+
+
   public
     { Public declarations }
 
@@ -374,8 +378,8 @@ begin
    try
       Result := False;
 
-//      if not ValidaCliente then
-//         Exit;
+      if not ValidaCliente then
+         Exit;
 
       if vEstadoTela = etIncluir then
       begin
@@ -427,6 +431,22 @@ begin
       end;
    end;
 
+end;
+
+function TfrmClientes.ValidaCliente: Boolean;
+begin
+   Result := False;
+
+   if (edtNome.Text = EmptyStr) then
+   begin
+      TMessageUtil.Alerta('Nome do Cliente não pode ficar em branco. ');
+      if edtNome.CanFocus then
+      edtNome.SetFocus;
+    Exit;
+
+   end;
+
+   Result := True;
 end;
 
 end.

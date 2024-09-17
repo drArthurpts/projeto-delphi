@@ -352,13 +352,11 @@ function TfrmClientes.ProcessaCliente: Boolean;
 begin
    try
       Result := False;
+
       if (ProcessaPessoa) and (ProcessaEndereco) then
       begin
          //Gravação no banco
-
          TPessoaController.getInstancia.GravaPessoa(vObjCliente);
-
-
          Result := True;
       end;
    except
