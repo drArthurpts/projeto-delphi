@@ -12,7 +12,7 @@ type
     pnlBotoes: TPanel;
     pnlArea: TPanel;
     lblCodigo: TLabel;
-    editCodigo: TEdit;
+    edtCodigo: TEdit;
     chkAtivo: TCheckBox;
     rdgTipoPessoa: TRadioGroup;
     lblCPFCNPJ: TLabel;
@@ -152,6 +152,10 @@ begin
 
       if (Components[i] is TCheckBox) then
          (Components[i] as TCheckBox).Checked := False;
+
+      if (Components[i] is TCheckBox) then
+         (Components[i] as TCheckBox).Enabled := pOpcao;
+
    end;
 
    grbEndereco.Enabled := pOpcao;
@@ -222,12 +226,41 @@ begin
          stbBaraStatus.Panels[0].Text := 'Inclusão';
          CamposEnabled(True);
 
-         editCodigo.Enabled := False;
+         edtCodigo.Enabled := False;
 
          chkAtivo.Checked := True;
 
          if edtNome.CanFocus then
             edtNome.SetFocus; 
+      end;
+
+      etConsultar:
+      begin
+         stbBaraStatus.Panels[0].Text := 'Consulta';
+
+         CamposEnabled(False);
+
+         if (edtCodigo.Text <> EmptyStr) then
+         begin
+            edtCodigo.Enabled    := False;
+            btnAlterar.Enabled   := True;
+            btnExcluir.Enabled   := True;
+            btnListar.Enabled    := True;
+            btnConfirmar.Enabled := False;
+            chkAtivo.Enabled     := False;
+
+            if (btnAlterar.CanFocus) then
+               btnAlterar.SetFocus;
+         end
+         else
+         begin
+            lblCodigo.Enabled := True;
+            edtCodigo.Enabled:= True;
+
+            if edtCodigo.CanFocus then
+            edtCodigo.SetFocus;
+
+         end;  
       end;
    end;
 end;
@@ -439,7 +472,7 @@ begin
 
    if (edtNome.Text = EmptyStr) then
    begin
-      TMessageUtil.Alerta('Nome do Cliente não pode ficar em branco. ');
+      TMessageUtil.Alerta('Nome do cliente não pode ficar em branco. ');
       if edtNome.CanFocus then
       edtNome.SetFocus;
     Exit;
