@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, ComCtrls, StdCtrls, ExtCtrls, Mask, Buttons, UEnumerationUtil, UCliente;
+  Dialogs, ComCtrls, StdCtrls, ExtCtrls, Mask, Buttons, UEnumerationUtil, UCliente, UPessoaController;
 
 type
   TfrmClientes = class(TForm)
@@ -332,7 +332,7 @@ begin
       if ProcessaCliente then
       begin
          TMessageUtil.Informacao('Cliente cadastrado com sucesso! ' + #13 +
-                                 'Código cadastrado: ');
+                                 'Código cadastrado: ' + IntToStr(vObjCliente.Id));
          vEstadoTela := etPadrao;
          DefineEstadoTela;
 
@@ -351,11 +351,12 @@ end;
 function TfrmClientes.ProcessaCliente: Boolean;
 begin
    try
-      if (ProcessaPessoa) and
-         (ProcessaEndereco) then
+      Result := False;
+
+      if (ProcessaPessoa) and (ProcessaEndereco) then
       begin
          //Gravação no banco
-
+         TPessoaController.getInstancia.GravaPessoa(vObjCliente);
          Result := True;
       end;
    except
@@ -391,9 +392,11 @@ begin
       if vObjCliente = nil then
               Exit;
 
-      vObjCliente.Tipo_Pessoa := 0;
-      vObjCliente.Nome := edtNome.Text;
-      vObjCliente.Fisica_Juridica := 
+      vObjCliente.Tipo_Pessoa         := 0;
+      vObjCliente.Nome                := edtNome.Text;
+      vObjCliente.Fisica_Juridica     := rdgTipoPessoa.ItemIndex;
+      vObjCliente.Ativo               := chkAtivo.Checked;
+      vObjCliente.IdentificadorPessoa := edtCPFCNPJ.Text;
 
 
       Result := True

@@ -9,9 +9,19 @@ type
       public
          constructor Create;
          function GravaPessoa(pPessoa : TPessoa) : Boolean;
+
+         function RetornaCondicaoPessoa(pId_Pessoa : Integer) : String;
+         published
+            class function  getInstancia : TPessoaController;
+
    end;
 
+var
+   _instance: TPessoaController;
+
 implementation
+
+uses UPessoaDAO;
 
 { TPessoaController }
 
@@ -20,27 +30,61 @@ begin
    inherited Create;
 end;
 
+class function TPessoaController.getInstancia: TPessoaController;
+begin
+   if _instance = nil then
+      _instance := TPessoaController.Create;
+
+   Result := _instance;
+
+end;
+
 function TPessoaController.GravaPessoa(pPessoa: TPessoa): Boolean;
 var
-   xPessoaDAO : TPessoa;
+   xPessoaDAO : TPessoaDAO;
    xAux : Integer;
 
 begin
    try
-        try
-            TConexao.get.iniciaTransacao;
+      try
+         TConexao.get.iniciaTransacao;
+         Result := False;
 
-            Result := False;
+         xPessoaDAO :=
+         TPessoaDAO.Create(TConexao.get.getConn);
 
-            xPessoaDAO :=
-               TPessoaDAO.Create(TConexao.get.getConn);
-        finally
+         if pPessoa.Id = 0 then
+            xPessoaDAO.Insere(pPessoa)
+         else
+            xPessoaDAO.Atualiza(pPessoa, RetornaCondicaoPessoa(pPessoa.Id));
 
-        end;
+         TConexao.get.confirmaTransacao;
+      finally
+         if (xPessoaDAO <> nil) then
+            FreeAndNil(xPessoaDAO);
+      end;
    except
-
+      on E : Exception do
+      begin
+         TConexao.get.cancelaTransacao;
+         Raise Exception.Create(
+         'Falha ao gravar os dados da pessoa [Controller]. ' + #13 +
+         e.Message);
+      end;
    end;
+end;
 
+function TPessoaController.RetornaCondicaoPessoa(
+  pId_Pessoa: Integer): String;
+
+var
+   xChave : String;
+begin
+   xChave := 'ID';
+
+   Result :=
+   'WHERE ' + #13 +
+   '    ' + xChave + '  =  ' + QuotedStr(IntToStr(pId_Pessoa)) + ' '#13;
 end;
 
 end.

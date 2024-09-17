@@ -13,7 +13,8 @@ uses
   Consts in 'Model\Util\Consts.pas',
   UEnumerationUtil in 'Model\Util\UEnumerationUtil.pas',
   UPessoa in 'Model\UPessoa.pas',
-  UPessoaDAO in 'Model\UPessoaDAO.pas';
+  UPessoaDAO in 'Model\UPessoaDAO.pas',
+  UCliente in 'Model\UCliente.pas';
 
 {$R *.res}
 
