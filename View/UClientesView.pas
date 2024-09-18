@@ -494,7 +494,11 @@ begin
 
          if (edtCodigo.CanFocus) then
             edtCodigo.SetFocus;
+
+         Exit;
       end;
+         vObjCliente := TPessoaController.getInstancia.BuscaPessoa(
+            edtCodigo.Text);
    except
        on E Exception do
        begin

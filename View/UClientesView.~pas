@@ -71,7 +71,7 @@ type
     function ProcessaConfirmacao   : Boolean;
     function ProcessaInclusao      : Boolean;
     function ProcessaCliente       : Boolean;
-
+    function ProcessaConsulta      : Boolean;  
     function ProcessaPessoa        : Boolean;
     function ProcessaEndereco      : Boolean;
     function ValidaCliente         : Boolean;
@@ -348,7 +348,8 @@ begin
 
       try
         case vEstadoTela of
-            etIncluir : Result := ProcessaInclusao;
+            etIncluir :   Result := ProcessaInclusao;
+            etConsultar : Result := ProcessaConsulta;
 
         end;
         if not Result then
@@ -480,6 +481,29 @@ begin
    end;
 
    Result := True;
+end;
+
+function TfrmClientes.ProcessaConsulta: Boolean;
+begin
+   try
+      Result := False;
+
+      if (edtCodigo.Text = EmptyStr) then
+      begin
+         TMessageUtil.Alerta('Código do cliente não pode ficar em branco.');
+
+         if (edtCodigo.CanFocus) then
+            edtCodigo.SetFocus;
+      end;
+   except
+       on E Exception do
+       begin
+         Raise Exception.Create(
+         'Falha ao consultar os dados do cliente [View].' + #13 +
+         e.Message);
+
+       end;
+   end;
 end;
 
 end.
