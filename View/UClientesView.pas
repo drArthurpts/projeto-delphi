@@ -68,6 +68,7 @@ type
     procedure CamposEnabled(pOpcao : Boolean);
     procedure LimpaTela;
     procedure DefineEstadoTela;
+    procedure CarregaDadosTela;
     function ProcessaConfirmacao   : Boolean;
     function ProcessaInclusao      : Boolean;
     function ProcessaCliente       : Boolean;
@@ -497,10 +498,31 @@ begin
 
          Exit;
       end;
-         vObjCliente := TPessoaController.getInstancia.BuscaPessoa(
-            edtCodigo.Text);
+
+      vObjCliente :=
+        TCliente (TPessoaController.getInstancia.BuscaPessoa(
+           StrToIntDef(edtCodigo.Text, 0)));
+
+      if (vObjCliente <> nil) then
+         CarregaDadosTela
+      else
+      begin
+         TMessageUtil.Alerta(
+            'Nenhum cliente encontrado para o código informado');
+         LimpaTela;
+
+         if (edtCodigo.CanFocus) then
+             edtCodigo.SetFocus;
+
+         Exit;
+      end;
+
+      DefineEstadoTela;
+
+      Result := True;
+
    except
-       on E Exception do
+       on E : Exception do
        begin
          Raise Exception.Create(
          'Falha ao consultar os dados do cliente [View].' + #13 +
@@ -510,5 +532,16 @@ begin
    end;
 end;
 
-end.
+procedure TfrmClientes.CarregaDadosTela;
+begin
+   if (vObjCliente = nil) then
+   Exit;
+
+   edtCodigo.Text          := IntToStr(vObjCliente.Id);
+   rdgTipoPessoa.ItemIndex := vObjCliente.Fisica_Juridica;
+   edtNome.Text            := vObjCliente.Nome;
+   chkAtivo.Checked        := vObjCliente.Ativo;
+   edtCPFCNPJ.Text         := vObjCliente.IdentificadorPessoa;
+
+end;
 
