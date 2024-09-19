@@ -235,6 +235,32 @@ begin
             edtNome.SetFocus; 
       end;
 
+      etAlterar:
+      begin
+         stbBarraStatus.Panels[0].Text := 'Alterarção';
+
+         if (edtCodigo.Text <> EmptyStr) then
+         begin
+            CamposEnabled(True);
+
+            edtCodigo.Enabled    := False;
+            btnAlterar.Enabled   := False;
+            btnConfirmar.Enabled := True;
+
+
+            if (chkAtivo.CanFocus) then
+               chkAtivo.SetFocus;
+         end
+         else
+         begin
+            lblCodigo.Enabled := True;
+            edtCodigo.Enabled := True;
+
+            if (edtCodigo.CanFocus) then
+               edtCodigo.SetFocus;
+         end;
+      end;
+
       etConsultar:
       begin
          stbBaraStatus.Panels[0].Text := 'Consulta';
@@ -545,3 +571,4 @@ begin
 
 end;
 
+end.

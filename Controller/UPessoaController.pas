@@ -42,7 +42,7 @@ begin
          FreeAndNil(xPessoaDAO);
       end;
    except
-      on E : Excpetion do
+      on E : Exception do
       begin
          Raise Exception.Create(
             'Falha ao buscar os dados da pessoa. [Controller]' + #13+       

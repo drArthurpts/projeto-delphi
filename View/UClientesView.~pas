@@ -235,6 +235,32 @@ begin
             edtNome.SetFocus; 
       end;
 
+      etAlterar:
+      begin
+         stbBarraStatus.Panels[0].Text := 'Alterarção';
+
+         if (edtCodigo.Text <> EmptyStr) then
+         begin
+            CamposEnabled(True);
+
+            edtCodigo.Enabled    := False;
+            btnAlterar.Enabled   := False;
+            btnConfirmar.Enabled := True;
+
+
+            if (chkAtivo.CanFocus) then
+               chkAtivo.SetFocus;
+         end
+         else
+         begin
+            lblCodigo.Enabled := True;
+            edtCodigo.Enabled := True;
+
+            if (edtCodigo.CanFocus) then
+               edtCodigo.SetFocus;
+         end;
+      end;
+
       etConsultar:
       begin
          stbBaraStatus.Panels[0].Text := 'Consulta';
@@ -498,7 +524,9 @@ begin
 
          Exit;
       end;
-        TCliente(vObjCliente := TPessoaController.getInstancia.BuscaPessoa(
+
+      vObjCliente :=
+        TCliente (TPessoaController.getInstancia.BuscaPessoa(
            StrToIntDef(edtCodigo.Text, 0)));
 
       if (vObjCliente <> nil) then
@@ -520,7 +548,7 @@ begin
       Result := True;
 
    except
-       on E Exception do
+       on E : Exception do
        begin
          Raise Exception.Create(
          'Falha ao consultar os dados do cliente [View].' + #13 +
@@ -538,8 +566,9 @@ begin
    edtCodigo.Text          := IntToStr(vObjCliente.Id);
    rdgTipoPessoa.ItemIndex := vObjCliente.Fisica_Juridica;
    edtNome.Text            := vObjCliente.Nome;
-   chkAtivo.Checked        := vObjCliente.Ativc;
+   chkAtivo.Checked        := vObjCliente.Ativo;
    edtCPFCNPJ.Text         := vObjCliente.IdentificadorPessoa;
 
-end.
+end;
 
+end.
