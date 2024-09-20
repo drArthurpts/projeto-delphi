@@ -8,7 +8,7 @@ uses
 
 type
   TfrmClientes = class(TForm)
-    stbBaraStatus: TStatusBar;
+    stbBarraStatus: TStatusBar;
     pnlBotoes: TPanel;
     pnlArea: TPanel;
     lblCodigo: TLabel;
@@ -57,6 +57,7 @@ type
     procedure FormShow(Sender: TObject);
     procedure FormKeyUp(Sender: TObject; var Key: Word;
       Shift: TShiftState);
+    procedure edtCodigoExit(Sender: TObject);
   private
     { Private declarations }
     vKey : Word;
@@ -71,6 +72,7 @@ type
     procedure CarregaDadosTela;
     function ProcessaConfirmacao   : Boolean;
     function ProcessaInclusao      : Boolean;
+    function ProcessaAlteracao     : Boolean;
     function ProcessaCliente       : Boolean;
     function ProcessaConsulta      : Boolean;  
     function ProcessaPessoa        : Boolean;
@@ -212,8 +214,8 @@ begin
          CamposEnabled(False);
          LimpaTela;
 
-         stbBaraStatus.Panels[0].Text := EmptyStr;
-         stbBaraStatus.Panels[1].Text := EmptyStr;
+         stbBarraStatus.Panels[0].Text := EmptyStr;
+         stbBarraStatus.Panels[1].Text := EmptyStr;
 
          if (frmClientes <> nil) and
          (frmClientes.Active) and
@@ -224,7 +226,7 @@ begin
       end;
       etIncluir:
       begin
-         stbBaraStatus.Panels[0].Text := 'Inclusão';
+         stbBarraStatus.Panels[0].Text := 'Inclusão';
          CamposEnabled(True);
 
          edtCodigo.Enabled := False;
@@ -237,7 +239,7 @@ begin
 
       etAlterar:
       begin
-         stbBarraStatus.Panels[0].Text := 'Alterarção';
+         stbBarraStatus.Panels[0].Text := 'Alteração';
 
          if (edtCodigo.Text <> EmptyStr) then
          begin
@@ -261,9 +263,21 @@ begin
          end;
       end;
 
+      etExcluir:
+      begin
+         stbBarraStatus.Panels[0].text := 'Exclusão';
+
+         if (edtCodigo.Text <> EmptyStr) then
+            ProcessaExclusao
+         else
+         begin
+            lblCodigo.Enabled := True;
+         end;
+      end;
+
       etConsultar:
       begin
-         stbBaraStatus.Panels[0].Text := 'Consulta';
+         stbBarraStatus.Panels[0].Text := 'Consulta';
 
          CamposEnabled(False);
 
@@ -375,7 +389,8 @@ begin
 
       try
         case vEstadoTela of
-            etIncluir :   Result := ProcessaInclusao;
+            etIncluir   : Result := ProcessaInclusao;
+            etAlterar   : Result := ProcessaAlteracao;
             etConsultar : Result := ProcessaConsulta;
 
         end;
@@ -569,6 +584,40 @@ begin
    chkAtivo.Checked        := vObjCliente.Ativo;
    edtCPFCNPJ.Text         := vObjCliente.IdentificadorPessoa;
 
+end;
+
+function TfrmClientes.ProcessaAlteracao: Boolean;
+begin
+   try
+      Result := False;
+
+      if ProcessaCliente then
+      begin
+         TMessageUtil.Informacao('Dados foram alterados com sucesso.');
+
+         vEstadoTela := etPadrao;
+         DefineEstadoTela;
+         Result := True;      
+      end;
+
+   except
+      on E : Exception do
+      begin
+         Raise Exception.Create(
+         'Falha ao alterar os dados do cliente [View]: ' +#13 +
+         e.Message);
+      end;  
+
+   end;
+
+end;
+
+procedure TfrmClientes.edtCodigoExit(Sender: TObject);
+begin
+   if vKey = VK_RETURN then
+      ProcessaConsulta;
+
+   vKey := VK_CLEAR;
 end;
 
 end.

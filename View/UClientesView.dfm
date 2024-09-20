@@ -22,7 +22,7 @@ object frmClientes: TfrmClientes
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
-  object stbBaraStatus: TStatusBar
+  object stbBarraStatus: TStatusBar
     Left = 0
     Top = 299
     Width = 611
@@ -402,6 +402,7 @@ object frmClientes: TfrmClientes
       Width = 67
       Height = 21
       TabOrder = 0
+      OnExit = edtCodigoExit
     end
     object chkAtivo: TCheckBox
       Left = 152
