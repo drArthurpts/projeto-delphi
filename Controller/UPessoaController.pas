@@ -45,7 +45,7 @@ begin
       on E : Exception do
       begin
          Raise Exception.Create(
-            'Falha ao buscar os dados da pessoa. [Controller]' + #13+       
+            'Falha ao buscar os dados da pessoa. [Controller]' + #13+
             e.Message);
       end;
    end;
@@ -57,18 +57,19 @@ begin
 end;
 
 function TPessoaController.ExcluiPessoa(pPessoa: TPessoa): Boolean;
+var
    xPessoaDAO : TPessoaDAO;
 begin
    try
       try
-         Ruslt := False;
+         Result := False;
 
          TConexao.get.iniciaTransacao;
 
          xPessoaDAO := TPessoaDAO.Create(TConexao.get.getConn);
 
          if (pPessoa.Id = 0) then
-            Exit;
+            Exit
          else
          begin
             xPessoaDAO.Deleta(RetornaCondicaoPessoa(pPessoa.Id));

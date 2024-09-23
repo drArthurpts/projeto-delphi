@@ -660,6 +660,11 @@ begin
       end;
 
       Result := True;
+      TMessageUtil.Informacao('Cliente excluído com sucesso.');
+      
+      LimpaTela;
+      vEstadoTela := etPadrao;
+      DefineEstadoTela;
    except
       on E: Exception do
       begin
