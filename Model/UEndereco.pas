@@ -37,7 +37,7 @@ type
 
    end;
 
-   TColEndereco = class(TList)
+   TColEndereco = Class(TList)
       public
          function Retorna(pIndex : Integer)  :  TEndereco;
          procedure Adiciona(pEndereco : TEndereco);
@@ -56,9 +56,21 @@ begin
          Self.vEndereco      := EmptyStr;
          Self.vNumero        := EmptyStr;
          Self.vComplemento   := EmptyStr;
-         Self.vBairro        :  EmptyStr;
-         Self.vUF            :  EmptyStr;
-         Self.vCidade        :  EmptyStr;
+         Self.vBairro        :=  EmptyStr;
+         Self.vUF            :=  EmptyStr;
+         Self.vCidade        :=  EmptyStr;
+end;
+
+{ TColEndereco }
+
+procedure TColEndereco.Adiciona(pEndereco: TEndereco);
+begin
+
+end;
+
+function TColEndereco.Retorna(pIndex: Integer): TEndereco;
+begin
+
 end;
 
 end.
