@@ -4,7 +4,8 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, ComCtrls, StdCtrls, ExtCtrls, Mask, Buttons, UEnumerationUtil, UCliente, UPessoaController;
+  Dialogs, ComCtrls, StdCtrls, ExtCtrls, Mask, Buttons, UEnumerationUtil,
+   UCliente, UPessoaController, UEndereco;
 
 type
   TfrmClientes = class(TForm)
@@ -79,6 +80,7 @@ type
     function ProcessaPessoa        : Boolean;
     function ProcessaEndereco      : Boolean;
     function ValidaCliente         : Boolean;
+    function ValidaEndereco         : Boolean;
 
 
 
@@ -496,9 +498,17 @@ begin
 end;
 
 function TfrmClientes.ProcessaEndereco: Boolean;
+var
+   xEndereco : TEndereco;
 begin
    try
        Result := False;
+
+       xEndereco := nil;
+
+       if (not ValidaEndereco) then
+         Exit;
+
 
        Result := True;
    except
@@ -673,6 +683,28 @@ begin
          e.Message);
       end;
    end;
+end;
+
+function TfrmClientes.ValidaEndereco: Boolean;
+begin
+   Result := False;
+
+   if (Trim(edtEndereco.Text) = EmptyStr) then
+   begin
+      TMessageUtil.Alerta('Endereço do cliente não pode ficar em branco.');
+
+      if (edtEndereco.CanFocus) then
+         edtEndereco.SetFocus;
+      Exit;
+   end;
+
+   if (Trim(edtNumero.Text = EmptyStr)) then
+   begin
+
+   end;
+
+
+   Result := True;
 end;
 
 end.

@@ -61,5 +61,17 @@ begin
          Self.vCidade        :=  EmptyStr;
 end;
 
+{ TColEndereco }
+
+procedure TColEndereco.Adiciona(pEndereco: TEndereco);
+begin
+
+end;
+
+function TColEndereco.Retorna(pIndex: Integer): TEndereco;
+begin
+
+end;
+
 end.
 

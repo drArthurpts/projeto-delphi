@@ -56,21 +56,21 @@ begin
          Self.vEndereco      := EmptyStr;
          Self.vNumero        := EmptyStr;
          Self.vComplemento   := EmptyStr;
-         Self.vBairro        :=  EmptyStr;
-         Self.vUF            :=  EmptyStr;
-         Self.vCidade        :=  EmptyStr;
+         Self.vBairro        := EmptyStr;
+         Self.vUF            := EmptyStr;
+         Self.vCidade        := EmptyStr;
 end;
 
 { TColEndereco }
 
 procedure TColEndereco.Adiciona(pEndereco: TEndereco);
 begin
-
+   Self.Add(TEndereco(pEndereco));
 end;
 
 function TColEndereco.Retorna(pIndex: Integer): TEndereco;
 begin
-
+   Result := TEndereco(Self[pIndex]);  
 end;
 
 end.

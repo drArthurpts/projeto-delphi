@@ -1,8 +1,8 @@
 object frmPrincipal: TfrmPrincipal
-  Left = -8
-  Top = -8
-  Width = 1382
-  Height = 744
+  Left = -7
+  Top = 2
+  Width = 1378
+  Height = 733
   Caption = 'Novo Sistema'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -21,8 +21,8 @@ object frmPrincipal: TfrmPrincipal
   object imgLogo: TImage
     Left = 0
     Top = 0
-    Width = 1366
-    Height = 666
+    Width = 1362
+    Height = 655
     Align = alClient
     Center = True
     Picture.Data = {
@@ -854,8 +854,8 @@ object frmPrincipal: TfrmPrincipal
   end
   object stbBarraStatus: TStatusBar
     Left = 0
-    Top = 666
-    Width = 1366
+    Top = 655
+    Width = 1362
     Height = 19
     Panels = <
       item
