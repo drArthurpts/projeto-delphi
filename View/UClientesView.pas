@@ -698,9 +698,48 @@ begin
       Exit;
    end;
 
-   if (Trim(edtNumero.Text = EmptyStr)) then
+    if (Trim(edtNumero.Text = EmptyStr)) then
    begin
+      TMessageUtil.Alerta(
+      'Numero de endereço do cliente não pode ficar em branco');
 
+      if (edtNumero.CanFocus) then
+         edtNumero.SetFocus;
+
+      Exit;
+   end;
+
+   if (Trim(edtBairro.Text = EmptyStr)) then
+   begin
+      TMessageUtil.Alerta(
+      'Bairro não pode ficar em branco');
+
+      if (edtBairro.CanFocus) then
+         edtBairo.SetFocus;
+
+      Exit;
+   end;
+
+   if (Trim(cmbUF.Text = EmptyStr)) then
+   begin
+      TMessageUtil.Alerta(
+      'UF não pode ficar em branco');
+
+      if (cmbUF.CanFocus) then
+         cmbUF.SetFocus;
+
+      Exit;
+   end;
+
+   if (Trim(edtCidade.Text = EmptyStr)) then
+   begin
+      TMessageUtil.Alerta(
+      'Cidade não pode ficar em branco');
+
+      if (edtCidade.CanFocus) then
+         edtCidade.SetFocus;
+
+      Exit;
    end;
 
 
