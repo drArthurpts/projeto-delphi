@@ -622,6 +622,9 @@ begin
 end;
 
 procedure TfrmClientes.CarregaDadosTela;
+var
+   i : Integer;
+
 begin
    if (vObjCliente = nil) then
    Exit;
@@ -631,6 +634,21 @@ begin
    edtNome.Text            := vObjCliente.Nome;
    chkAtivo.Checked        := vObjCliente.Ativo;
    edtCPFCNPJ.Text         := vObjCliente.IdentificadorPessoa;
+
+   if (vObjColEndereco <> nil) then
+   begin
+      for i := 0 to pred(vObjColEndereco.Count) do
+      begin
+
+         edtEndereco.Text := vObjColEndereco.Retorna(i).Endereco;
+         edtNumero.Text   := vObjColEndereco.Retorna(i).Numero;
+         edtComplemento.Text   := vObjColEndereco.Retorna(i).Complemento;
+         edtBairro.Text   := vObjColEndereco.Retorna(i).Bairro;
+         cmbUF.Text       := vObjColEndereco.Retorna(i).UF;
+         edtCidade.Text   := vObjColEndereco.Retorna(i).Cidade;
+      end;
+
+   end;
 
 end;
 

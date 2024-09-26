@@ -691,7 +691,8 @@ begin
    try
       Result := False;
 
-      if (vObjCliente = nil) then
+      if (vObjCliente = nil) or
+         (vObjColEndereco = nil) then
       begin
          TMessageUtil.Alerta(
             'Não foi possível carregar todos os dados cadastrados do cliente.');

@@ -162,15 +162,22 @@ begin
             TEnderecoDAO.Create(TConexao.get.getConn);
 
          if pPessoa.Id = 0 then
+         begin
             xPessoaDAO.Insere(pPessoa);
 
             for xAux := 0 to pred(pColEndereco.Count) do
                pColEndereco.Retorna(xAux).ID_Pessoa := pPessoa.Id;
                
 
-            xEnderecoDAO.InsereLista(pColEndereco);
+            xEnderecoDAO.InsereLista(pColEndereco)
+         end
          else
+         begin
             xPessoaDAO.Atualiza(pPessoa, RetornaCondicaoPessoa(pPessoa.Id));
+            
+            xEnderecoDAO.Deleta(RetornaCondicaoPessoa(pPessoa.Id, True));
+            xEnderecoDAO.InsereLista(pColEndereco);
+         end;
 
          TConexao.get.confirmaTransacao;
       finally
@@ -190,12 +197,11 @@ end;
 
 function TPessoaController.RetornaCondicaoPessoa(
   pId_Pessoa: Integer ; pRelacionada : Boolean): String;
-
 var
-   begin
-   xChave : String;
+    xChave : String;
+begin
    if (pRelacionada = True) then
-       xChave := 'ID_PESSOA';
+       xChave := 'ID_PESSOA'
    else
        xChave := 'ID';
 
