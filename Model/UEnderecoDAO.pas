@@ -52,7 +52,7 @@ end;
 
 function TEnderecoDAO.RetornaLista(pCondicao: String): TColEndereco;
 begin
-   Result := TColPessoa(inherited RetornaLista(pCondicao));
+   Result := TColEndereco(inherited RetornaLista(pCondicao));
 end;
 
 end.

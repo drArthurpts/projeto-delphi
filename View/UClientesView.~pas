@@ -589,7 +589,8 @@ begin
            StrToIntDef(edtCodigo.Text, 0)));
 
         vObjColEndereco :=
-            TPessoaController.getInstancia.BuscaEnderecoPessoa();
+            TPessoaController.getInstancia.BuscaEnderecoPessoa(
+            StrToIntDef(edtCodigo.Text, 0));
 
       if (vObjCliente <> nil) then
          CarregaDadosTela
