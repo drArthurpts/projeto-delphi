@@ -425,6 +425,7 @@ object frmClientes: TfrmClientes
         'F'#237'sica'
         'Jur'#237'dica')
       TabOrder = 2
+      OnClick = rdgTipoPessoaClick
     end
     object edtCPFCNPJ: TMaskEdit
       Left = 480
@@ -435,6 +436,9 @@ object frmClientes: TfrmClientes
       MaxLength = 14
       TabOrder = 3
       Text = '   .   .   -  '
+      OnExit = edtCPFCNPJExit
+      OnKeyDown = edtCPFCNPJKeyDown
+      OnKeyPress = edtCPFCNPJKeyPress
     end
     object lblNome: TStaticText
       Left = 34
@@ -541,6 +545,7 @@ object frmClientes: TfrmClientes
         Top = 15
         Width = 473
         Height = 21
+        MaxLength = 100
         TabOrder = 0
       end
       object edtNumero: TEdit

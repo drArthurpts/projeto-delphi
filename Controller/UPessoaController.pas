@@ -20,6 +20,8 @@ type
                   pId_Pessoa : Integer;
                    pRelacionada : Boolean = False) : String;
 
+//         function ValidaCPF(const CPF : String) : Boolean;
+
          published
             class function  getInstancia : TPessoaController;
 
@@ -180,6 +182,7 @@ begin
          end
          else
          begin
+
             xPessoaDAO.Atualiza(pPessoa, RetornaCondicaoPessoa(pPessoa.Id));
             
             xEnderecoDAO.Deleta(RetornaCondicaoPessoa(pPessoa.Id, True));
@@ -217,5 +220,6 @@ begin
    '    ' + xChave + '  =  ' + QuotedStr(IntToStr(pId_Pessoa)) + ' '#13;
 end;
 
-end.
- 
+   end.
+
+

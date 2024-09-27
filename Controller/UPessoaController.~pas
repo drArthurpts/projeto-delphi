@@ -94,7 +94,8 @@ end;
 
 function TPessoaController.ExcluiPessoa(pPessoa: TPessoa): Boolean;
 var
-   xPessoaDAO : TPessoaDAO;
+   xPessoaDAO   : TPessoaDAO;
+   xEnderecoDAO : TEnderecoDAO;
 begin
    try
       try
@@ -104,11 +105,14 @@ begin
 
          xPessoaDAO := TPessoaDAO.Create(TConexao.get.getConn);
 
+         xEnderecoDAO := TEnderecoDAO.Create(TConexao.get.getConn);
+
          if (pPessoa.Id = 0) then
             Exit
          else
          begin
             xPessoaDAO.Deleta(RetornaCondicaoPessoa(pPessoa.Id));
+            xEnderecoDAO.Deleta(RetornaCondicaoPessoa(pPessoa.Id, True));
          end;
 
 
@@ -119,6 +123,9 @@ begin
       finally
          if xPessoaDAO <> nil then
             FreeAndNil(xPessoaDAO);
+
+         if xEnderecoDAO <> nil then
+            FreeAndNil(xEnderecoDAO);
       end;
    except
        on E : Exception do

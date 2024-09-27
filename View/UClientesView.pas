@@ -59,6 +59,11 @@ type
     procedure FormKeyUp(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure edtCodigoExit(Sender: TObject);
+    procedure rdgTipoPessoaClick(Sender: TObject);
+    procedure edtCPFCNPJExit(Sender: TObject);
+    procedure edtCPFCNPJKeyPress(Sender: TObject; var Key: Char);
+    procedure edtCPFCNPJKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
   private
     { Private declarations }
     vKey : Word;
@@ -81,7 +86,7 @@ type
     function ProcessaPessoa        : Boolean;
     function ProcessaEndereco      : Boolean;
     function ValidaCliente         : Boolean;
-    function ValidaEndereco         : Boolean;
+    function ValidaEndereco        : Boolean;
 
 
 
@@ -195,6 +200,12 @@ begin
 
 
    end;
+   if (vObjCliente <> nil) then
+   FreeAndNil(vObjCliente);
+
+   if (vObjColEndereco <> nil) then
+   FreeAndNil(vObjColEndereco);
+
 end;
 
 procedure TfrmClientes.DefineEstadoTela;
@@ -399,6 +410,7 @@ begin
         case vEstadoTela of
             etIncluir   : Result := ProcessaInclusao;
             etAlterar   : Result := ProcessaAlteracao;
+            etExcluir   : Result := ProcessaExclusao; 
             etConsultar : Result := ProcessaConsulta;
 
         end;
@@ -796,6 +808,36 @@ begin
 
 
    Result := True;
+end;
+
+procedure TfrmClientes.rdgTipoPessoaClick(Sender: TObject);
+begin
+   if rdgTipoPessoa.ItemIndex = 1 then
+   begin
+      edtCPFCNPJ.Clear;
+      edtCPFCNPJ.EditMask := '00\.000\.000\/0000\-00;1;_'
+   end
+   else
+   begin
+       edtCPFCNPJ.Clear;
+       edtCPFCNPJ.EditMask := '000\.000\.000\-00;1;_';
+   end;
+end;
+
+procedure TfrmClientes.edtCPFCNPJExit(Sender: TObject);
+begin
+//
+end;
+
+procedure TfrmClientes.edtCPFCNPJKeyPress(Sender: TObject; var Key: Char);
+begin
+//
+end;
+
+procedure TfrmClientes.edtCPFCNPJKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+//
 end;
 
 end.
