@@ -436,9 +436,7 @@ object frmClientes: TfrmClientes
       MaxLength = 14
       TabOrder = 3
       Text = '   .   .   -  '
-      OnExit = edtCPFCNPJExit
       OnKeyDown = edtCPFCNPJKeyDown
-      OnKeyPress = edtCPFCNPJKeyPress
     end
     object lblNome: TStaticText
       Left = 34

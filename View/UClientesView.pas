@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, ComCtrls, StdCtrls, ExtCtrls, Mask, Buttons, UEnumerationUtil,
-   UCliente, UPessoaController, UEndereco;
+   UCliente, UPessoaController, UEndereco, UClassFuncoes;
 
 type
   TfrmClientes = class(TForm)
@@ -60,8 +60,6 @@ type
       Shift: TShiftState);
     procedure edtCodigoExit(Sender: TObject);
     procedure rdgTipoPessoaClick(Sender: TObject);
-    procedure edtCPFCNPJExit(Sender: TObject);
-    procedure edtCPFCNPJKeyPress(Sender: TObject; var Key: Char);
     procedure edtCPFCNPJKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
   private
@@ -824,20 +822,29 @@ begin
    end;
 end;
 
-procedure TfrmClientes.edtCPFCNPJExit(Sender: TObject);
-begin
-//
-end;
-
-procedure TfrmClientes.edtCPFCNPJKeyPress(Sender: TObject; var Key: Char);
-begin
-//
-end;
 
 procedure TfrmClientes.edtCPFCNPJKeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
+var
+   xCPFReplace : string;
 begin
-//
+
+  if Key = VK_RETURN then
+  begin
+    xCPFReplace := TFuncoes.removeCaracterEspecial(edtCPFCNPJ.Text, True);
+    if not TPessoaController.getInstancia.ValidaCPF(xCPFReplace) then
+    begin
+      ShowMessage('CPF inválido! Verifique e tente novamente.');
+
+      if edtCPFCNPJ.CanFocus then
+      edtCPFCNPJ.SetFocus;
+    end
+    else
+    begin
+      ShowMessage('CPF válido!');
+
+    end;
+  end;
 end;
 
 end.

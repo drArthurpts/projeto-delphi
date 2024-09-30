@@ -20,7 +20,7 @@ type
                   pId_Pessoa : Integer;
                    pRelacionada : Boolean = False) : String;
 
-//         function ValidaCPF(const CPF : String) : Boolean;
+         function ValidaCPF(const CPF : String) : Boolean;
 
          published
             class function  getInstancia : TPessoaController;
@@ -220,6 +220,58 @@ begin
    '    ' + xChave + '  =  ' + QuotedStr(IntToStr(pId_Pessoa)) + ' '#13;
 end;
 
+
+function TPessoaController.ValidaCPF(const CPF: String): Boolean;
+var
+  Digito1, Digito2: Integer;
+  Soma, Resto, I: Integer;
+  CPFArray: array[1..11] of Integer;
+begin
+  Result := False;
+
+
+  if Length(CPF) <> 11 then
+    Exit;
+
+
+  if CPF = StringOfChar(CPF[1], 11) then
+    Exit;
+
+
+  for I := 1 to 11 do
+    CPFArray[I] := StrToIntDef(CPF[I], -1);
+
+
+  for I := 1 to 11 do
+    if CPFArray[I] = -1 then
+      Exit;
+
+
+  Soma := 0;
+  for I := 1 to 9 do
+    Soma := Soma + CPFArray[I] * (10 - I);
+
+  Resto := Soma mod 11;
+  if Resto < 2 then
+    Digito1 := 0
+  else
+    Digito1 := 11 - Resto;
+
+
+  Soma := 0;
+  for I := 1 to 9 do
+    Soma := Soma + CPFArray[I] * (11 - I);
+  Soma := Soma + Digito1 * 2;
+
+  Resto := Soma mod 11;
+  if Resto < 2 then
+    Digito2 := 0
+  else
+    Digito2 := 11 - Resto;
+
+  
+  Result := (Digito1 = CPFArray[10]) and (Digito2 = CPFArray[11]);
+end;
    end.
 
 
