@@ -223,55 +223,41 @@ end;
 
 function TPessoaController.ValidaCPF(const CPF: String): Boolean;
 var
-  Digito1, Digito2: Integer;
-  Soma, Resto, I: Integer;
-  CPFArray: array[1..11] of Integer;
+   CPFCalculado: String;
+   Soma, Resto, DigitoVerificador1, DigitoVerificador2 : Integer;
+   i: Integer;
 begin
-  Result := False;
+   CPFCalculado := CPF;
 
-  // Verifica se o CPF tem 11 dígitos
-  if Length(CPF) <> 11 then
-    Exit;
+   if Length(CPF) <> 11 then
+   begin
+      Result := False;
+      exit;
+   end;
 
-  // Verifica se todos os dígitos são iguais
-  if CPF = StringOfChar(CPF[1], 11) then
-    Exit;
+   Soma := 0;
+   
+   for i := 1 to 9 do
+      Soma := Soma + StrToInt(CPFCalculado[i]) * (11 - i);
 
-  // Converte os caracteres do CPF para inteiros
-  for I := 1 to 11 do
-    CPFArray[I] := StrToIntDef(CPF[I], -1);
+   Resto := (Soma * 10) mod 11;
 
-  // Verifica se a conversão foi bem-sucedida
-  for I := 1 to 11 do
-    if CPFArray[I] = -1 then
-      Exit; // CPF contém caracteres inválidos
+   if (Resto = 10) or (Resto = StrToInt(CPFCalculado[10])) then
+   begin
+      Soma := 0;
+      for i := 1 to 10 do
+         Soma := Soma + StrToInt(CPFCalculado[i]) * (12 - i);
+      Resto := (Soma * 10 ) mod 11;
+      if (Resto = 10) or (Resto =  StrToInt(CPFCalculado[11])) then
+      begin
+         Result := True;
+         exit;
+      end;
+   end;
 
-  // Cálculo do primeiro dígito verificador
-  Soma := 0;
-  for I := 1 to 9 do
-    Soma := Soma + CPFArray[I] * (10 - I);
-
-  Resto := Soma mod 11;
-  if Resto < 2 then
-    Digito1 := 0
-  else
-    Digito1 := 11 - Resto;
-
-  // Cálculo do segundo dígito verificador
-  Soma := 0;
-  for I := 1 to 9 do
-    Soma := Soma + CPFArray[I] * (11 - I);
-  Soma := Soma + Digito1 * 2;
-
-  Resto := Soma mod 11;
-  if Resto < 2 then
-    Digito2 := 0
-  else
-    Digito2 := 11 - Resto;
-
-  // Verifica se os dígitos calculados correspondem aos informados
-  Result := (Digito1 = CPFArray[10]) and (Digito2 = CPFArray[11]);
+   Result := False;
 end;
-   end.
+
+end.
 
 
