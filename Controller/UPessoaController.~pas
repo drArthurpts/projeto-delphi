@@ -227,7 +227,6 @@ var
    Soma, Resto, DigitoVerificador1, DigitoVerificador2 : Integer;
    i: Integer;
 begin
-   CPFCalculado := CPF;
 
    if Length(CPF) <> 11 then
    begin

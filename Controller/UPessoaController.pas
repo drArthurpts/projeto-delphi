@@ -22,6 +22,8 @@ type
 
          function ValidaCPF(const CPF : String) : Boolean;
 
+         function ValidaCNPJ (const CNPJ : String) : Boolean;
+
          published
             class function  getInstancia : TPessoaController;
 
@@ -221,40 +223,51 @@ begin
 end;
 
 
+function TPessoaController.ValidaCNPJ(const CNPJ: String): Boolean;
+var
+   Soma,
+   Resto
+
 function TPessoaController.ValidaCPF(const CPF: String): Boolean;
 var
-   CPFCalculado: String;
-   Soma, Resto, DigitoVerificador1, DigitoVerificador2 : Integer;
+   Soma,
+   Resto,
+   DigitoVerificador1,
+   DigitoVerificador2 : Integer;
    i: Integer;
 begin
 
+   Result := False;
+
    if Length(CPF) <> 11 then
-   begin
-      Result := False;
       exit;
-   end;
+
+   if (CPF = '11111111111') or (CPF = '22222222222') or
+      (CPF = '33333333333') or (CPF = '44444444444') or
+      (CPF = '55555555555') or (CPF = '66666666666') or
+      (CPF = '77777777777') or (CPF = '88888888888') or
+      (CPF = '99999999999') then
+      exit;
 
    Soma := 0;
-   
+
    for i := 1 to 9 do
-      Soma := Soma + StrToInt(CPFCalculado[i]) * (11 - i);
+      Soma := Soma + StrToInt(CPF[i]) * (11 - i);
 
    Resto := (Soma * 10) mod 11;
 
-   if (Resto = 10) or (Resto = StrToInt(CPFCalculado[10])) then
+   if (Resto = 10) or (Resto = StrToInt(CPF[10])) then
    begin
       Soma := 0;
       for i := 1 to 10 do
-         Soma := Soma + StrToInt(CPFCalculado[i]) * (12 - i);
+         Soma := Soma + StrToInt(CPF[i]) * (12 - i);
       Resto := (Soma * 10 ) mod 11;
-      if (Resto = 10) or (Resto =  StrToInt(CPFCalculado[11])) then
+      if (Resto = 10) or (Resto =  StrToInt(CPF[11])) then
       begin
          Result := True;
          exit;
       end;
    end;
-
-   Result := False;
 end;
 
 end.
