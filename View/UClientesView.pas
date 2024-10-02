@@ -62,6 +62,7 @@ type
     procedure rdgTipoPessoaClick(Sender: TObject);
     procedure edtCPFCNPJKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
+    procedure edtCPFCNPJChange(Sender: TObject);
   private
     { Private declarations }
     vKey : Word;
@@ -827,24 +828,41 @@ procedure TfrmClientes.edtCPFCNPJKeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 var
    xCPFReplace : string;
+   xCNPJReplace : string;
 begin
 
   if Key = VK_RETURN then
   begin
-    xCPFReplace := TFuncoes.removeCaracterEspecial(edtCPFCNPJ.Text, True);
-    if not TPessoaController.getInstancia.ValidaCPF(xCPFReplace) then
-    begin
-      ShowMessage('CPF inválido! Verifique e tente novamente.');
+    xCPFReplace := TFuncoes.SoNumero(edtCPFCNPJ.Text);
+    xCNPJReplace := TFuncoes.SoNumero(edtCPFCNPJ.Text);
 
-      if edtCPFCNPJ.CanFocus then
-      edtCPFCNPJ.SetFocus;
+    if (rdgTipoPessoa.ItemIndex = 0) then
+    begin
+       if not TPessoaController.getInstancia.ValidaCPF(xCPFReplace) then
+       begin
+         TMessageUtil.Alerta('CPF inválido! Verifique e tente novamente.');
+
+         if edtCPFCNPJ.CanFocus then
+         edtCPFCNPJ.SetFocus;
+       end;
     end
     else
     begin
-      ShowMessage('CPF válido!');
+      if not TPessoaController.getInstancia.ValidaCNPJ(xCNPJReplace) then
+         begin
+            ShowMessage('CPNPJ inválido! Verifique e tente novamente.');
+
+            if edtCPFCNPJ.CanFocus then
+            edtCPFCNPJ.SetFocus;
+         end
 
     end;
   end;
+end;
+
+procedure TfrmClientes.edtCPFCNPJChange(Sender: TObject);
+begin
+//
 end;
 
 end.

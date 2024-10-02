@@ -430,12 +430,13 @@ object frmClientes: TfrmClientes
     object edtCPFCNPJ: TMaskEdit
       Left = 480
       Top = 31
-      Width = 120
+      Width = 118
       Height = 21
-      EditMask = '000\.000\.000\-00;1;_'
+      EditMask = '###\.###\.###\-##;1;_'
       MaxLength = 14
       TabOrder = 3
       Text = '   .   .   -  '
+      OnChange = edtCPFCNPJChange
       OnKeyDown = edtCPFCNPJKeyDown
     end
     object lblNome: TStaticText

@@ -225,8 +225,60 @@ end;
 
 function TPessoaController.ValidaCNPJ(const CNPJ: String): Boolean;
 var
-   Soma,
-   Resto
+  Soma, Resto, DigitoVerificador1, DigitoVerificador2: Integer;
+  i: Integer;
+  Peso1: array[1..12] of Integer;
+  Peso2: array[1..13] of Integer;
+begin
+ 
+  Peso1[1] := 5; Peso1[2] := 4; Peso1[3] := 3; Peso1[4] := 2;
+  Peso1[5] := 9; Peso1[6] := 8; Peso1[7] := 7; Peso1[8] := 6;
+  Peso1[9] := 5; Peso1[10] := 4; Peso1[11] := 3; Peso1[12] := 2;
+
+  Peso2[1] := 6; Peso2[2] := 5; Peso2[3] := 4; Peso2[4] := 3;
+  Peso2[5] := 2; Peso2[6] := 9; Peso2[7] := 8; Peso2[8] := 7;
+  Peso2[9] := 6; Peso2[10] := 5; Peso2[11] := 4; Peso2[12] := 3;
+  Peso2[13] := 2;
+
+  Result := False;
+
+
+  if Length(CNPJ) <> 14 then
+    Exit;
+
+
+  if CNPJ = StringOfChar(CNPJ[1], 14) then
+    Exit;
+
+  Soma := 0;
+  for i := 1 to 12 do
+    Soma := Soma + StrToInt(CNPJ[i]) * Peso1[i];
+
+  Resto := Soma mod 11;
+  if Resto < 2 then
+    DigitoVerificador1 := 0
+  else
+    DigitoVerificador1 := 11 - Resto;
+
+
+  if DigitoVerificador1 <> StrToInt(CNPJ[13]) then
+    Exit;
+
+
+  Soma := 0;
+  for i := 1 to 13 do
+    Soma := Soma + StrToInt(CNPJ[i]) * Peso2[i];
+
+  Resto := Soma mod 11;
+  if Resto < 2 then
+    DigitoVerificador2 := 0
+  else
+    DigitoVerificador2 := 11 - Resto;
+
+
+  if DigitoVerificador2 = StrToInt(CNPJ[14]) then
+    Result := True;
+end;
 
 function TPessoaController.ValidaCPF(const CPF: String): Boolean;
 var
