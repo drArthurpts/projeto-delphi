@@ -30,8 +30,7 @@ type
     cdsClienteAtivo: TIntegerField;
     cdsClienteDescricaoAtivo: TStringField;
     procedure FormKeyDown(Sender: TObject; var Key: Word;
-      Shift:
-    procedure pnlBotoesClick(Sender: TObject); TShiftState);
+   
   private
     { Private declarations }
     vKey : Word;
@@ -59,8 +58,18 @@ begin
 
       VK_ESCAPE:
       begin
-         if TMessegeUtil.Pergunta('Deseja sair da rotina? ') then
+         if TMessageUtil.Pergunta('Deseja sair da rotina? ') then
             Close;
+      end;
+
+      VK_UP:
+      begin
+         vKey := VK_CLEAR;
+
+         if (ActiveControl = dbgCliente) then
+         exit; 
+
+         Perform(WM_NEXTDLGCTL, 1, 0);
       end;
 end;
 

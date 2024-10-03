@@ -12,7 +12,6 @@ object frmClientesPesq: TfrmClientesPesq
   Font.Style = []
   KeyPreview = True
   OldCreateOrder = False
-  OnKeyDown = FormKeyDown
   PixelsPerInch = 96
   TextHeight = 13
   object stbBarraStatus: TStatusBar
