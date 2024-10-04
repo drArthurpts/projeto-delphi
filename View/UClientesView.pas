@@ -100,8 +100,8 @@ var
 implementation
 
 uses
-  uMessageUtil;
-  
+  uMessageUtil, UClientePesqView;
+
 {$R *.dfm}
 
 procedure TfrmClientes.FormKeyDown(Sender: TObject; var Key: Word;
@@ -320,6 +320,32 @@ begin
             edtCodigo.SetFocus;
 
          end;  
+      end;
+      etPesquisar:
+      begin
+         stbBarraStatus.Panels[0].Text := 'Pesquisa';
+
+         if (frmClientesPesq = nil) then
+            frmClientesPesq := TfrmClientesPesq.Create(Application);
+
+         frmClientesPesq.ShowModal;
+
+         if (frmClientesPesq.mClienteID <> 0) then
+         begin
+            edtCodigo.Text := IntToStr(frmClientesPesq.mClienteID);
+            vEstadoTela    := etConsultar;
+            ProcessaConsulta;
+         end
+         else
+         begin
+            vEstadoTela := etPadrao;
+            DefineEstadoTela;
+         end;
+         frmClientesPesq.mClienteID   := 0;
+         frmClientesPesq.mClienteNome := EmptyStr;
+
+         if edtNome.CanFocus then
+            edtNome.SetFocus;
       end;
    end;
 end;

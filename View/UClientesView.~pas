@@ -100,8 +100,8 @@ var
 implementation
 
 uses
-  uMessageUtil;
-  
+  uMessageUtil, UClientePesqView;
+
 {$R *.dfm}
 
 procedure TfrmClientes.FormKeyDown(Sender: TObject; var Key: Word;
@@ -320,6 +320,15 @@ begin
             edtCodigo.SetFocus;
 
          end;  
+      end;
+      etPesquisar:
+      begin
+         stbBarraStatus.Panels[0].Text := 'Pesquisa';
+
+         if (frmClientesPesq = nil) then
+            frmClientesPesq := TfrmClientesPesq.Create(Application);
+
+         frmClientesPesq.ShowModal;
       end;
    end;
 end;
@@ -855,10 +864,7 @@ begin
             if edtCPFCNPJ.CanFocus then
             edtCPFCNPJ.SetFocus;
          end
-         else
-         begin
-            ShowMessage('CNPJ válido!');
-         end;
+
     end;
   end;
 end;
