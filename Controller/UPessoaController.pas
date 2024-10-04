@@ -223,7 +223,7 @@ begin
             IfThen(pNome <> EmptyStr,
                'WHERE  ' + #13+
                '    (NOME LIKE ''%' + pNome + '%'') '+ #13
-               + 'ORDER NOME, ID', EmptyStr);
+               + 'ORDER BY NOME, ID', EmptyStr);
                
 
          Result := xPessoaDAO.RetornaLista();
