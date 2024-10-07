@@ -5,7 +5,8 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, ComCtrls, StdCtrls, ExtCtrls, Mask, Buttons, UEnumerationUtil,
-   UCliente, UPessoaController, UEndereco, UClassFuncoes, frxClass;
+   UCliente, UPessoaController, UEndereco, UClassFuncoes, frxClass, DB,
+  DBClient;
 
 type
   TfrmClientes = class(TForm)
@@ -43,6 +44,16 @@ type
     btnCancelar: TBitBtn;
     btnSair: TBitBtn;
     frxListagemCliente: TfrxReport;
+    cdsCliente: TClientDataSet;
+    cdsClienteID: TStringField;
+    cdsClienteNome: TStringField;
+    cdsClienteCPFCNPJ: TStringField;
+    cdsClienteAtivo: TStringField;
+    cdsClienteEndereco: TStringField;
+    cdsClienteNumero: TStringField;
+    cdsClienteComplemento: TStringField;
+    cdsClienteBairro: TStringField;
+    cdsClienteCidadeUF: TStringField;
     procedure FormKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -83,7 +94,7 @@ type
     function ProcessaExclusao      : Boolean;
     function ProcessaCliente       : Boolean;
     function ProcessaConsulta      : Boolean;
-    function ProcessaListagem      : Boolean; 
+    function ProcessaListagem      : Boolean;
     function ProcessaPessoa        : Boolean;
     function ProcessaEndereco      : Boolean;
     function ValidaCliente         : Boolean;
@@ -915,7 +926,19 @@ end;
 function TfrmClientes.ProcessaListagem: Boolean;
 begin
    try
-
+      if (not cdsCliente.Active) then
+         exit;
+      cdsCliente.Append;
+      cdsClienteID.Value           := edtCodigo.Text;
+      cdsClienteNome.Value         := edtNome.Text;
+      cdsClienteCPFCNPJ.Value      := edtCPFCNPJ.Text;
+      cdsClienteAtivo.Value        := IfThen(chkAtivo.Checked, 'Sim', 'Nao');
+      cdsClienteEndereco.Value     := edtEndereco.Text;
+      cdsClienteNumero.Value       := edtNumero.Text;
+      cdsClienteComplemento.Value  := edtComplemento.Text;
+      cdsClienteBairro.Value       := edtBairro.Text;
+      cdsClienteCidadeUF.Value     := edtCidade.Text + '/' + cmbUF.Text; 
+      cdsCliente.Post;
    finally
        vEstadoTela := etPadrao;
        DefineEstadoTela;
