@@ -867,18 +867,23 @@ object frmPrincipal: TfrmPrincipal
     Top = 376
     object menMenu: TMenuItem
       Caption = 'Cadastros'
-      object menCliente: TMenuItem
+      object MenCliente: TMenuItem
         Caption = 'Clientes'
-        OnClick = menClienteClick
+        OnClick = MenClienteClick
       end
       object MenProdutos: TMenuItem
         Caption = 'Produtos'
+      end
+      object MenUnidadedeProduto: TMenuItem
+        Caption = 'Unidade de Produto'
+        OnClick = MenUnidadedeProdutoClick
       end
     end
     object menRelatorios: TMenuItem
       Caption = 'Relat'#243'rios'
       object menRelVendas: TMenuItem
         Caption = 'Vendas'
+        OnClick = menRelVendasClick
       end
     end
     object MenMovimentos: TMenuItem

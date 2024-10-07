@@ -1,7 +1,7 @@
 object frmPrincipal: TfrmPrincipal
-  Left = -7
-  Top = 2
-  Width = 1374
+  Left = 504
+  Top = 120
+  Width = 632
   Height = 733
   Caption = 'Novo Sistema'
   Color = clBtnFace
@@ -21,7 +21,7 @@ object frmPrincipal: TfrmPrincipal
   object imgLogo: TImage
     Left = 0
     Top = 0
-    Width = 1358
+    Width = 616
     Height = 655
     Align = alClient
     Center = True
@@ -855,7 +855,7 @@ object frmPrincipal: TfrmPrincipal
   object stbBarraStatus: TStatusBar
     Left = 0
     Top = 655
-    Width = 1358
+    Width = 616
     Height = 19
     Panels = <
       item
@@ -867,12 +867,16 @@ object frmPrincipal: TfrmPrincipal
     Top = 376
     object menMenu: TMenuItem
       Caption = 'Cadastros'
-      object menCliente: TMenuItem
+      object MenCliente: TMenuItem
         Caption = 'Clientes'
-        OnClick = menClienteClick
+        OnClick = MenClienteClick
       end
       object MenProdutos: TMenuItem
         Caption = 'Produtos'
+      end
+      object MenUnidadedeProduto: TMenuItem
+        Caption = 'Unidade de Produto'
+        OnClick = MenUnidadedeProdutoClick
       end
     end
     object menRelatorios: TMenuItem
