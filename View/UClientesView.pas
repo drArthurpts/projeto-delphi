@@ -6,7 +6,7 @@ uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, ComCtrls, StdCtrls, ExtCtrls, Mask, Buttons, UEnumerationUtil,
    UCliente, UPessoaController, UEndereco, UClassFuncoes, frxClass, DB,
-  DBClient;
+  DBClient, frxDBSet, frxExportXLS, frxExportPDF;
 
 type
   TfrmClientes = class(TForm)
@@ -54,6 +54,9 @@ type
     cdsClienteComplemento: TStringField;
     cdsClienteBairro: TStringField;
     cdsClienteCidadeUF: TStringField;
+    frxDBCliente: TfrxDBDataset;
+    frxPDF: TfrxPDFExport;
+    frxXLS: TfrxXLSExport;
     procedure FormKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -932,16 +935,31 @@ begin
       cdsClienteID.Value           := edtCodigo.Text;
       cdsClienteNome.Value         := edtNome.Text;
       cdsClienteCPFCNPJ.Value      := edtCPFCNPJ.Text;
-      cdsClienteAtivo.Value        := IfThen(chkAtivo.Checked, 'Sim', 'Nao');
+
+      if chkAtivo.Checked then
+        cdsClienteAtivo.Value := 'Sim'
+      else
+        cdsClienteAtivo.Value := 'Nao';
+
       cdsClienteEndereco.Value     := edtEndereco.Text;
       cdsClienteNumero.Value       := edtNumero.Text;
       cdsClienteComplemento.Value  := edtComplemento.Text;
       cdsClienteBairro.Value       := edtBairro.Text;
-      cdsClienteCidadeUF.Value     := edtCidade.Text + '/' + cmbUF.Text; 
+      cdsClienteCidadeUF.Value     := edtCidade.Text + '/' + cmbUF.Text;
       cdsCliente.Post;
+
+      frxListagemCliente.Variables['DATAHORA'] :=
+         QuotedStr(FormatDateTime('DD/MM/YYYY hh:mm', Date + Time));
+      frxListagemCliente.Variables['NOMEEMPRESA'] :=
+         QuotedStr('Nome da empresa');
+
+      frxXLS.Wysiwyg := False;
+
+      frxListagemCliente.ShowReport();
    finally
        vEstadoTela := etPadrao;
        DefineEstadoTela;
+       cdsCliente.EmptyDataSet;
    end;
 end;
 
