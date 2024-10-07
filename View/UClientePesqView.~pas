@@ -106,8 +106,7 @@ begin
    if (edtNome.CanFocus) then
       edtNome.SetFocus;
 
-   mClienteID   := 0;
-   mClienteNome := EmptyStr;
+
    
 end;
 
@@ -118,6 +117,8 @@ begin
       mClienteID       := cdsClienteID.Value;
       mClienteNome     := cdsClienteNome.Value;
       Self.ModalResult := mrOk;
+      LimparTela;
+      Close;
    end
    else
    begin

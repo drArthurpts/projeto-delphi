@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, ComCtrls, StdCtrls, ExtCtrls, Mask, Buttons, UEnumerationUtil,
-   UCliente, UPessoaController, UEndereco, UClassFuncoes;
+   UCliente, UPessoaController, UEndereco, UClassFuncoes, frxClass;
 
 type
   TfrmClientes = class(TForm)
@@ -42,6 +42,7 @@ type
     btnConfirmar: TBitBtn;
     btnCancelar: TBitBtn;
     btnSair: TBitBtn;
+    frxListagemCliente: TfrxReport;
     procedure FormKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -81,7 +82,8 @@ type
     function ProcessaAlteracao     : Boolean;
     function ProcessaExclusao      : Boolean;
     function ProcessaCliente       : Boolean;
-    function ProcessaConsulta      : Boolean;  
+    function ProcessaConsulta      : Boolean;
+    function ProcessaListagem      : Boolean; 
     function ProcessaPessoa        : Boolean;
     function ProcessaEndereco      : Boolean;
     function ValidaCliente         : Boolean;
@@ -321,6 +323,23 @@ begin
 
          end;  
       end;
+
+      etListar:
+      begin
+         stbBarraStatus.Panels[0].Text := 'Listagem';
+
+         if (edtCodigo.Text <> EmptyStr) then
+            ProcessaListagem
+         else
+         begin
+            lblCodigo.Enabled := True;
+            edtCodigo.Enabled := True;
+
+            if edtCodigo.CanFocus then
+               edtCodigo.SetFocus;
+         end;
+      end;
+
       etPesquisar:
       begin
          stbBarraStatus.Panels[0].Text := 'Pesquisa';
@@ -745,6 +764,8 @@ begin
              Screen.Cursor := crHourGlass;
 
              TPessoaController.getInstancia.ExcluiPessoa(vObjCliente);
+
+             TMessageUtil.Informacao('Cliente excluído com sucesso.');
           end
           else
           begin
@@ -759,7 +780,7 @@ begin
       end;
 
       Result := True;
-      TMessageUtil.Informacao('Cliente excluído com sucesso.');
+
       
       LimpaTela;
       vEstadoTela := etPadrao;
@@ -889,6 +910,16 @@ end;
 procedure TfrmClientes.edtCPFCNPJChange(Sender: TObject);
 begin
 //
+end;
+
+function TfrmClientes.ProcessaListagem: Boolean;
+begin
+   try
+
+   finally
+       vEstadoTela := etPadrao;
+       DefineEstadoTela;
+   end;
 end;
 
 end.
