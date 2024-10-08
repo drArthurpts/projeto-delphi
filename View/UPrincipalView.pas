@@ -70,7 +70,7 @@ procedure TfrmPrincipal.MenUnidadedeProdutoClick(Sender: TObject);
 begin
    try
       Screen.Cursor := crHourGlass;
-     if (frmUnidadeProd <> nil) then
+     if (frmUnidadeProd = nil) then
          frmUnidadeProd := TfrmUnidadeProd.Create(Application);
 
      frmUnidadeProd.Show;

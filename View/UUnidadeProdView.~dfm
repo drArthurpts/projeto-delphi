@@ -1,7 +1,7 @@
 object frmUnidadeProd: TfrmUnidadeProd
   Left = 385
   Top = 259
-  Width = 536
+  Width = 600
   Height = 229
   Caption = 'Unidade de Produto'
   Color = clBtnFace
@@ -10,13 +10,19 @@ object frmUnidadeProd: TfrmUnidadeProd
   Font.Height = -11
   Font.Name = 'MS Sans Serif'
   Font.Style = []
+  FormStyle = fsMDIChild
+  KeyPreview = True
   OldCreateOrder = False
+  Position = poScreenCenter
+  Visible = True
+  OnClose = FormClose
+  OnKeyDown = FormKeyDown
   PixelsPerInch = 96
   TextHeight = 13
   object StbBarraStatus: TStatusBar
     Left = 0
     Top = 171
-    Width = 520
+    Width = 584
     Height = 19
     Panels = <
       item
@@ -29,7 +35,7 @@ object frmUnidadeProd: TfrmUnidadeProd
   object pnlBotoes: TPanel
     Left = 0
     Top = 88
-    Width = 520
+    Width = 584
     Height = 83
     Align = alBottom
     TabOrder = 1
@@ -40,6 +46,7 @@ object frmUnidadeProd: TfrmUnidadeProd
       Height = 25
       Caption = '&Incluir'
       TabOrder = 0
+      OnClick = btnIncluirClick
       Glyph.Data = {
         36030000424D3603000000000000360000002800000010000000100000000100
         18000000000000030000C40E0000C40E00000000000000000000FFFFFFFFFFFF
@@ -75,6 +82,7 @@ object frmUnidadeProd: TfrmUnidadeProd
       Height = 25
       Caption = '&Alterar'
       TabOrder = 1
+      OnClick = btnAlterarClick
       Glyph.Data = {
         36030000424D3603000000000000360000002800000010000000100000000100
         18000000000000030000C40E0000C40E000000000000000000000A2B95062082
@@ -110,6 +118,7 @@ object frmUnidadeProd: TfrmUnidadeProd
       Height = 25
       Caption = '&Excluir'
       TabOrder = 2
+      OnClick = btnExcluirClick
       Glyph.Data = {
         36030000424D3603000000000000360000002800000010000000100000000100
         18000000000000030000C40E0000C40E00000000000000000000FFFFFFFFFFFF
@@ -145,6 +154,7 @@ object frmUnidadeProd: TfrmUnidadeProd
       Height = 25
       Caption = '&Consultar'
       TabOrder = 3
+      OnClick = btnConsultarClick
       Glyph.Data = {
         36030000424D3603000000000000360000002800000010000000100000000100
         18000000000000030000C40E0000C40E00000000000000000000FFFFFFFFFFFF
@@ -180,6 +190,7 @@ object frmUnidadeProd: TfrmUnidadeProd
       Height = 25
       Caption = '&Pesquisar'
       TabOrder = 4
+      OnClick = btnPesquisarClick
       Glyph.Data = {
         36030000424D3603000000000000360000002800000010000000100000000100
         18000000000000030000C40E0000C40E00000000000000000000FFFFFFFFFFFF
@@ -216,6 +227,7 @@ object frmUnidadeProd: TfrmUnidadeProd
       Caption = 'C&onfirmar'
       Enabled = False
       TabOrder = 5
+      OnClick = btnConfirmarClick
       Glyph.Data = {
         36030000424D3603000000000000360000002800000010000000100000000100
         18000000000000030000C40E0000C40E00000000000000000000FFFFFFFFFFFF
@@ -252,6 +264,7 @@ object frmUnidadeProd: TfrmUnidadeProd
       Caption = '&Cancelar'
       Enabled = False
       TabOrder = 6
+      OnClick = btnCancelarClick
       Glyph.Data = {
         36030000424D3603000000000000360000002800000010000000100000000100
         18000000000000030000C40E0000C40E00000000000000000000FFFFFF5B57D9
@@ -287,6 +300,7 @@ object frmUnidadeProd: TfrmUnidadeProd
       Height = 25
       Caption = '&Sair'
       TabOrder = 7
+      OnClick = btnSairClick
       Glyph.Data = {
         36030000424D3603000000000000360000002800000010000000100000000100
         18000000000000030000C40E0000C40E00000000000000000000FFFFFFFFFFFF
@@ -319,7 +333,7 @@ object frmUnidadeProd: TfrmUnidadeProd
   object pnlArea: TPanel
     Left = 0
     Top = 0
-    Width = 520
+    Width = 584
     Height = 88
     Align = alClient
     TabOrder = 2
@@ -327,14 +341,14 @@ object frmUnidadeProd: TfrmUnidadeProd
       Left = 8
       Top = 18
       Width = 33
-      Height = 14
+      Height = 13
       Caption = 'C'#243'digo'
     end
     object lblUnidade: TLabel
       Left = 2
       Top = 50
-      Width = 49
-      Height = 19
+      Width = 48
+      Height = 13
       Caption = 'Unidade'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
@@ -347,7 +361,7 @@ object frmUnidadeProd: TfrmUnidadeProd
       Left = 139
       Top = 49
       Width = 58
-      Height = 14
+      Height = 13
       Caption = 'Descri'#231#227'o'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
@@ -360,7 +374,7 @@ object frmUnidadeProd: TfrmUnidadeProd
       Left = 48
       Top = 14
       Width = 68
-      Height = 22
+      Height = 21
       TabOrder = 0
     end
     object chkAtivo: TCheckBox
@@ -371,18 +385,18 @@ object frmUnidadeProd: TfrmUnidadeProd
       Caption = 'Ativo'
       TabOrder = 1
     end
-    object TEdit
+    object edtUnidade: TEdit
       Left = 51
       Top = 47
       Width = 65
-      Height = 22
+      Height = 21
       TabOrder = 2
     end
     object edtDescricao: TEdit
       Left = 202
       Top = 45
       Width = 303
-      Height = 22
+      Height = 21
       TabOrder = 3
     end
   end

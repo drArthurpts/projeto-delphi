@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, ExtCtrls, ComCtrls, Buttons;
+  Dialogs, StdCtrls, ExtCtrls, ComCtrls, Buttons, UEnumerationUtil;
 
 type
   TfrmUnidadeProd = class(TForm)
@@ -25,8 +25,29 @@ type
     btnConfirmar: TBitBtn;
     btnCancelar: TBitBtn;
     btnSair: TBitBtn;
+    edtUnidade: TEdit;
+    procedure FormKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure btnIncluirClick(Sender: TObject);
+    procedure btnAlterarClick(Sender: TObject);
+    procedure btnExcluirClick(Sender: TObject);
+    procedure btnConsultarClick(Sender: TObject);
+    procedure btnPesquisarClick(Sender: TObject);
+    procedure btnConfirmarClick(Sender: TObject);
+    procedure btnCancelarClick(Sender: TObject);
+    procedure btnSairClick(Sender: TObject);
   private
     { Private declarations }
+    vKey : Word;
+
+    //Variaveis de classes
+    vEstadoTela : TEstadoTela;
+
+
+    procedure CamposEnabled(pOpcao : Boolean);
+    procedure LimpaTela;
+    procedure DefineEstadoTela;
   public
     { Public declarations }
   end;
@@ -36,6 +57,176 @@ var
 
 implementation
 
+uses
+   uMessageUtil;
 {$R *.dfm}
+
+procedure TfrmUnidadeProd.FormKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+   vKey := Key;
+
+   case vKey of     
+      VK_RETURN:
+      begin
+         Perform(WM_NEXTDLGCTL, 0, 0);
+
+      end;
+
+      VK_ESCAPE:
+      begin
+          if (TMessageUtil.Pergunta(
+         'Deseja realmente abortar essa operação?')) then
+         Close;
+      end;
+
+
+   end;
+end;
+
+procedure TfrmUnidadeProd.FormClose(Sender: TObject;
+  var Action: TCloseAction);
+begin
+   Action := caFree;
+   frmUnidadeProd := nil;
+end;
+
+procedure TfrmUnidadeProd.CamposEnabled(pOpcao: Boolean);
+var
+   i : Integer;
+begin
+   for i := 0 to pred(ComponentCount) do
+   begin
+      if (Components[i] is TEdit) then
+         (Components[i] as TEdit).Enabled := pOpcao;
+
+      if (Components[i] is TCheckBox) then
+         (Components[i] as TCheckBox).Checked := False;
+
+      if (Components[i] is TCheckBox) then
+         (Components[i] as TCheckBox).Enabled := pOpcao;
+
+   end;
+
+
+
+end;
+
+procedure TfrmUnidadeProd.LimpaTela;
+var
+   i : Integer;
+begin
+   for i := 0 to pred(ComponentCount) do
+   begin
+      if (Components[i] is TEdit) then
+         (Components[i] as TEdit).Text := EmptyStr;
+
+      if (Components[i] is TCheckBox) then
+         (Components[i] as TCheckBox).Checked := False;
+
+
+   end;
+
+end;
+
+
+procedure TfrmUnidadeProd.DefineEstadoTela;
+begin
+   btnIncluir.Enabled   := (vEstadoTela in [etPadrao]);
+   btnAlterar.Enabled   := (vEstadoTela in [etPadrao]);
+   btnExcluir.Enabled   := (vEstadoTela in [etPadrao]);
+   btnConsultar.Enabled := (vEstadoTela in [etPadrao]);
+   btnPesquisar.Enabled := (vEstadoTela in [etPadrao]);
+
+   btnConfirmar.Enabled :=
+      vEstadoTela in [etIncluir, etAlterar, etExcluir, etConsultar];
+
+   btnCancelar.Enabled :=
+      vEstadoTela in [etIncluir, etAlterar, etExcluir, etConsultar];
+
+   case vEstadoTela of
+      etPadrao:
+      begin
+         CamposEnabled(False);
+         LimpaTela;
+
+         stbBarraStatus.Panels[0].Text := EmptyStr;
+         stbBarraStatus.Panels[1].Text := EmptyStr;
+
+         if (frmUnidadeProd <> nil) and
+         (frmUnidadeProd.Active) and
+         (frmUnidadeProd.CanFocus) then
+          btnIncluir.SetFocus;
+
+         Application.ProcessMessages;
+      end;
+      
+      etIncluir:
+      begin
+         stbBarraStatus.Panels[0].Text := 'Inclusão';
+         CamposEnabled(True);
+
+         edtCodigo.Enabled := False;
+
+         if edtCodigo.CanFocus then
+            edtCodigo.SetFocus;
+      end;
+
+   end;
+end;
+procedure TfrmUnidadeProd.btnIncluirClick(Sender: TObject);
+begin
+   vEstadoTela := etIncluir;
+   DefineEstadoTela;
+end;
+
+procedure TfrmUnidadeProd.btnAlterarClick(Sender: TObject);
+begin
+   vEstadoTela := etAlterar;
+   DefineEstadoTela;
+end;
+
+procedure TfrmUnidadeProd.btnExcluirClick(Sender: TObject);
+begin
+   vEstadoTela := etExcluir;
+   DefineEstadoTela;
+end;
+
+procedure TfrmUnidadeProd.btnConsultarClick(Sender: TObject);
+begin
+   vEstadoTela := etConsultar;
+   DefineEstadoTela;
+end;
+
+procedure TfrmUnidadeProd.btnPesquisarClick(Sender: TObject);
+begin
+   vEstadoTela := etPesquisar;
+   DefineEstadoTela;
+end;
+
+procedure TfrmUnidadeProd.btnConfirmarClick(Sender: TObject);
+begin
+   //Confirmar
+end;
+
+procedure TfrmUnidadeProd.btnCancelarClick(Sender: TObject);
+begin
+   vEstadoTela := etPadrao;
+   DefineEstadoTela;
+end;
+
+procedure TfrmUnidadeProd.btnSairClick(Sender: TObject);
+begin
+    if (vEstadoTela <> etPadrao) then
+   begin
+      if (TMessageUtil.Pergunta('Deseja realmente abortar essa operação?')) then
+      begin
+         vEstadoTela := etPadrao;
+         DefineEstadoTela;
+      end;
+   end
+   else
+      Close;
+end;
 
 end.
