@@ -1,6 +1,6 @@
 object frmUnidadeProd: TfrmUnidadeProd
-  Left = 385
-  Top = 259
+  Left = 299
+  Top = 112
   Width = 600
   Height = 229
   Caption = 'Unidade de Produto'
@@ -16,7 +16,10 @@ object frmUnidadeProd: TfrmUnidadeProd
   Position = poScreenCenter
   Visible = True
   OnClose = FormClose
+  OnCreate = FormCreate
   OnKeyDown = FormKeyDown
+  OnKeyUp = FormKeyUp
+  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object StbBarraStatus: TStatusBar
