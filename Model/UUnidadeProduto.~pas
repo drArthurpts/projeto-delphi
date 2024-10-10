@@ -49,9 +49,9 @@ end;
 
 { TColUnidadeProd }
 
-procedure TColUnidadeProd.Adiciona(PUnidadeProduto: TUnidadeProduto);
+procedure TColUnidadeProd.Adiciona(pUnidadeProduto: TUnidadeProduto);
 begin
-
+   Self.Add(TUnidadeProduto(pUnidadeProduto))
 end;
 
 function TColUnidadeProd.Retorna(pIndex: Integer): TUnidadeProduto;

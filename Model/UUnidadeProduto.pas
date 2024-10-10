@@ -16,17 +16,20 @@ type
 
        private
           vId        : Integer;
-          vAtivo     : Integer;
+          vAtivo     : Boolean;
           vUnidade   : String;
           vDescricao : String;
+          vCodigo    : String;
+
 
 
        public
           constructor Create;
        published
             property Id        : Integer read vId write vId;
-            property Ativo     : Integer read vAtivo write vAtivo;
+            property Ativo     : Boolean read vAtivo write vAtivo;
             property Unidade   : String  read vUnidade write vUnidade;
+            property Codigo    : String  read vCodigo write vCodigo;
             property Descricao : String  read vDescricao write vDescricao;
    end;
 
@@ -41,10 +44,11 @@ implementation
 
 constructor TUnidadeProduto.Create;
 begin
-    Self.vId := 0;
-    Self.vAtivo := 0;
-    Self.vUnidade := EmptyStr;
+    Self.vId        := 0;
+    Self.vAtivo     := False;
+    Self.vUnidade   := EmptyStr;
     Self.vDescricao := EmptyStr;
+    Self.vCodigo    := EmptyStr;
 end;
 
 { TColUnidadeProd }

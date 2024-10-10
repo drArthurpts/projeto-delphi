@@ -4,7 +4,8 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, ExtCtrls, ComCtrls, Buttons, UEnumerationUtil;
+  Dialogs, StdCtrls, ExtCtrls, ComCtrls, Buttons, UEnumerationUtil,
+  UUnidadeProduto;
 
 type
   TfrmUnidadeProd = class(TForm)
@@ -47,6 +48,7 @@ type
 
     //Variaveis de classes
     vEstadoTela : TEstadoTela;
+    vObjUnidadeProd : TUnidadeProduto;
 
 
     procedure CamposEnabled(pOpcao : Boolean);
@@ -59,7 +61,7 @@ type
     function ProcessaExclusao      : Boolean;
     function ProcessaConsulta      : Boolean;
     function ProcessaDescricao     : Boolean;
-    function ProcessaUnidade       : Boolean;
+    function ProcessaUnidade: Boolean;
   public
     { Public declarations }
   end;
@@ -331,18 +333,22 @@ function TfrmUnidadeProd.ProcessaProduto: Boolean;
 begin
     try
       Result := False;
-//      if (ProcessaUnidade)   and
-//         (ProcessaDescricao) then
+      if (ProcessaUnidade)   and
+         (ProcessaDescricao) then
 
       begin
-      
+
+
+       
+
+
       Result := True;
       end;
    except
      on E : Exception do
      begin
          Raise  Exception.Create(
-         'Falha ao gavar os dados dos Produtos [View]: '#13 +
+         'Falha ao processar os dados dos Produtos [View]: '#13 +
          e.Message);
      end;
    end;
@@ -375,6 +381,24 @@ begin
 //      if not ValidaProduto then
 //      exit;
 
+      if vEstadoTela = etIncluir then
+      begin
+         if vObjUnidadeProd = nil then
+            vObjUnidadeProd := TUnidadeProduto.Create;
+      end
+      else
+      if vEstadoTela = etAlterar then
+
+      begin
+         if vObjUnidadeProd = nil then
+            Exit;
+      end;
+
+      vObjUnidadeProd.Codigo     := edtCodigo.Text;
+      vObjUnidadeProd.Unidade    := edtUnidade.Text;
+      vObjUnidadeProd.Descricao  := edtDescricao.Text;
+      vObjUnidadeProd.Ativo      := chkAtivo.Checked;
+
       Result := True;
    except
       on E : Exception do
@@ -385,5 +409,6 @@ begin
      end;
    end;
 end;
+
 
 end.
