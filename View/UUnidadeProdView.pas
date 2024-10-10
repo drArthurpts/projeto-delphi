@@ -60,7 +60,6 @@ type
     function ProcessaConsulta      : Boolean;
     function ProcessaDescricao     : Boolean;
     function ProcessaUnidade       : Boolean;
-    function ProcessaCodigo        : Boolean;
   public
     { Public declarations }
   end;
@@ -385,11 +384,6 @@ begin
          e.Message);
      end;
    end;
-end;
-
-function TfrmUnidadeProd.ProcessaCodigo: Boolean;
-begin
-   //
 end;
 
 end.

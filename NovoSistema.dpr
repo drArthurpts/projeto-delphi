@@ -19,7 +19,8 @@ uses
   UEndereco in 'Model\UEndereco.pas',
   UEnderecoDAO in 'Model\UEnderecoDAO.pas',
   UClientePesqView in 'View\UClientePesqView.pas' {frmClientesPesq},
-  UUnidadeProdView in 'View\UUnidadeProdView.pas' {frmUnidadeProd};
+  UUnidadeProdView in 'View\UUnidadeProdView.pas' {frmUnidadeProd},
+  UUnidadeProduto in 'Model\UUnidadeProduto.pas';
 
 {$R *.res}
 
