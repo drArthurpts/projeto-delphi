@@ -76,6 +76,7 @@ begin
      frmUnidadeProd.Show;
    finally
       Screen.Cursor := crDefault;
+      
    end;
 end;
 

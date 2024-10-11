@@ -19,8 +19,6 @@ type
           vAtivo     : Boolean;
           vUnidade   : String;
           vDescricao : String;
-          vCodigo    : String;
-
 
 
        public
@@ -29,7 +27,6 @@ type
             property Id        : Integer read vId write vId;
             property Ativo     : Boolean read vAtivo write vAtivo;
             property Unidade   : String  read vUnidade write vUnidade;
-            property Codigo    : String  read vCodigo write vCodigo;
             property Descricao : String  read vDescricao write vDescricao;
    end;
 
@@ -48,7 +45,6 @@ begin
     Self.vAtivo     := False;
     Self.vUnidade   := EmptyStr;
     Self.vDescricao := EmptyStr;
-    Self.vCodigo    := EmptyStr;
 end;
 
 { TColUnidadeProd }

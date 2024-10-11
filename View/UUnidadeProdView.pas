@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, ExtCtrls, ComCtrls, Buttons, UEnumerationUtil,
-  UUnidadeProduto;
+  UUnidadeProduto, UUnidadeProdController;
 
 type
   TfrmUnidadeProd = class(TForm)
@@ -42,6 +42,7 @@ type
     procedure FormShow(Sender: TObject);
     procedure FormKeyUp(Sender: TObject; var Key: Word;
       Shift: TShiftState);
+
   private
     { Private declarations }
     vKey : Word;
@@ -61,7 +62,8 @@ type
     function ProcessaExclusao      : Boolean;
     function ProcessaConsulta      : Boolean;
     function ProcessaDescricao     : Boolean;
-    function ProcessaUnidade: Boolean;
+    function ProcessaUnidade       : Boolean;
+    function ValidaUnidadeProd     : Boolean;
   public
     { Public declarations }
   end;
@@ -196,6 +198,34 @@ begin
             edtCodigo.SetFocus;
       end;
 
+      etConsultar:
+      begin
+         stbBarraStatus.Panels[0].Text := 'Consulta';
+
+         CamposEnabled(False);
+
+         if (edtCodigo.Text <> EmptyStr) then
+         begin
+            edtCodigo.Enabled    := False;
+            btnAlterar.Enabled   := True;
+            btnExcluir.Enabled   := True;
+            btnConfirmar.Enabled := False;
+            chkAtivo.Enabled     := False;
+
+            if (btnAlterar.CanFocus) then
+               btnAlterar.SetFocus;
+         end
+         else
+         begin
+            lblCodigo.Enabled := True;
+            edtCodigo.Enabled:= True;
+
+            if edtCodigo.CanFocus then
+            edtCodigo.SetFocus;
+
+         end;  
+      end;
+
    end;
 end;
 procedure TfrmUnidadeProd.btnIncluirClick(Sender: TObject);
@@ -313,7 +343,8 @@ begin
       if ProcessaProduto then
       begin
          TMessageUtil.Informacao('Produto cadastrado com sucesso! ' + #13 +
-                                 'Código cadastrado: ');
+                                 'Código cadastrado: '+
+                                 IntToStr(vObjUnidadeProd.Id));
          vEstadoTela := etPadrao;
          DefineEstadoTela;
 
@@ -338,9 +369,7 @@ begin
 
       begin
 
-
-       
-
+      TUnidadeProdController.getInstancia.GravaUnidadeProd(vObjUnidadeProd);
 
       Result := True;
       end;
@@ -378,8 +407,8 @@ begin
    try
       Result := False;
 
-//      if not ValidaProduto then
-//      exit;
+      if not ValidaUnidadeProd then
+      exit;
 
       if vEstadoTela = etIncluir then
       begin
@@ -394,7 +423,7 @@ begin
             Exit;
       end;
 
-      vObjUnidadeProd.Codigo     := edtCodigo.Text;
+      //vObjUnidadeProd.Codigo     := edtCodigo.Text;
       vObjUnidadeProd.Unidade    := edtUnidade.Text;
       vObjUnidadeProd.Descricao  := edtDescricao.Text;
       vObjUnidadeProd.Ativo      := chkAtivo.Checked;
@@ -408,6 +437,23 @@ begin
          e.Message);
      end;
    end;
+end;
+
+
+function TfrmUnidadeProd.ValidaUnidadeProd: Boolean;
+begin
+   Result := False;
+
+   if (edtUnidade.Text = EmptyStr) then
+   begin
+      TMessageUtil.Alerta('Unidade não pode ficar em branco. ');
+      if edtUnidade.CanFocus then
+      edtUnidade.SetFocus;
+    Exit;
+
+   end;
+
+   Result := True;
 end;
 
 
