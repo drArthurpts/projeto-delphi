@@ -55,6 +55,7 @@ type
     procedure CamposEnabled(pOpcao : Boolean);
     procedure LimpaTela;
     procedure DefineEstadoTela;
+    procedure CarregaDadosTela;
     function ProcessaConfirmacao : Boolean;
     function ProcessaInclusao      : Boolean;
     function ProcessaProduto       : Boolean;
@@ -327,7 +328,51 @@ end;
 
 function TfrmUnidadeProd.ProcessaConsulta: Boolean;
 begin
+   try
+      Result := False;
 
+      if (edtCodigo.Text = EmptyStr) then
+      begin
+         TMessageUtil.Alerta('Código da unidade de produto não pode ficar em branco.');
+
+         if (edtCodigo.CanFocus) then
+            edtCodigo.SetFocus;
+
+         Exit;
+      end;
+
+      vObjUnidadeProd :=
+         TUnidadeProduto (TUnidadeProdController.getInstancia.BuscaUnidadeProd(
+           StrToIntDef(edtCodigo.Text, 0)));
+
+      if (vObjUnidadeProd <> nil) then
+         CarregaDadosTela
+      else
+      begin
+         TMessageUtil.Alerta(
+            'Nenhuma unidade encontrada para o código informado');
+               
+         LimpaTela;
+
+         if (edtCodigo.CanFocus) then
+             edtCodigo.SetFocus;
+
+         Exit;
+      end;
+
+      DefineEstadoTela;
+
+      Result := True;
+
+   except
+       on E : Exception do
+       begin
+         Raise Exception.Create(
+         'Falha ao consultar os dados do cliente [View].' + #13 +
+         e.Message);
+
+       end;
+   end;
 end;
 
 function TfrmUnidadeProd.ProcessaExclusao: Boolean;
@@ -337,49 +382,50 @@ end;
 
 function TfrmUnidadeProd.ProcessaInclusao: Boolean;
 begin
-    try
-      Result := False;
+   try
+      try
+         Result := False;
 
-      if ProcessaProduto then
-      begin
-         TMessageUtil.Informacao('Produto cadastrado com sucesso! ' + #13 +
-                                 'Código cadastrado: '+
-                                 IntToStr(vObjUnidadeProd.Id));
-         vEstadoTela := etPadrao;
-         DefineEstadoTela;
+         if ProcessaProduto then
+         begin
+            TMessageUtil.Informacao('Produto cadastrado com sucesso! ' + #13 +
+                                    'Código cadastrado: '+
+                                    IntToStr(vObjUnidadeProd.Id));
+            vEstadoTela := etPadrao;
+            DefineEstadoTela;
 
-         Result := True;
+            Result := True;
+         end;
+      except
+          on E : Exception do
+          begin
+             Raise Exception.Create(
+             'Falha ao incluir os dados do produto [View]: '#13 +
+             e.Message);
+          end;
       end;
-   except
-       on E : Exception do
-       begin
-          Raise Exception.Create(
-          'Falha ao incluir os dados do produto [View]: '#13 +
-          e.Message);
-       end;
+   finally
+      if vObjUnidadeProd <> nil then
+         FreeAndNil(vObjUnidadeProd);
    end;
 end;
 
 function TfrmUnidadeProd.ProcessaProduto: Boolean;
 begin
-    try
+   try
       Result := False;
-      if (ProcessaUnidade)   and
-         (ProcessaDescricao) then
-
+      if (ProcessaUnidade) and (ProcessaDescricao) then
       begin
-
-      TUnidadeProdController.getInstancia.GravaUnidadeProd(vObjUnidadeProd);
-
-      Result := True;
+         TUnidadeProdController.getInstancia.GravaUnidadeProd(vObjUnidadeProd);
+         Result := True;
       end;
    except
-     on E : Exception do
-     begin
+      on E : Exception do
+      begin
          Raise  Exception.Create(
          'Falha ao processar os dados dos Produtos [View]: '#13 +
          e.Message);
-     end;
+      end;
    end;
 end;
 
@@ -456,5 +502,18 @@ begin
    Result := True;
 end;
 
+
+procedure TfrmUnidadeProd.CarregaDadosTela;
+begin
+
+   if (vObjUnidadeProd = nil) then
+   Exit;
+
+   edtCodigo.Text          := IntToStr(vObjUnidadeProd.Id);
+   edtUnidade.Text         := vObjUnidadeProd.Unidade;
+   edtDescricao.Text       := vObjUnidadeProd.Descricao;
+   chkAtivo.Checked        := vObjUnidadeProd.Ativo;
+
+end;
 
 end.

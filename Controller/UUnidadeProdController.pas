@@ -10,10 +10,13 @@ type
          constructor Create;
          function GravaUnidadeProd(
                         pUnidadeProduto : TUnidadeProduto) : Boolean;
+
+         function BuscaUnidadeProd(pID : Integer)          : TUnidadeProduto;
          function RetornaCondicaoUnidadeProd(
-                          pID_Produto : Integer) : String;
+                          pID_Produto : Integer)           : String;
          published
-            class function getInstancia : TUnidadeProdController;
+            class function getInstancia                    :
+            TUnidadeProdController;
 
    end;
 
@@ -27,6 +30,34 @@ var
 
 
 { TUnidadeProdController }
+
+function TUnidadeProdController.BuscaUnidadeProd(
+  pID: Integer): TUnidadeProduto;
+var
+   xUnidadeProdDAO : TUnidadeProdutoDAO;
+begin
+   try
+       try
+         Result := nil;
+
+         xUnidadeProdDAO := TUnidadeProdutoDAO.Create(
+                            TConexao.getInstance.getConn);
+
+         Result := xUnidadeProdDAO.Retorna(RetornaCondicaoUnidadeProd(pID));
+       finally
+         if (xUnidadeProdDAO <> nil) then
+            FreeAndNil(xUnidadeProdDAO);
+
+       end;
+   except
+      on E: Exception do
+      begin
+         Raise Exception.Create(
+            'Falha ao buscar os dados. [Controller]' + #13 +
+            e.Message);
+      end;
+   end;
+end;
 
 constructor TUnidadeProdController.Create;
 begin

@@ -10,17 +10,21 @@ uses
   UClassFuncoes in 'Model\Util\UClassFuncoes.pas',
   UClientesView in 'View\UClientesView.pas' {frmClientes},
   uMessageUtil in 'Model\Util\uMessageUtil.pas',
+  UPessoaController in 'Controller\UPessoaController.pas',
+  UUnidadeProduto in 'Model\UUnidadeProduto.pas',
+  UUnidadeProdController in 'Controller\UUnidadeProdController.pas',
+  UUnidadeProdutoDAO in 'Model\UUnidadeProdutoDAO.pas',
   Consts in 'Model\Util\Consts.pas',
   UEnumerationUtil in 'Model\Util\UEnumerationUtil.pas',
   UPessoa in 'Model\UPessoa.pas',
   UPessoaDAO in 'Model\UPessoaDAO.pas',
   UCliente in 'Model\UCliente.pas',
-  UPessoaController in 'Controller\UPessoaController.pas',
   UEndereco in 'Model\UEndereco.pas',
   UEnderecoDAO in 'Model\UEnderecoDAO.pas',
   UClientePesqView in 'View\UClientePesqView.pas' {frmClientesPesq},
-  UUnidadeProdView in 'View\UUnidadeProdView.pas' {frmUnidadeProd},
-  UUnidadeProduto in 'Model\UUnidadeProduto.pas';
+  UUnidadeProdView in 'View\UUnidadeProdView.pas' {frmUnidadeProd};
+
+
 
 {$R *.res}
 
