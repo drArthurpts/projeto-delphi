@@ -42,6 +42,9 @@ type
     procedure FormShow(Sender: TObject);
     procedure FormKeyUp(Sender: TObject; var Key: Word;
       Shift: TShiftState);
+    procedure edtCodigoExit(Sender: TObject);
+    procedure edtUnidadeChange(Sender: TObject);
+    procedure edtDescricaoChange(Sender: TObject);
 
   private
     { Private declarations }
@@ -75,7 +78,7 @@ var
 implementation
 
 uses
-   uMessageUtil;
+   uMessageUtil, UClassFuncoes;
 {$R *.dfm}
 
 procedure TfrmUnidadeProd.FormKeyDown(Sender: TObject; var Key: Word;
@@ -172,6 +175,7 @@ begin
       vEstadoTela in [etIncluir, etAlterar, etExcluir, etConsultar];
 
    case vEstadoTela of
+
       etPadrao:
       begin
          CamposEnabled(False);
@@ -225,6 +229,48 @@ begin
             edtCodigo.SetFocus;
 
          end;  
+      end;
+
+      etAlterar:
+      begin
+         stbBarraStatus.Panels[0].Text := 'Alteração';
+
+         if (edtCodigo.Text <> EmptyStr) then
+         begin
+            CamposEnabled(True);
+
+            edtCodigo.Enabled    := False;
+            btnAlterar.Enabled   := False;
+            btnConfirmar.Enabled := True;
+
+
+            if (chkAtivo.CanFocus) then
+               chkAtivo.SetFocus;
+         end
+         else
+         begin
+            lblCodigo.Enabled := True;
+            edtCodigo.Enabled := True;
+
+            if (edtCodigo.CanFocus) then
+               edtCodigo.SetFocus;
+         end;
+      end;
+
+      etExcluir:
+      begin
+         stbBarraStatus.Panels[0].text := 'Exclusão';
+
+         if (edtCodigo.Text <> EmptyStr) then
+            ProcessaExclusao
+         else
+         begin
+            lblCodigo.Enabled := True;
+            edtCodigo.Enabled := True;
+
+            if (edtCodigo.CanFocus) then
+               edtCodigo.SetFocus;
+         end;
       end;
 
    end;
@@ -323,7 +369,27 @@ end;
 
 function TfrmUnidadeProd.ProcessaAlteracao: Boolean;
 begin
+ try
+      Result := False;
 
+      if ProcessaProduto then
+      begin
+         TMessageUtil.Informacao('Dados foram alterados com sucesso.');
+
+         vEstadoTela := etPadrao;
+         DefineEstadoTela;
+         Result := True;      
+      end;
+
+ except
+      on E : Exception do
+      begin
+         Raise Exception.Create(
+         'Falha ao alterar os dados do produto [View]: ' +#13 +
+         e.Message);
+      end;  
+
+ end;
 end;
 
 function TfrmUnidadeProd.ProcessaConsulta: Boolean;
@@ -377,7 +443,55 @@ end;
 
 function TfrmUnidadeProd.ProcessaExclusao: Boolean;
 begin
+try
+      Result := False;
 
+      if (vObjUnidadeProd = nil) then
+      begin
+         TMessageUtil.Alerta(
+            'Não foi possível carregar todos os dados cadastrados do cliente.');
+         LimpaTela;
+         vEstadoTela := etPadrao;
+         DefineEstadoTela;
+         Exit;
+      end;
+
+      try
+          if TMessageUtil.Pergunta('Confirma a exclusão do produto?') then
+          begin
+             Screen.Cursor := crHourGlass;
+
+             TUnidadeProdController.getInstancia
+             .ExcluiProduto(vObjUnidadeProd);
+
+             TMessageUtil.Informacao('Unidade de produto excluída com sucesso.');
+          end
+          else
+          begin
+              LimpaTela;
+              vEstadoTela := etPadrao;
+              DefineEstadoTela;
+              Exit;
+          end;
+      finally
+         Screen.Cursor := crDefault;
+         Application.ProcessMessages;
+      end;
+
+      Result := True;
+
+      
+      LimpaTela;
+      vEstadoTela := etPadrao;
+      DefineEstadoTela;
+   except
+      on E: Exception do
+      begin
+         Raise Exception.Create(
+            'Falha ao excluir os dados da unidade [View]: ' + #13 +
+         e.Message);
+      end;
+   end;
 end;
 
 function TfrmUnidadeProd.ProcessaInclusao: Boolean;
@@ -514,6 +628,25 @@ begin
    edtDescricao.Text       := vObjUnidadeProd.Descricao;
    chkAtivo.Checked        := vObjUnidadeProd.Ativo;
 
+end;
+
+procedure TfrmUnidadeProd.edtCodigoExit(Sender: TObject);
+begin
+   if vKey = VK_RETURN then
+      ProcessaConsulta;
+
+   vKey := VK_CLEAR;
+end;
+
+
+procedure TfrmUnidadeProd.edtUnidadeChange(Sender: TObject);
+begin
+   edtUnidade.Text := TFuncoes.removeCaracterEspecial(edtUnidade.Text, True);
+end;
+
+procedure TfrmUnidadeProd.edtDescricaoChange(Sender: TObject);
+begin
+   edtDescricao.Text := TFuncoes.removeCaracterEspecial(edtDescricao.Text, True);
 end;
 
 end.

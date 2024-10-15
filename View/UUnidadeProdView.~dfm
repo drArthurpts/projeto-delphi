@@ -1,5 +1,5 @@
 object frmUnidadeProd: TfrmUnidadeProd
-  Left = 299
+  Left = 300
   Top = 112
   Width = 600
   Height = 229
@@ -379,6 +379,7 @@ object frmUnidadeProd: TfrmUnidadeProd
       Width = 68
       Height = 21
       TabOrder = 0
+      OnExit = edtCodigoExit
     end
     object chkAtivo: TCheckBox
       Left = 136
@@ -393,7 +394,9 @@ object frmUnidadeProd: TfrmUnidadeProd
       Top = 47
       Width = 65
       Height = 21
+      MaxLength = 2
       TabOrder = 2
+      OnChange = edtUnidadeChange
     end
     object edtDescricao: TEdit
       Left = 202
@@ -401,6 +404,7 @@ object frmUnidadeProd: TfrmUnidadeProd
       Width = 303
       Height = 21
       TabOrder = 3
+      OnChange = edtDescricaoChange
     end
   end
 end

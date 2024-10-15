@@ -34,14 +34,14 @@ var
 function TUnidadeProdController.BuscaUnidadeProd(
   pID: Integer): TUnidadeProduto;
 var
-   xUnidadeProdDAO : TUnidadeProdutoDAO
+   xUnidadeProdDAO : TUnidadeProdutoDAO;
 begin
    try
        try
          Result := nil;
 
          xUnidadeProdDAO := TUnidadeProdutoDAO.Create(
-                            TConexao.getInstace.getConn);
+                            TConexao.getInstance.getConn);
 
          Result := xUnidadeProdDAO.Retorna(RetornaCondicaoUnidadeProd(pID));
        finally

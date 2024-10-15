@@ -33,7 +33,7 @@ end;
 constructor TUnidadeProdutoDAO.Create(pConexao: TSQLConnection);
 begin
    inherited Create;
-   vEntidade := 'UNIDADEDEPRODUTO';
+   vEntidade := 'UNIDADEPRODUTO';
    vConexao  := pConexao;
    vClass    := TUnidadeProduto;
 end;
