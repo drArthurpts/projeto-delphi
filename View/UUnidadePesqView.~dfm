@@ -35,8 +35,8 @@ object frmUnidadePesq: TfrmUnidadePesq
       Width = 75
       Height = 25
       Caption = 'C&onfirmar'
+      Enabled = False
       TabOrder = 0
-      OnClick = btnConfirmarClick
       Glyph.Data = {
         36030000424D3603000000000000360000002800000010000000100000000100
         18000000000000030000C40E0000C40E00000000000000000000FFFFFFFFFFFF
@@ -71,6 +71,7 @@ object frmUnidadePesq: TfrmUnidadePesq
       Width = 75
       Height = 25
       Caption = '&Limpar'
+      Enabled = False
       TabOrder = 1
       Glyph.Data = {
         36030000424D3603000000000000360000002800000010000000100000000100
@@ -106,6 +107,7 @@ object frmUnidadePesq: TfrmUnidadePesq
       Width = 75
       Height = 25
       Caption = '&Sair'
+      Enabled = False
       TabOrder = 2
       Glyph.Data = {
         36030000424D3603000000000000360000002800000010000000100000000100
@@ -179,7 +181,6 @@ object frmUnidadePesq: TfrmUnidadePesq
         Height = 25
         Caption = '&Filtrar'
         TabOrder = 1
-        OnClick = btnFiltrarClick
         Glyph.Data = {
           36030000424D3603000000000000360000002800000010000000100000000100
           18000000000000030000C40E0000C40E00000000000000000000FFFFFFFFFFFF

@@ -9,13 +9,16 @@ type
       public
          constructor Create;
          function GravaUnidadeProd(
-                        pUnidadeProduto : TUnidadeProduto) : Boolean;
+                        pUnidadeProduto : TUnidadeProduto)         : Boolean;
 
-         function BuscaUnidadeProd(pID : Integer)          : TUnidadeProduto;
+         function ExcluiProduto(pUnidadeProduto : TUnidadeProduto) : Boolean;
+
+         function BuscaUnidadeProd(pID : Integer)                  :
+         TUnidadeProduto;
          function RetornaCondicaoUnidadeProd(
-                          pID_Produto : Integer)           : String;
+                          pID_Produto : Integer)                   : String;
          published
-            class function getInstancia                    :
+            class function getInstancia                            :
             TUnidadeProdController;
 
    end;
@@ -62,6 +65,49 @@ end;
 constructor TUnidadeProdController.Create;
 begin
    inherited Create;
+end;
+
+function TUnidadeProdController.ExcluiProduto(
+  pUnidadeProduto: TUnidadeProduto): Boolean;
+var
+   xUnidadeProdutoDAO  : TUnidadeProdutoDAO;
+begin
+   try
+      try
+         Result := False;
+
+         TConexao.get.iniciaTransacao;
+
+         xUnidadeProdutoDAO := TUnidadeProdutoDAO.Create(TConexao.get.getConn);
+
+         if (pUnidadeProduto.Id = 0) then
+            Exit
+         else
+         begin
+            xUnidadeProdutoDAO.Deleta(
+               RetornaCondicaoUnidadeProd(pUnidadeProduto.Id));
+
+         end;
+
+
+         TConexao.get.confirmaTransacao;
+
+         Result := True;
+
+      finally
+         if xUnidadeProdutoDAO <> nil then
+            FreeAndNil(xUnidadeProdutoDAO);
+      end;
+   except
+       on E : Exception do
+       begin
+          TConexao.get.cancelaTransacao;
+          Raise Exception.Create(
+               'Falha ao escluir os dados da unidade [Controller]: ' + #13 +
+                e.Message);
+       end;
+
+   end;
 end;
 
 class function TUnidadeProdController.getInstancia: TUnidadeProdController;

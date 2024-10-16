@@ -31,19 +31,15 @@ type
     cdsUnidadeDescricao: TStringField;
     procedure FormKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
-    procedure btnFiltrarClick(Sender: TObject);
-    procedure btnConfirmarClick(Sender: TObject);
   private
     { Private declarations }
     vKey : Word;
     procedure LimparTela;
     procedure ProcessaPesquisa;
-    procedure ProcessaConfirmacao;
   public
     { Public declarations }
-    mUnidadeID      : Integer;
-    mUnidadeUnidade : String;
-
+    mUnidadeID : Integer;
+    mUnidadeUnidade : string;
   end;
 
 var
@@ -102,25 +98,6 @@ begin
 end;
 
 
-procedure TfrmUnidadePesq.ProcessaConfirmacao;
-begin
-   if (not cdsUnidade.IsEmpty) then
-   begin
-      mUnidadeID       := cdsUnidadeID.Value;
-      mUnidadeUnidade    := cdsUnidadeUnidade.Value;
-      Self.ModalResult := mrOk;
-      LimparTela;
-      Close;
-   end
-   else
-   begin
-      TMessageUtil.Alerta('Nenhuma Unidade encontrada.');
-
-      if edtNome.CanFocus then
-         edtNome.SetFocus;
-   end;
-end;
-
 procedure TfrmUnidadePesq.ProcessaPesquisa;
 var
    xListaUnidade : TColUnidadeProd;
@@ -177,18 +154,6 @@ begin
             e.Message);
       end;
    end;
-end;
-
-procedure TfrmUnidadePesq.btnFiltrarClick(Sender: TObject);
-begin
-   mUnidadeID   := 0;
-   mUnidadeUnidade := EmptyStr;
-   ProcessaPesquisa;
-end;
-
-procedure TfrmUnidadePesq.btnConfirmarClick(Sender: TObject);
-begin
-   ProcessaConfirmacao;
 end;
 
 end.

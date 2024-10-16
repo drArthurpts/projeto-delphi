@@ -641,7 +641,7 @@ end;
 
 procedure TfrmUnidadeProd.edtUnidadeChange(Sender: TObject);
 begin
-   edtUnidade.Text := TFuncoes.removeCaracterEspecial(edtCodigo.Text, True);
+   edtUnidade.Text := TFuncoes.removeCaracterEspecial(edtUnidade.Text, True);
 end;
 
 procedure TfrmUnidadeProd.edtDescricaoChange(Sender: TObject);

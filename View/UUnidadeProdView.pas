@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, ExtCtrls, ComCtrls, Buttons, UEnumerationUtil,
-  UUnidadeProduto, UUnidadeProdController;
+  UUnidadeProduto, UUnidadeProdController, UUnidadePesqView;
 
 type
   TfrmUnidadeProd = class(TForm)
@@ -70,6 +70,7 @@ type
     function ValidaUnidadeProd     : Boolean;
   public
     { Public declarations }
+
   end;
 
 var
@@ -271,6 +272,33 @@ begin
             if (edtCodigo.CanFocus) then
                edtCodigo.SetFocus;
          end;
+      end;
+
+      etPesquisar:
+      begin
+         stbBarraStatus.Panels[0].Text := 'Pesquisa';
+
+         if (frmUnidadeProd = nil) then
+            frmUnidadeProd := TfrmUnidadeProd.Create(Application);
+
+         frmUnidadeProd.ShowModal;
+
+         if (frmUnidadeProd.mUnidadeID <> 0) then
+         begin
+            edtCodigo.Text := IntToStr(frmUnidadeProd.mUnidadeID);
+            vEstadoTela    := etConsultar;
+            ProcessaConsulta;
+         end
+         else
+         begin
+            vEstadoTela := etPadrao;
+            DefineEstadoTela;
+         end;
+         frmUnidadeProd.mUnidadeID   := 0;
+         frmUnidadeProd.mUnidadeUnidade := EmptyStr;
+
+         if edtNome.CanFocus then
+            edtNome.SetFocus;
       end;
 
    end;
