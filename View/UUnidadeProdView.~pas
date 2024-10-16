@@ -70,6 +70,7 @@ type
     function ValidaUnidadeProd     : Boolean;
   public
     { Public declarations }
+
   end;
 
 var
@@ -78,7 +79,7 @@ var
 implementation
 
 uses
-   uMessageUtil, UClassFuncoes;
+   uMessageUtil, UClassFuncoes, UUnidadePesqView;
 {$R *.dfm}
 
 procedure TfrmUnidadeProd.FormKeyDown(Sender: TObject; var Key: Word;
@@ -273,6 +274,32 @@ begin
          end;
       end;
 
+      etPesquisar:
+      begin
+         stbBarraStatus.Panels[0].Text := 'Pesquisa';
+
+         if (frmUnidadePesq = nil) then
+            frmUnidadePesq := TfrmUnidadePesq.Create(Application);
+
+         frmUnidadePesq.ShowModal;
+
+         if (frmUnidadePesq.mUnidadeID <> 0) then
+         begin
+            edtCodigo.Text := IntToStr(frmUnidadePesq.mUnidadeID);
+            vEstadoTela    := etConsultar;
+            ProcessaConsulta;
+         end
+         else
+         begin
+            vEstadoTela := etPadrao;
+            DefineEstadoTela;
+         end;
+         frmUnidadePesq.mUnidadeID   := 0;
+         frmUnidadePesq.mUnidadeUnidade := EmptyStr;
+
+         if edtUnidade.CanFocus then
+            edtUnidade.SetFocus;
+      end;
    end;
 end;
 procedure TfrmUnidadeProd.btnIncluirClick(Sender: TObject);

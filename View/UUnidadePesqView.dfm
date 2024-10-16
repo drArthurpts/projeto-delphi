@@ -72,6 +72,7 @@ object frmUnidadePesq: TfrmUnidadePesq
       Height = 25
       Caption = '&Limpar'
       TabOrder = 1
+      OnClick = btnLimparClick
       Glyph.Data = {
         36030000424D3603000000000000360000002800000010000000100000000100
         18000000000000030000C40E0000C40E00000000000000000000FFFFFFFFFFFF
@@ -107,6 +108,7 @@ object frmUnidadePesq: TfrmUnidadePesq
       Height = 25
       Caption = '&Sair'
       TabOrder = 2
+      OnClick = btnSairClick
       Glyph.Data = {
         36030000424D3603000000000000360000002800000010000000100000000100
         18000000000000030000C40E0000C40E00000000000000000000FFFFFFFFFFFF
@@ -238,6 +240,8 @@ object frmUnidadePesq: TfrmUnidadePesq
         TitleFont.Height = -11
         TitleFont.Name = 'MS Sans Serif'
         TitleFont.Style = []
+        OnDblClick = dbgUnidadeDblClick
+        OnKeyDown = dbgUnidadeKeyDown
         Columns = <
           item
             Expanded = False
@@ -275,6 +279,7 @@ object frmUnidadePesq: TfrmUnidadePesq
     Active = True
     Aggregates = <>
     Params = <>
+    BeforeDelete = cdsUnidadeBeforeDelete
     Left = 38
     Top = 110
     Data = {

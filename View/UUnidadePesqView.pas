@@ -33,6 +33,12 @@ type
       Shift: TShiftState);
     procedure btnFiltrarClick(Sender: TObject);
     procedure btnConfirmarClick(Sender: TObject);
+    procedure btnLimparClick(Sender: TObject);
+    procedure btnSairClick(Sender: TObject);
+    procedure cdsUnidadeBeforeDelete(DataSet: TDataSet);
+    procedure dbgUnidadeDblClick(Sender: TObject);
+    procedure dbgUnidadeKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
   private
     { Private declarations }
     vKey : Word;
@@ -99,6 +105,9 @@ begin
 
    if (edtNome.CanFocus) then
       edtNome.SetFocus;
+
+   mUnidadeID   := 0;
+   mUnidadeUnidade := EmptyStr;
 end;
 
 
@@ -139,21 +148,19 @@ begin
          begin
             for xAux := 0 to pred(xListaUnidade.Count) do
             begin
-
             cdsUnidade.Append;
             cdsUnidadeID.Value       := xListaUnidade.Retorna(xAux).Id;
-            cdsUnidadeUnidade.Value  := xListaUnidade.Retorna(xAux).Unidade;
+            cdsUnidadeUnidade.Value       := xListaUnidade.Retorna(xAux).Unidade;
             cdsUnidadeAtivo.Value    :=
-               IfThen(xListaUnidade.Retorna(xAux).Ativo, 1, 0);
-            cdsUnidadeDescricao.Value :=
-                IfThen(xListaUnidade.Retorna(xAux).Ativo, 'Sim', 'Não');
+               IfThen (xListaUnidade.Retorna(xAux).Ativo, 1, 0);
+            cdsUnidadeDescricao.Value := xListaUnidade.Retorna(xAux).Descricao;
             cdsUnidade.Post;
-             end;
+            end;
          end;
 
          if (cdsUnidade.RecordCount = 0) then
          begin
-            TMessageUtil.Alerta('Nenhum cliente encontrado para esse filtro.');
+            TMessageUtil.Alerta('Nenhuma unidade encontrada para esse filtro.');
             if edtNome.CanFocus then
                edtNome.SetFocus;
          end
@@ -189,6 +196,35 @@ end;
 procedure TfrmUnidadePesq.btnConfirmarClick(Sender: TObject);
 begin
    ProcessaConfirmacao;
+end;
+
+procedure TfrmUnidadePesq.btnLimparClick(Sender: TObject);
+begin
+    LimparTela;
+end;
+
+procedure TfrmUnidadePesq.btnSairClick(Sender: TObject);
+begin
+   LimparTela;
+   Close;
+end;
+
+procedure TfrmUnidadePesq.cdsUnidadeBeforeDelete(DataSet: TDataSet);
+begin
+   Abort;
+end;
+
+procedure TfrmUnidadePesq.dbgUnidadeDblClick(Sender: TObject);
+begin
+   ProcessaConfirmacao;
+end;
+
+procedure TfrmUnidadePesq.dbgUnidadeKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+   if (Key = VK_RETURN) and
+      (btnConfirmar.CanFocus) then
+       btnConfirmar.SetFocus;
 end;
 
 end.

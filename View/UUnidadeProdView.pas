@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, ExtCtrls, ComCtrls, Buttons, UEnumerationUtil,
-  UUnidadeProduto, UUnidadeProdController, UUnidadePesqView;
+  UUnidadeProduto, UUnidadeProdController;
 
 type
   TfrmUnidadeProd = class(TForm)
@@ -79,7 +79,7 @@ var
 implementation
 
 uses
-   uMessageUtil, UClassFuncoes;
+   uMessageUtil, UClassFuncoes, UUnidadePesqView;
 {$R *.dfm}
 
 procedure TfrmUnidadeProd.FormKeyDown(Sender: TObject; var Key: Word;
@@ -278,14 +278,14 @@ begin
       begin
          stbBarraStatus.Panels[0].Text := 'Pesquisa';
 
-         if (frmUnidadeProd = nil) then
-            frmUnidadeProd := TfrmUnidadeProd.Create(Application);
+         if (frmUnidadePesq = nil) then
+            frmUnidadePesq := TfrmUnidadePesq.Create(Application);
 
-         frmUnidadeProd.ShowModal;
+         frmUnidadePesq.ShowModal;
 
-         if (frmUnidadeProd.mUnidadeID <> 0) then
+         if (frmUnidadePesq.mUnidadeID <> 0) then
          begin
-            edtCodigo.Text := IntToStr(frmUnidadeProd.mUnidadeID);
+            edtCodigo.Text := IntToStr(frmUnidadePesq.mUnidadeID);
             vEstadoTela    := etConsultar;
             ProcessaConsulta;
          end
@@ -294,13 +294,12 @@ begin
             vEstadoTela := etPadrao;
             DefineEstadoTela;
          end;
-         frmUnidadeProd.mUnidadeID   := 0;
-         frmUnidadeProd.mUnidadeUnidade := EmptyStr;
+         frmUnidadePesq.mUnidadeID   := 0;
+         frmUnidadePesq.mUnidadeUnidade := EmptyStr;
 
-         if edtNome.CanFocus then
-            edtNome.SetFocus;
+         if edtUnidade.CanFocus then
+            edtUnidade.SetFocus;
       end;
-
    end;
 end;
 procedure TfrmUnidadeProd.btnIncluirClick(Sender: TObject);
@@ -573,21 +572,7 @@ end;
 
 function TfrmUnidadeProd.ProcessaDescricao : Boolean;
 begin
-//   try
-//   Result := False;
-//
-//
-//
-//
-//   Result := True;
-//   except
-//      on E : Exception do
-//     begin
-//         Raise  Exception.Create(
-//         'Falha ao processar a  do produto [View]: '#13 +
-//         e.Message);
-//     end;
-//   end;
+
 end;
 
 function TfrmUnidadeProd.ProcessaUnidade: Boolean;
