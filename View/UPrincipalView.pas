@@ -37,7 +37,7 @@ var
 implementation
 
 uses
-  UConexao, UClientesView, UUnidadeProdView;
+  UConexao, UClientesView, UUnidadeProdView, UProdutoView;
 
 {$R *.dfm}
 
@@ -88,7 +88,7 @@ begin
      if (frmProduto = nil) then
          frmProduto := TfrmProduto.Create(Application);
 
-     frmProd.Show;
+     frmProduto.Show;
    finally
       Screen.Cursor := crDefault;
 

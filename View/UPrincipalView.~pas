@@ -24,6 +24,7 @@ type
     procedure FormShow(Sender: TObject);
     procedure MenClienteClick(Sender: TObject);
     procedure MenUnidadedeProdutoClick(Sender: TObject);
+    procedure MenProdutosClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -76,7 +77,21 @@ begin
      frmUnidadeProd.Show;
    finally
       Screen.Cursor := crDefault;
-      
+
+   end;
+end;
+
+procedure TfrmPrincipal.MenProdutosClick(Sender: TObject);
+begin
+   try
+      Screen.Cursor := crHourGlass;
+     if (frmProduto = nil) then
+         frmProduto := TfrmProduto.Create(Application);
+
+     frmProd.Show;
+   finally
+      Screen.Cursor := crDefault;
+
    end;
 end;
 

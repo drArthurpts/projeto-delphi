@@ -22,9 +22,10 @@ uses
   UEndereco in 'Model\UEndereco.pas',
   UEnderecoDAO in 'Model\UEnderecoDAO.pas',
   UClientePesqView in 'View\UClientePesqView.pas' {frmClientesPesq},
-  UUnidadeProdView in 'View\UUnidadeProdView.pas' {frmUnidadeProd};
-
-
+  UUnidadeProdView in 'View\UUnidadeProdView.pas' {frmUnidadeProd},
+  UUnidadePesqView in 'View\UUnidadePesqView.pas' {frmUnidadePesq},
+  UProduto in 'Model\UProduto.pas',
+  UProdutoView in 'View\UProdutoView.pas' {Form2};
 
 {$R *.res}
 

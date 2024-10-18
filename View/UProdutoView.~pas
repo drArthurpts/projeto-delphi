@@ -29,7 +29,7 @@ type
     btnPesquisar: TBitBtn;
     btnConfirmar: TBitBtn;
     btnCancelar: TBitBtn;
-    btnSair: TBitBtn;  s
+    btnSair: TBitBtn;
     Edit1: TEdit;
     btnSpeed: TSpeedButton;
   private

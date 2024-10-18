@@ -9,19 +9,20 @@ private
     vID: Integer;
     vDescricao        : string;
     vUnidade          : string;
-    vQuantidadeEstoque: Integer;
-    vPrecoVenda       : Double;
+    FQuantidadeEstoque: Integer;
+    FPrecoVenda       : Double;
 
 public
     property ID               : Integer read vID write vID;
     property Descricao        : string read vDescricao write vDescricao;
-    property Unidade          : string read vUnidade write vUnidade;
+    property UnidadeSaida     : string read vUnidadeSaida write vUnidadeSaida;
     property QuantidadeEstoque:
-             Integer read vQuantidadeEstoque write vQuantidadeEstoque;
+             Double read vQuantidadeEstoque write vQuantidadeEstoque;
     property PrecoVenda       : Double read vPrecoVenda write vPrecoVenda;
-
+    property Imagem           : TBlobField read vImagem write vImagem;
   end;
 
 implementation
 
 end.
+ 
