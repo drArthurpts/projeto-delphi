@@ -7,7 +7,7 @@ uses
   Dialogs, StdCtrls, Menus, ComCtrls, DBCtrls, ExtCtrls, pngimage;
 
 type
-  TfrmPrincipal = class(TForm)
+    TfrmPrincipal = class(TForm)
     MainCadastro: TMainMenu;
     menMenu: TMenuItem;
     MenCliente: TMenuItem;
@@ -20,6 +20,7 @@ type
     stbBarraStatus: TStatusBar;
     imgLogo: TImage;
     MenUnidadedeProduto: TMenuItem;
+    vObjProduto : TProduto;
     procedure menSairClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure MenClienteClick(Sender: TObject);
@@ -29,6 +30,7 @@ type
     { Private declarations }
   public
     { Public declarations }
+
   end;
 
 var

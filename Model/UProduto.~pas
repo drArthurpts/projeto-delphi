@@ -3,26 +3,25 @@ unit UProduto;
 interface
 
 type
-   TProduto = class
+   TProduto = class(TPersistent)
 
 private
     vID: Integer;
     vDescricao        : string;
     vUnidade          : string;
-    FQuantidadeEstoque: Integer;
-    FPrecoVenda       : Double;
+    vQuantidadeEstoque: Integer;
+    vPrecoVenda       : Double;
 
 public
     property ID               : Integer read vID write vID;
     property Descricao        : string read vDescricao write vDescricao;
-    property UnidadeSaida     : string read vUnidadeSaida write vUnidadeSaida;
+    property Unidade          : string read vUnidade write vUnidade;
     property QuantidadeEstoque:
-             Double read vQuantidadeEstoque write vQuantidadeEstoque;
+             Integer read vQuantidadeEstoque write vQuantidadeEstoque;
     property PrecoVenda       : Double read vPrecoVenda write vPrecoVenda;
-    property Imagem           : TBlobField read vImagem write vImagem;
+
   end;
 
 implementation
 
 end.
- 

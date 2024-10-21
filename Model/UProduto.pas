@@ -2,8 +2,10 @@ unit UProduto;
 
 interface
 
+uses SysUtils, Classes;
+
 type
-   TProduto = class
+   TProduto = class(TPersistent)
 
 private
     vID: Integer;

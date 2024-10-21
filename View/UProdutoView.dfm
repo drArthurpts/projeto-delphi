@@ -2,7 +2,7 @@ object frmProduto: TfrmProduto
   Left = 318
   Top = 224
   Width = 620
-  Height = 225
+  Height = 227
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -12,6 +12,11 @@ object frmProduto: TfrmProduto
   KeyPreview = True
   OldCreateOrder = False
   Position = poScreenCenter
+  OnClose = FormClose
+  OnCreate = FormCreate
+  OnKeyDown = FormKeyDown
+  OnKeyUp = FormKeyUp
+  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object Label1: TLabel
@@ -23,14 +28,20 @@ object frmProduto: TfrmProduto
   end
   object stbBarraStatus: TStatusBar
     Left = 0
-    Top = 167
+    Top = 169
     Width = 604
     Height = 19
-    Panels = <>
+    Panels = <
+      item
+        Width = 50
+      end
+      item
+        Width = 50
+      end>
   end
   object pnlBotoes: TPanel
     Left = 0
-    Top = 76
+    Top = 78
     Width = 604
     Height = 91
     Align = alBottom
@@ -42,6 +53,7 @@ object frmProduto: TfrmProduto
       Height = 25
       Caption = '&Incluir'
       TabOrder = 0
+      OnClick = btnIncluirClick
       Glyph.Data = {
         36030000424D3603000000000000360000002800000010000000100000000100
         18000000000000030000C40E0000C40E00000000000000000000FFFFFFFFFFFF
@@ -77,6 +89,7 @@ object frmProduto: TfrmProduto
       Height = 25
       Caption = '&Alterar'
       TabOrder = 1
+      OnClick = btnAlterarClick
       Glyph.Data = {
         36030000424D3603000000000000360000002800000010000000100000000100
         18000000000000030000C40E0000C40E000000000000000000000A2B95062082
@@ -112,6 +125,7 @@ object frmProduto: TfrmProduto
       Height = 25
       Caption = '&Excluir'
       TabOrder = 2
+      OnClick = btnExcluirClick
       Glyph.Data = {
         36030000424D3603000000000000360000002800000010000000100000000100
         18000000000000030000C40E0000C40E00000000000000000000FFFFFFFFFFFF
@@ -147,6 +161,7 @@ object frmProduto: TfrmProduto
       Height = 25
       Caption = '&Consultar'
       TabOrder = 3
+      OnClick = btnConsultarClick
       Glyph.Data = {
         36030000424D3603000000000000360000002800000010000000100000000100
         18000000000000030000C40E0000C40E00000000000000000000FFFFFFFFFFFF
@@ -182,6 +197,7 @@ object frmProduto: TfrmProduto
       Height = 25
       Caption = '&Listar'
       TabOrder = 4
+      OnClick = btnListarClick
       Glyph.Data = {
         36030000424D3603000000000000360000002800000010000000100000000100
         18000000000000030000C40E0000C40E00000000000000000000FFFFFFFFFFFF
@@ -214,9 +230,10 @@ object frmProduto: TfrmProduto
       Left = 233
       Top = 47
       Width = 75
-      Height = 25
+      Height = 26
       Caption = '&Pesquisar'
       TabOrder = 5
+      OnClick = btnPesquisarClick
       Glyph.Data = {
         36030000424D3603000000000000360000002800000010000000100000000100
         18000000000000030000C40E0000C40E00000000000000000000FFFFFFFFFFFF
@@ -253,6 +270,7 @@ object frmProduto: TfrmProduto
       Caption = 'C&onfirmar'
       Enabled = False
       TabOrder = 6
+      OnClick = btnConfirmarClick
       Glyph.Data = {
         36030000424D3603000000000000360000002800000010000000100000000100
         18000000000000030000C40E0000C40E00000000000000000000FFFFFFFFFFFF
@@ -289,6 +307,7 @@ object frmProduto: TfrmProduto
       Caption = '&Cancelar'
       Enabled = False
       TabOrder = 7
+      OnClick = btnCancelarClick
       Glyph.Data = {
         36030000424D3603000000000000360000002800000010000000100000000100
         18000000000000030000C40E0000C40E00000000000000000000FFFFFF5B57D9
@@ -324,6 +343,7 @@ object frmProduto: TfrmProduto
       Height = 25
       Caption = '&Sair'
       TabOrder = 8
+      OnClick = btnSairClick
       Glyph.Data = {
         36030000424D3603000000000000360000002800000010000000100000000100
         18000000000000030000C40E0000C40E00000000000000000000FFFFFFFFFFFF
@@ -357,12 +377,12 @@ object frmProduto: TfrmProduto
     Left = 0
     Top = 0
     Width = 604
-    Height = 76
+    Height = 78
     Align = alClient
     TabOrder = 2
     object lblUnidade: TLabel
       Left = 6
-      Top = 41
+      Top = 45
       Width = 40
       Height = 13
       Caption = 'Unidade'
@@ -375,29 +395,29 @@ object frmProduto: TfrmProduto
       Caption = 'C'#243'digo '
     end
     object lblQuantidade: TLabel
-      Left = 448
-      Top = 42
+      Left = 449
+      Top = 17
       Width = 58
       Height = 13
       Caption = 'Quantidade '
     end
     object lblPreco: TLabel
-      Left = 359
-      Top = 41
+      Left = 355
+      Top = 17
       Width = 31
       Height = 13
       Caption = 'Pre'#231'o '
     end
     object btnSpeed: TSpeedButton
       Left = 107
-      Top = 38
+      Top = 41
       Width = 15
       Height = 16
     end
-    object edtDescricao: TEdit
+    object edtDescricaoProd: TEdit
       Left = 108
       Top = 10
-      Width = 477
+      Width = 237
       Height = 21
       CharCase = ecUpperCase
       TabOrder = 0
@@ -410,34 +430,38 @@ object frmProduto: TfrmProduto
       CharCase = ecUpperCase
       TabOrder = 1
     end
-    object edtQuantidade: TEdit
-      Left = 507
-      Top = 35
-      Width = 77
+    object edtUnidade: TEdit
+      Left = 52
+      Top = 39
+      Width = 48
       Height = 21
       CharCase = ecUpperCase
       TabOrder = 2
     end
-    object edtVenda: TEdit
-      Left = 392
-      Top = 34
-      Width = 48
+    object TNumEdit
+      Left = 389
+      Top = 11
+      Width = 49
       Height = 21
-      CharCase = ecUpperCase
+      Alignment = taRightJustify
+      Decimals = 2
+      ShowSeparator = True
       TabOrder = 3
     end
-    object Edit1: TEdit
-      Left = 52
-      Top = 35
-      Width = 48
+    object TNumEdit
+      Left = 511
+      Top = 10
+      Width = 56
       Height = 21
-      CharCase = ecUpperCase
+      Alignment = taRightJustify
+      Decimals = 2
+      ShowSeparator = True
       TabOrder = 4
     end
   end
-  object edtUnidade: TEdit
-    Left = 130
-    Top = 35
+  object edtDescricaoUnidade: TEdit
+    Left = 135
+    Top = 39
     Width = 217
     Height = 21
     CharCase = ecUpperCase

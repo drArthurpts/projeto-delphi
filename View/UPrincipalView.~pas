@@ -20,6 +20,7 @@ type
     stbBarraStatus: TStatusBar;
     imgLogo: TImage;
     MenUnidadedeProduto: TMenuItem;
+    vObjProduto : TProduto;
     procedure menSairClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure MenClienteClick(Sender: TObject);
@@ -29,6 +30,7 @@ type
     { Private declarations }
   public
     { Public declarations }
+
   end;
 
 var
@@ -37,7 +39,7 @@ var
 implementation
 
 uses
-  UConexao, UClientesView, UUnidadeProdView;
+  UConexao, UClientesView, UUnidadeProdView, UProdutoView;
 
 {$R *.dfm}
 
@@ -88,7 +90,7 @@ begin
      if (frmProduto = nil) then
          frmProduto := TfrmProduto.Create(Application);
 
-     frmProd.Show;
+     frmProduto.Show;
    finally
       Screen.Cursor := crDefault;
 
