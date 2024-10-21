@@ -1,6 +1,6 @@
 object frmProduto: TfrmProduto
-  Left = 318
-  Top = 224
+  Left = 583
+  Top = 214
   Width = 620
   Height = 227
   Color = clBtnFace
@@ -395,7 +395,7 @@ object frmProduto: TfrmProduto
       Caption = 'C'#243'digo '
     end
     object lblQuantidade: TLabel
-      Left = 448
+      Left = 449
       Top = 17
       Width = 58
       Height = 13
@@ -430,28 +430,32 @@ object frmProduto: TfrmProduto
       CharCase = ecUpperCase
       TabOrder = 1
     end
-    object edtQuantidade: TEdit
-      Left = 508
-      Top = 10
-      Width = 77
-      Height = 21
-      CharCase = ecUpperCase
-      TabOrder = 2
-    end
-    object edtPreco: TEdit
-      Left = 388
-      Top = 10
-      Width = 48
-      Height = 21
-      CharCase = ecUpperCase
-      TabOrder = 3
-    end
     object edtUnidade: TEdit
       Left = 52
       Top = 39
       Width = 48
       Height = 21
       CharCase = ecUpperCase
+      TabOrder = 2
+    end
+    object edtPreco: TNumEdit
+      Left = 388
+      Top = 11
+      Width = 57
+      Height = 21
+      Alignment = taRightJustify
+      Decimals = 2
+      ShowSeparator = True
+      TabOrder = 3
+    end
+    object edtQuantidade: TNumEdit
+      Left = 512
+      Top = 11
+      Width = 57
+      Height = 21
+      Alignment = taRightJustify
+      Decimals = 2
+      ShowSeparator = True
       TabOrder = 4
     end
   end

@@ -41,7 +41,7 @@ end;
 function TUnidadeProdutoDAO.Insere(
   pUnidadeProduto: TUnidadeProduto): Boolean;
 begin
-   Result := inherited Insere(pUnidadeProduto, 'ID')
+   Result := inherited Insere(pUnidadeProduto, 'ID');
 end;
 
 function TUnidadeProdutoDAO.InsereLista(

@@ -25,7 +25,9 @@ uses
   UUnidadeProdView in 'View\UUnidadeProdView.pas' {frmUnidadeProd},
   UUnidadePesqView in 'View\UUnidadePesqView.pas' {frmUnidadePesq},
   UProduto in 'Model\UProduto.pas',
-  UProdutoView in 'View\UProdutoView.pas' {Form2};
+  UProdutoView in 'View\UProdutoView.pas' {Form2},
+  UProdutoController in 'Controller\UProdutoController.pas',
+  UProdutoDAO in 'Model\UProdutoDAO.pas';
 
 {$R *.res}
 

@@ -1,6 +1,6 @@
 object frmProduto: TfrmProduto
-  Left = 318
-  Top = 224
+  Left = 583
+  Top = 214
   Width = 620
   Height = 227
   Color = clBtnFace
@@ -438,20 +438,20 @@ object frmProduto: TfrmProduto
       CharCase = ecUpperCase
       TabOrder = 2
     end
-    object TNumEdit
-      Left = 389
+    object edtPreco: TNumEdit
+      Left = 388
       Top = 11
-      Width = 49
+      Width = 57
       Height = 21
       Alignment = taRightJustify
       Decimals = 2
       ShowSeparator = True
       TabOrder = 3
     end
-    object TNumEdit
-      Left = 511
-      Top = 10
-      Width = 56
+    object edtQuantidade: TNumEdit
+      Left = 512
+      Top = 11
+      Width = 57
       Height = 21
       Alignment = taRightJustify
       Decimals = 2

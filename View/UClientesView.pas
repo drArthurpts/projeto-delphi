@@ -535,7 +535,7 @@ begin
       Result := False;
 
       if not ValidaCliente then
-         Exit;
+         exit;
 
       if vEstadoTela = etIncluir then
       begin
@@ -546,11 +546,12 @@ begin
       if vEstadoTela = etAlterar then
       begin
            if vObjCliente = nil then
-              Exit;
+              exit;
 
       end;
+
       if vObjCliente = nil then
-              Exit;
+         exit;
 
       vObjCliente.Tipo_Pessoa         := 0;
       vObjCliente.Nome                := edtNome.Text;
@@ -899,7 +900,7 @@ begin
 
     if (rdgTipoPessoa.ItemIndex = 0) then
     begin
-       if not TPessoaController.getInstancia.ValidaCPF(xCPFReplace) then
+       if TPessoaController.getInstancia.ValidaCPF(xCPFReplace) then
        begin
          TMessageUtil.Alerta('CPF inválido! Verifique e tente novamente.');
 

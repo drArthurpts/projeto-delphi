@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, ExtCtrls, ComCtrls, Buttons,  UEnumerationUtil,
-  NumEdit;
+  NumEdit, UProduto, UProdutoController;
 
 type
     TfrmProduto = class(TForm)
@@ -31,6 +31,8 @@ type
     btnSair: TBitBtn;
     edtUnidade: TEdit;
     btnSpeed: TSpeedButton;
+    edtPreco: TNumEdit;
+    edtQuantidade: TNumEdit;
     procedure FormKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -52,16 +54,19 @@ type
 
     vKey : Word;
     vEstadoTela : TEstadoTela;
+    vObjProduto : TProduto;
     procedure CamposEnabled(pOpcao : Boolean);
     procedure DefineEstadoTela;
     procedure LimpaTela;
-    function ProcessaConfirmacao   : Boolean;
-    function ProcessaInclusao      : Boolean;
-    function ProcessaAlteracao     : Boolean;
-    function ProcessaExclusao      : Boolean;
-    function ProcessaCliente       : Boolean;
-    function ProcessaConsulta      : Boolean;
-    function ProcessaListagem      : Boolean;
+    function ProcessaConfirmacao          : Boolean;
+    function ProcessaInclusao             : Boolean;
+    function ProcessaAlteracao            : Boolean;
+    function ProcessaExclusao             : Boolean;
+    function ProcessaCliente              : Boolean;
+    function ProcessaConsulta             : Boolean;
+    function ProcessaListagem             : Boolean;
+    function ProcessaUnidadeProduto       : Boolean;
+    function ProcessaProduto              : Boolean;
   public
     { Public declarations }
   end;
@@ -322,7 +327,7 @@ begin
    try
       Result := False;
 
-      if ProcessaProduto then
+      if ProcessaUnidadeProduto then
       begin
          TMessageUtil.Informacao('Produto cadastrado com sucesso! ' + #13 +
                                  'Código cadastrado: ' + IntToStr(vObjProduto.Id));
@@ -344,6 +349,66 @@ end;
 function TfrmProduto.ProcessaListagem: Boolean;
 begin
 
+end;
+
+function TfrmProduto.ProcessaUnidadeProduto: Boolean;
+begin
+   try
+      Result := False;
+
+      if (ProcessaProduto) then
+      begin
+//         Gravação no banco
+         TProdutoController.getInstancia.GravaProduto(
+         vObjProduto);
+         Result := True;
+      end;
+   except
+     on E : Exception do
+     begin
+         Raise  Exception.Create(
+         'Falha ao gavar os dados dos Produtos [View]: '#13 +
+         e.Message);
+     end;
+   end;
+end;
+
+function TfrmProduto.ProcessaProduto: Boolean;
+begin
+   try
+      Result := False;
+
+//      if not ValidaProduto then
+//         exit;
+
+      if vEstadoTela = etIncluir then
+      begin
+         if vObjProduto = nil then
+            vObjProduto := TProduto.Create;
+      end
+      else
+      if vEstadoTela = etAlterar then
+      begin
+         if vObjProduto = nil then
+              exit;
+      end;
+      if vObjProduto = nil then
+         exit;
+
+      vObjProduto.Unidade_ID        := 0;
+      vObjProduto.QuantidadeEstoque := 1; //edtQuantidade.Value;
+      vObjProduto.PrecoVenda        := 1; //edtPreco.Value;
+      vObjProduto.Descricao         :=  edtDescricaoProd.Text;
+
+      Result := True;
+   except
+      on E : Exception do
+      begin
+         Raise Exception.Create('Falha ao processar os dados do Produto [View]'
+         + #13+ e.Message);
+      end;
+
+   end;
 end;
 
 end.

@@ -51,12 +51,12 @@ end;
 
 procedure TColUnidadeProd.Adiciona(pUnidadeProduto: TUnidadeProduto);
 begin
-   Self.Add(TUnidadeProduto(pUnidadeProduto))
+   Self.Add(TUnidadeProduto(pUnidadeProduto));
 end;
 
 function TColUnidadeProd.Retorna(pIndex: Integer): TUnidadeProduto;
 begin
-   Result := TUnidadeProduto(Self[pIndex]);  
+   Result := TUnidadeProduto(Self[pIndex]);
 end;
 
 end.

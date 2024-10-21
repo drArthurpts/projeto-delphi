@@ -7,7 +7,7 @@ uses
   Dialogs, StdCtrls, Menus, ComCtrls, DBCtrls, ExtCtrls, pngimage;
 
 type
-  TfrmPrincipal = class(TForm)
+    TfrmPrincipal = class(TForm)
     MainCadastro: TMainMenu;
     menMenu: TMenuItem;
     MenCliente: TMenuItem;

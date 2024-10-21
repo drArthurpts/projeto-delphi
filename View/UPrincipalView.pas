@@ -20,7 +20,6 @@ type
     stbBarraStatus: TStatusBar;
     imgLogo: TImage;
     MenUnidadedeProduto: TMenuItem;
-    vObjProduto : TProduto;
     procedure menSairClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure MenClienteClick(Sender: TObject);
