@@ -1,8 +1,8 @@
 object frmProduto: TfrmProduto
-  Left = 583
-  Top = 214
-  Width = 620
-  Height = 227
+  Left = 590
+  Top = 333
+  Width = 614
+  Height = 225
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -28,8 +28,8 @@ object frmProduto: TfrmProduto
   end
   object stbBarraStatus: TStatusBar
     Left = 0
-    Top = 169
-    Width = 604
+    Top = 167
+    Width = 598
     Height = 19
     Panels = <
       item
@@ -41,8 +41,8 @@ object frmProduto: TfrmProduto
   end
   object pnlBotoes: TPanel
     Left = 0
-    Top = 78
-    Width = 604
+    Top = 76
+    Width = 598
     Height = 91
     Align = alBottom
     TabOrder = 1
@@ -376,8 +376,8 @@ object frmProduto: TfrmProduto
   object pnlArea: TPanel
     Left = 0
     Top = 0
-    Width = 604
-    Height = 78
+    Width = 598
+    Height = 76
     Align = alClient
     TabOrder = 2
     object lblUnidade: TLabel
@@ -395,27 +395,52 @@ object frmProduto: TfrmProduto
       Caption = 'C'#243'digo '
     end
     object lblQuantidade: TLabel
-      Left = 449
-      Top = 17
-      Width = 58
+      Left = 397
+      Top = 43
+      Width = 70
       Height = 13
       Caption = 'Quantidade '
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = [fsBold]
+      ParentFont = False
     end
     object lblPreco: TLabel
-      Left = 355
+      Left = 428
       Top = 17
-      Width = 31
+      Width = 38
       Height = 13
       Caption = 'Pre'#231'o '
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = [fsBold]
+      ParentFont = False
     end
     object btnSpeed: TSpeedButton
-      Left = 107
+      Left = 119
       Top = 41
       Width = 15
       Height = 16
     end
+    object Label2: TLabel
+      Left = 120
+      Top = 17
+      Width = 45
+      Height = 13
+      Caption = 'Produto'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
     object edtDescricaoProd: TEdit
-      Left = 108
+      Left = 168
       Top = 10
       Width = 237
       Height = 21
@@ -439,7 +464,7 @@ object frmProduto: TfrmProduto
       TabOrder = 2
     end
     object edtPreco: TNumEdit
-      Left = 388
+      Left = 464
       Top = 11
       Width = 57
       Height = 21
@@ -449,8 +474,8 @@ object frmProduto: TfrmProduto
       TabOrder = 3
     end
     object edtQuantidade: TNumEdit
-      Left = 512
-      Top = 11
+      Left = 465
+      Top = 36
       Width = 57
       Height = 21
       Alignment = taRightJustify
@@ -460,7 +485,7 @@ object frmProduto: TfrmProduto
     end
   end
   object edtDescricaoUnidade: TEdit
-    Left = 135
+    Left = 169
     Top = 39
     Width = 217
     Height = 21

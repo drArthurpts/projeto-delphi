@@ -900,7 +900,7 @@ begin
 
     if (rdgTipoPessoa.ItemIndex = 0) then
     begin
-       if TPessoaController.getInstancia.ValidaCPF(xCPFReplace) then
+       if not TPessoaController.getInstancia.ValidaCPF(xCPFReplace) then
        begin
          TMessageUtil.Alerta('CPF inválido! Verifique e tente novamente.');
 
