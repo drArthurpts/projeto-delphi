@@ -149,11 +149,11 @@ begin
             for xAux := 0 to pred(xListaUnidade.Count) do
             begin
             cdsUnidade.Append;
-            cdsUnidadeID.Value       := xListaUnidade.Retorna(xAux).Id;
+            cdsUnidadeID.Value            := xListaUnidade.Retorna(xAux).Id;
             cdsUnidadeUnidade.Value       := xListaUnidade.Retorna(xAux).Unidade;
-            cdsUnidadeAtivo.Value    :=
+            cdsUnidadeAtivo.Value         :=
                IfThen (xListaUnidade.Retorna(xAux).Ativo, 1, 0);
-            cdsUnidadeDescricao.Value := xListaUnidade.Retorna(xAux).Descricao;
+            cdsUnidadeDescricao.Value     := xListaUnidade.Retorna(xAux).Descricao;
             cdsUnidade.Post;
             end;
          end;

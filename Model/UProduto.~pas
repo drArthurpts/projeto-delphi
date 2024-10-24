@@ -10,7 +10,7 @@ type
       private
           vID               : Integer;
           vDescricao        : String;
-          vUnidade_ID          : String;
+          vUnidade_ID       : Integer;
           vQuantidadeEstoque: Double;
           vPrecoVenda       : Double;
 
@@ -19,7 +19,7 @@ type
       published
           property ID               : Integer read vID write vID;
           property Descricao        : string  read vDescricao write vDescricao;
-          property Unidade_ID          : string  read vUnidade_ID write vUnidade_ID;
+          property Unidade_ID          : Integer  read vUnidade_ID write vUnidade_ID;
           property QuantidadeEstoque: Double  read vQuantidadeEstoque write vQuantidadeEstoque;
           property PrecoVenda       : Double  read vPrecoVenda write vPrecoVenda;
 
@@ -36,7 +36,7 @@ constructor TProduto.Create;
 begin
     Self.vID                := 0;
     Self.vDescricao         := EmptyStr;
-    Self.vUnidade_ID          := EmptyStr;
+    Self.vUnidade_ID        := 0;
     Self.vQuantidadeEstoque := 0;
     Self.vPrecoVenda        := 0;
 end;

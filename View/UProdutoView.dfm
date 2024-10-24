@@ -3,6 +3,7 @@ object frmProduto: TfrmProduto
   Top = 333
   Width = 614
   Height = 225
+  Caption = 'Produto'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText

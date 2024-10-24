@@ -148,21 +148,19 @@ begin
          begin
             for xAux := 0 to pred(xListaUnidade.Count) do
             begin
-
             cdsUnidade.Append;
             cdsUnidadeID.Value       := xListaUnidade.Retorna(xAux).Id;
-            cdsUnidadeUnidade.Value  := xListaUnidade.Retorna(xAux).Unidade;
+            cdsUnidadeUnidade.Value       := xListaUnidade.Retorna(xAux).Unidade;
             cdsUnidadeAtivo.Value    :=
-               IfThen(xListaUnidade.Retorna(xAux).Ativo, 1, 0);
-            cdsUnidadeDescricao.Value :=
-                IfThen(xListaUnidade.Retorna(xAux).Ativo, 'Sim', 'Não');
+               IfThen (xListaUnidade.Retorna(xAux).Ativo, 1, 0);
+            cdsUnidadeDescricao.Value := xListaUnidade.Retorna(xAux).Descricao;
             cdsUnidade.Post;
-             end;
+            end;
          end;
 
          if (cdsUnidade.RecordCount = 0) then
          begin
-            TMessageUtil.Alerta('Nenhum cliente encontrado para esse filtro.');
+            TMessageUtil.Alerta('Nenhuma unidade encontrada para esse filtro.');
             if edtNome.CanFocus then
                edtNome.SetFocus;
          end

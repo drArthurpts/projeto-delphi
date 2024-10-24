@@ -625,7 +625,7 @@ end;
 
 procedure TfrmProduto.edtCodigoExit(Sender: TObject);
 begin
-   ProcessaConsulta;
+//   ProcessaConsulta;
 end;
 
 end.

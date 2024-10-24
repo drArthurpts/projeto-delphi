@@ -12,7 +12,6 @@ object frmUnidadePesq: TfrmUnidadePesq
   Font.Style = []
   KeyPreview = True
   OldCreateOrder = False
-  Visible = True
   OnKeyDown = FormKeyDown
   PixelsPerInch = 96
   TextHeight = 13

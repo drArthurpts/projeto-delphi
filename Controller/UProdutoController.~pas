@@ -121,10 +121,7 @@ begin
    try
       try
          TConexao.get.iniciaTransacao;
-
          Result := False;
-
-
          xProdutoDAO := TProdutoDAO.Create(TConexao.get.getConn);
 
          if pProduto.Id = 0 then
@@ -135,9 +132,8 @@ begin
          begin
             xProdutoDAO.Atualiza(
             pProduto, RetornaCondicaoProduto(pProduto.Id));
-
-
          end;
+
          TConexao.get.confirmaTransacao;
       finally
           if (xProdutoDAO <> nil) then

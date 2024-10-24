@@ -4,8 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, ExtCtrls, ComCtrls, StdCtrls, Buttons, DB, DBClient, Grids,
-  DBGrids;
+  Dialogs, ExtCtrls, ComCtrls, StdCtrls, Buttons;
 
 type
   TfrmProdutoPesqView = class(TForm)
@@ -16,19 +15,6 @@ type
     btnSair: TBitBtn;
     pnlFiltro: TPanel;
     pnlResultado: TPanel;
-    grbFiltrar: TGroupBox;
-    lblInfo: TLabel;
-    lblProduto: TLabel;
-    edtNome: TEdit;
-    btnFiltrar: TBitBtn;
-    grbGrid: TGroupBox;
-    DBGrid1: TDBGrid;
-    dtsProduto: TDataSource;
-    cdsProduto: TClientDataSet;
-    cdsProdutoID: TIntegerField;
-    cdsProdutoDescricao: TStringField;
-    cdsProdutoQuantidade: TIntegerField;
-    cdsProdutoPreco: TFloatField;
   private
     { Private declarations }
   public

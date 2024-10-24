@@ -291,15 +291,9 @@ end;
 
 procedure TfrmProduto.btnExcluirClick(Sender: TObject);
 begin
-   if Trim(edtCodigo.Text) = EmptyStr then
-   begin
+   vEstadoTela := etExcluir;
+   DefineEstadoTela;
 
-   end
-      vEstadoTela := etConsultar
-   else
-      vEstadoTela := etExcluir;
-
-  DefineEstadoTela;
 end;
 
 procedure TfrmProduto.btnConsultarClick(Sender: TObject);
