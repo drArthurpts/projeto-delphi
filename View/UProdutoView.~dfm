@@ -454,6 +454,7 @@ object frmProduto: TfrmProduto
       Height = 21
       CharCase = ecUpperCase
       TabOrder = 1
+      OnExit = edtCodigoExit
     end
     object edtUnidade: TEdit
       Left = 52
