@@ -3,7 +3,7 @@ unit UProdutoDAO;
 interface
 
 uses SqlExpr, DBXpress, SimpleDS, Db , Classes , SysUtils, DateUtils,
-     StdCtrls, UGenericDAO, UProduto;
+     StdCtrls, UGenericDAO, UProduto, UUnidadeProduto;
 
 
 type
@@ -16,9 +16,13 @@ type
          function Retorna (pCondicao : String)            : TProduto;
          function RetornaLista (pCondicao : String = '')  : TColProduto;
 
+private
+   vObjUnidadeProd : TUnidadeProduto;
+
 end;
 
 implementation
+
 
 { TProdutoDAO }
 

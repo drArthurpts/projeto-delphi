@@ -59,7 +59,7 @@ type
     procedure LimpaTela;
     procedure DefineEstadoTela;
     procedure CarregaDadosTela;
-    function ProcessaConfirmacao : Boolean;
+    function ProcessaConfirmacao   : Boolean;
     function ProcessaInclusao      : Boolean;
     function ProcessaProduto       : Boolean;
     function ProcessaAlteracao     : Boolean;

@@ -3,6 +3,7 @@ object frmProduto: TfrmProduto
   Top = 333
   Width = 614
   Height = 225
+  Caption = 'Produto'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -456,14 +457,6 @@ object frmProduto: TfrmProduto
       TabOrder = 1
       OnExit = edtCodigoExit
     end
-    object edtUnidade: TEdit
-      Left = 52
-      Top = 39
-      Width = 48
-      Height = 21
-      CharCase = ecUpperCase
-      TabOrder = 2
-    end
     object edtPreco: TNumEdit
       Left = 464
       Top = 11
@@ -472,7 +465,7 @@ object frmProduto: TfrmProduto
       Alignment = taRightJustify
       Decimals = 2
       ShowSeparator = True
-      TabOrder = 3
+      TabOrder = 2
     end
     object edtQuantidade: TNumEdit
       Left = 465
@@ -482,7 +475,19 @@ object frmProduto: TfrmProduto
       Alignment = taRightJustify
       Decimals = 2
       ShowSeparator = True
+      TabOrder = 3
+    end
+    object cmbUnidade: TComboBox
+      Left = 53
+      Top = 41
+      Width = 49
+      Height = 21
+      CharCase = ecUpperCase
+      ItemHeight = 13
       TabOrder = 4
+      OnChange = cmbUnidadeChange
+      Items.Strings = (
+        '')
     end
   end
   object edtDescricaoUnidade: TEdit

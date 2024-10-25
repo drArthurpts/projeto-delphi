@@ -572,21 +572,7 @@ end;
 
 function TfrmUnidadeProd.ProcessaDescricao : Boolean;
 begin
-//   try
-//   Result := False;
-//
-//
-//
-//
-//   Result := True;
-//   except
-//      on E : Exception do
-//     begin
-//         Raise  Exception.Create(
-//         'Falha ao processar a  do produto [View]: '#13 +
-//         e.Message);
-//     end;
-//   end;
+
 end;
 
 function TfrmUnidadeProd.ProcessaUnidade: Boolean;

@@ -734,7 +734,7 @@ begin
 
          vEstadoTela := etPadrao;
          DefineEstadoTela;
-         Result := True;      
+         Result := True;
       end;
 
    except
@@ -743,7 +743,7 @@ begin
          Raise Exception.Create(
          'Falha ao alterar os dados do cliente [View]: ' +#13 +
          e.Message);
-      end;  
+      end;
 
    end;
 
@@ -787,7 +787,7 @@ begin
               LimpaTela;
               vEstadoTela := etPadrao;
               DefineEstadoTela;
-              Exit;
+              exit;
           end;
       finally
          Screen.Cursor := crDefault;

@@ -5,7 +5,8 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, ExtCtrls, ComCtrls, Buttons, UEnumerationUtil, NumEdit,
-  UProduto, UProdutoController, Math;
+  UProduto, UProdutoController, UUnidadeProdController,Math, UUnidadeProduto, UUnidadeProdutoDAO
+  ,UConexao, DB, DBClient;
 
 type
   TfrmProduto = class(TForm)
@@ -29,11 +30,12 @@ type
     btnConfirmar: TBitBtn;
     btnCancelar: TBitBtn;
     btnSair: TBitBtn;
-    edtUnidade: TEdit;
     btnSpeed: TSpeedButton;
     edtPreco: TNumEdit;
     edtQuantidade: TNumEdit;
     Label2: TLabel;
+    cmbUnidade: TComboBox;
+    ClientDataSet1: TClientDataSet;
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure btnIncluirClick(Sender: TObject);
@@ -49,6 +51,7 @@ type
     procedure FormKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure btnConfirmarClick(Sender: TObject);
     procedure edtCodigoExit(Sender: TObject);
+
   private
     { Private declarations }
 
@@ -60,6 +63,7 @@ type
     procedure DefineEstadoTela;
     procedure CarregaDadosTela;
     procedure LimpaTela;
+    procedure CarregaDadoscmb;
     function ProcessaConfirmacao: Boolean;
     function ProcessaInclusao: Boolean;
     function ProcessaAlteracao: Boolean;
@@ -74,12 +78,16 @@ type
   end;
 
 var
-  frmProduto: TfrmProduto;
+  frmProduto      : TfrmProduto;
+  vObjUnidadeProd : TUnidadeProduto;
+  TUnidadesDAO    : TUnidadeProdutoDAO;
+  Conexao        :  TConexao;
+
 
 implementation
 
 uses
-  uMessageUtil, Types;
+  uMessageUtil, Types, UProdutoPesqView, UProdutoDAO;
 
 {$R *.dfm}
 
@@ -222,9 +230,36 @@ begin
             edtCodigo.SetFocus;
         end;
       end;
+       etPesquisar:
+      begin
+          stbBarraStatus.Panels[0].Text := 'Pesquisa';
+
+         if (frmProdutoPesqView = nil) then
+            frmProdutoPesqView := TfrmProdutoPesqView.Create(Application);
+
+         frmProdutoPesqView.ShowModal;
+
+         if (frmProdutoPesqView.mProdutoID <> 0) then
+         begin
+            edtCodigo.Text := IntToStr(frmProdutoPesqView.mProdutoID);
+            vEstadoTela    := etConsultar;
+            ProcessaConsulta;
+         end
+         else
+         begin
+            vEstadoTela := etPadrao;
+            DefineEstadoTela;
+         end;
+         frmProdutoPesqView.mProdutoID   := 0;
+         frmProdutoPesqView.mProdutoDescricao := EmptyStr;
+
+         if edtDescricaoProd.CanFocus then
+            edtDescricaoProd.SetFocus;
+      end;
+      end;
 
   end;
-end;
+
 
 procedure TfrmProduto.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
 begin
@@ -331,11 +366,13 @@ end;
 procedure TfrmProduto.FormCreate(Sender: TObject);
 begin
   vEstadoTela := etPadrao;
+
 end;
 
 procedure TfrmProduto.FormShow(Sender: TObject);
 begin
   DefineEstadoTela;
+  CarregaDadoscmb;
 end;
 
 procedure TfrmProduto.btnCancelarClick(Sender: TObject);
@@ -614,6 +651,7 @@ procedure TfrmProduto.CarregaDadosTela;
 var
   i: Integer;
 begin
+
    if (vObjProduto = nil) then
       exit;
 
@@ -621,6 +659,7 @@ begin
    edtDescricaoProd.Text := vObjProduto.Descricao;
    edtPreco.Value := vObjProduto.PrecoVenda;
    edtQuantidade.Value := vObjProduto.QuantidadeEstoque;
+
 end;
 
 procedure TfrmProduto.edtCodigoExit(Sender: TObject);
@@ -628,5 +667,31 @@ begin
 //   ProcessaConsulta;
 end;
 
+
+procedure TfrmProduto.CarregaDadoscmb;
+var
+   xListaUnidades : TColUnidadeProd;
+   Unidade        : TUnidadeProduto;
+   i              : Integer;
+
+begin
+   xListaUnidades := TColUnidadeProd.Create;
+
+    xListaUnidades :=
+            TUnidadeProdController.getInstancia.PesquisaUnidade(Trim(cmbUnidade.Text));
+
+    try
+       cmbUnidade.Items.Clear;
+
+        for i := 0 to xListaUnidades.Count - 1 do
+        begin
+            Unidade := xListaUnidades[i];
+            cmbUnidade.Items.AddObject(Unidade.Unidade, Unidade);
+        end;
+
+    except
+         TMessageUtil.Alerta('Decrição do produto não pode ficar em branco.');
+    end;
+    end;
 end.
 

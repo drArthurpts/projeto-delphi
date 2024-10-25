@@ -457,14 +457,6 @@ object frmProduto: TfrmProduto
       TabOrder = 1
       OnExit = edtCodigoExit
     end
-    object edtUnidade: TEdit
-      Left = 52
-      Top = 39
-      Width = 48
-      Height = 21
-      CharCase = ecUpperCase
-      TabOrder = 2
-    end
     object edtPreco: TNumEdit
       Left = 464
       Top = 11
@@ -473,7 +465,7 @@ object frmProduto: TfrmProduto
       Alignment = taRightJustify
       Decimals = 2
       ShowSeparator = True
-      TabOrder = 3
+      TabOrder = 2
     end
     object edtQuantidade: TNumEdit
       Left = 465
@@ -483,7 +475,18 @@ object frmProduto: TfrmProduto
       Alignment = taRightJustify
       Decimals = 2
       ShowSeparator = True
+      TabOrder = 3
+    end
+    object cmbUnidade: TComboBox
+      Left = 53
+      Top = 41
+      Width = 49
+      Height = 21
+      CharCase = ecUpperCase
+      ItemHeight = 13
       TabOrder = 4
+      Items.Strings = (
+        '')
     end
   end
   object edtDescricaoUnidade: TEdit
@@ -493,5 +496,11 @@ object frmProduto: TfrmProduto
     Height = 21
     CharCase = ecUpperCase
     TabOrder = 3
+  end
+  object ClientDataSet1: TClientDataSet
+    Aggregates = <>
+    Params = <>
+    Left = 352
+    Top = 132
   end
 end

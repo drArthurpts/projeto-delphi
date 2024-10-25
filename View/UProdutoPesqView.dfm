@@ -11,6 +11,8 @@ object frmProdutoPesqView: TfrmProdutoPesqView
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   OldCreateOrder = False
+  Position = poScreenCenter
+  OnKeyDown = FormKeyDown
   PixelsPerInch = 96
   TextHeight = 13
   object stbBarraStatus: TStatusBar
@@ -69,6 +71,7 @@ object frmProdutoPesqView: TfrmProdutoPesqView
       Height = 25
       Caption = '&Limpar'
       TabOrder = 1
+      OnClick = btnLimparClick
       Glyph.Data = {
         36030000424D3603000000000000360000002800000010000000100000000100
         18000000000000030000C40E0000C40E00000000000000000000FFFFFFFFFFFF
@@ -104,6 +107,7 @@ object frmProdutoPesqView: TfrmProdutoPesqView
       Height = 25
       Caption = '&Sair'
       TabOrder = 2
+      OnClick = btnSairClick
       Glyph.Data = {
         36030000424D3603000000000000360000002800000010000000100000000100
         18000000000000030000C40E0000C40E00000000000000000000FFFFFFFFFFFF
@@ -176,6 +180,7 @@ object frmProdutoPesqView: TfrmProdutoPesqView
         Height = 25
         Caption = '&Filtrar'
         TabOrder = 1
+        OnClick = btnFiltrarClick
         Glyph.Data = {
           36030000424D3603000000000000360000002800000010000000100000000100
           18000000000000030000C40E0000C40E00000000000000000000FFFFFFFFFFFF
@@ -213,7 +218,7 @@ object frmProdutoPesqView: TfrmProdutoPesqView
     Height = 103
     Align = alClient
     TabOrder = 3
-    object grbGrid: TGroupBox
+    object dbgProduto: TGroupBox
       Left = 1
       Top = 1
       Width = 491
@@ -221,6 +226,7 @@ object frmProdutoPesqView: TfrmProdutoPesqView
       Align = alClient
       Caption = 'Resultado da busca: '
       TabOrder = 0
+      OnDblClick = dbgProdutoDblClick
       object DBGrid1: TDBGrid
         Left = 2
         Top = 15
@@ -245,13 +251,34 @@ object frmProdutoPesqView: TfrmProdutoPesqView
   object cdsProduto: TClientDataSet
     Active = True
     Aggregates = <>
+    FieldDefs = <
+      item
+        Name = 'ID'
+        DataType = ftInteger
+      end
+      item
+        Name = 'Descricao'
+        DataType = ftString
+        Size = 20
+      end
+      item
+        Name = 'Preco'
+        DataType = ftFloat
+      end
+      item
+        Name = 'Quantidade'
+        DataType = ftFloat
+      end>
+    IndexDefs = <>
     Params = <>
+    StoreDefs = True
+    BeforeDelete = cdsProdutoBeforeDelete
     Left = 42
     Top = 114
     Data = {
       640000009619E0BD010000001800000004000000000003000000640002494404
       000100000000000944657363726963616F010049000000010005574944544802
-      00020014000A5175616E746964616465040001000000000005507265636F0800
+      000200140005507265636F08000400000000000A5175616E7469646164650800
       0400000000000000}
     object cdsProdutoID: TIntegerField
       DisplayWidth = 12
@@ -261,13 +288,12 @@ object frmProdutoPesqView: TfrmProdutoPesqView
       DisplayWidth = 46
       FieldName = 'Descricao'
     end
-    object cdsProdutoQuantidade: TIntegerField
-      DisplayWidth = 12
-      FieldName = 'Quantidade'
-    end
     object cdsProdutoPreco: TFloatField
       DisplayWidth = 8
       FieldName = 'Preco'
+    end
+    object cdsProdutoQuantidade: TFloatField
+      FieldName = 'Quantidade'
     end
   end
 end
