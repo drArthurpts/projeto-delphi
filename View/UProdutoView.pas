@@ -5,8 +5,8 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, ExtCtrls, ComCtrls, Buttons, UEnumerationUtil, NumEdit,
-  UProduto, UProdutoController, UUnidadeProdController,Math, UUnidadeProduto, UUnidadeProdutoDAO
-  ,UConexao, DB, DBClient;
+  UProduto, UProdutoController, UUnidadeProdController,Math, UUnidadeProduto,
+  UUnidadeProdutoDAO,UConexao, DB, DBClient;
 
 type
   TfrmProduto = class(TForm)
@@ -34,6 +34,8 @@ type
     lblDescProd: TLabel;
     cmbUnidade: TComboBox;
     ClientDataSet1: TClientDataSet;
+    lblCodigo: TLabel;
+    edtCodigo: TEdit;
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure btnIncluirClick(Sender: TObject);
@@ -133,6 +135,7 @@ begin
         CamposEnabled(True);
         stbBarraStatus.Panels[0].Text := 'Inclusão';
 
+        edtCodigo.Enabled := False;
 
 
         if edtDescricaoProd.CanFocus then
@@ -152,7 +155,7 @@ begin
 
         CamposEnabled(False);
 
-        if (edtDescricaoProd.Text <> EmptyStr) then
+        if (edtCodigo.Text <> EmptyStr) then
         begin
           btnAlterar.Enabled := True;
           btnExcluir.Enabled := True;
@@ -164,10 +167,11 @@ begin
         end
         else
         begin
-          edtDescricaoProd.Enabled := True;
+            lblCodigo.Enabled := True;
+            edtCodigo.Enabled:= True;
 
-          if edtDescricaoProd.CanFocus then
-            edtDescricaoProd.SetFocus;
+            if edtCodigo.CanFocus then
+            edtCodigo.SetFocus;
 
         end;
       end;
@@ -175,11 +179,11 @@ begin
       begin
         stbBarraStatus.Panels[0].Text := 'Alteração';
 
-        if (edtDescricaoProd.Text <> EmptyStr) then
+        if (edtCodigo.Text <> EmptyStr) then
         begin
           CamposEnabled(True);
 
-          edtDescricaoProd.Enabled := True;
+          edtCodigo.Enabled := False;
           btnAlterar.Enabled := False;
           btnConfirmar.Enabled := True;
 
@@ -187,11 +191,11 @@ begin
         else
         begin
 
-          lblDescProd.Enabled := True;
-          edtDescricaoProd.Enabled := True;
+          lblCodigo.Enabled := True;
+          edtCodigo.Enabled := True;
 
-          if (edtDescricaoProd.CanFocus) then
-              edtDescricaoProd.SetFocus;
+          if (edtCodigo.CanFocus) then
+              edtCodigo.SetFocus;
         end;
       end;
       etExcluir:
@@ -202,30 +206,30 @@ begin
 
         stbBarraStatus.Panels[0].text := 'Exclusão';
 
-        if (edtDescricaoProd.Text <> EmptyStr) then
+        if (edtCodigo.Text <> EmptyStr) then
            ProcessaExclusao
         else
         begin
-          lblDescProd.Enabled := True;
-          edtDescricaoProd.Enabled := True;
+          lblCodigo.Enabled := True;
+          edtCodigo.Enabled := True;
 
-          if (edtDescricaoProd.CanFocus) then
-              edtDescricaoProd.SetFocus;
+          if (edtCodigo.CanFocus) then
+              edtCodigo.SetFocus;
         end;
       end;
     etListar:
       begin
         stbBarraStatus.Panels[0].Text := 'Listagem';
 
-        if (edtDescricaoProd.Text <> EmptyStr) then
+        if (edtCodigo.Text <> EmptyStr) then
           ProcessaListagem
         else
         begin
           lblDescProd.Enabled := True;
-          edtDescricaoProd.Enabled := True;
+          edtCodigo.Enabled := True;
 
-          if edtDescricaoProd.CanFocus then
-            edtDescricaoProd.SetFocus;
+          if edtCodigo.CanFocus then
+            edtCodigo.SetFocus;
         end;
       end;
        etPesquisar:
@@ -239,7 +243,7 @@ begin
 
          if (frmProdutoPesqView.mProdutoID <> 0) then
          begin
-            edtDescricaoProd.Text := IntToStr(frmProdutoPesqView.mProdutoID);
+            edtCodigo.Text := IntToStr(frmProdutoPesqView.mProdutoID);
             vEstadoTela    := etConsultar;
             ProcessaConsulta;
          end
@@ -251,8 +255,8 @@ begin
          frmProdutoPesqView.mProdutoID   := 0;
          frmProdutoPesqView.mProdutoDescricao := EmptyStr;
 
-         if edtDescricaoProd.CanFocus then
-            edtDescricaoProd.SetFocus;
+         if edtCodigo.CanFocus then
+            edtCodigo.SetFocus;
       end;
       end;
 
@@ -265,7 +269,6 @@ begin
   case vKey of
     VK_RETURN:
       begin
-
         Perform(WM_NEXTDLGCTL, 0, 0);
       end;
 
@@ -418,24 +421,31 @@ end;
 function TfrmProduto.ProcessaAlteracao: Boolean;
 begin
   try
-    Result := False;
+      Result := False;
 
-    if ProcessaUnidadeProduto then
-    begin
-      TMessageUtil.Informacao('Dados foram alterados com sucesso.');
+      if edtCodigo.Enabled then
+      begin
+         ProcessaConsulta;
+         exit;
+      end;
 
-      vEstadoTela := etPadrao;
-      DefineEstadoTela;
-      Result := True;
-    end;
+      if ProcessaProduto then
+      begin
+         TMessageUtil.Informacao('Dados alterados com sucesso.');
 
-  except
-    on E: Exception do
-    begin
-      raise Exception.Create('Falha ao alterar os dados do Produto [View]: ' + #13 + e.Message);
-    end;
+         vEstadoTela := etPadrao;
+         DefineEstadoTela;
 
-  end;
+         Result := True;
+      end;
+   except
+      on E: Exception do
+      begin
+         raise Exception.Create(
+            'Falha ao alterar os dados de Produto [View]: '#13+
+            e.Message);
+      end;
+   end;
 end;
 
 function TfrmProduto.ProcessaConsulta: Boolean;
@@ -443,27 +453,28 @@ begin
   try
     Result := False;
 
-    if (edtDescricaoProd.Text = EmptyStr) then
+    if (edtCodigo.Text = EmptyStr) then
     begin
-      TMessageUtil.Alerta('Produto não pode ficar em branco.');
+      TMessageUtil.Alerta('Código do produto não pode ficar em branco.');
 
-      if (edtDescricaoProd.CanFocus) then
-          edtDescricaoProd.SetFocus;
+      if (edtCodigo.CanFocus) then
+          edtCodigo.SetFocus;
 
       Exit;
     end;
 
-    vObjProduto := TProduto(TProdutoController.getInstancia.BuscaProduto(edtDescricaoProd.Text));
+    vObjProduto := TProduto(TProdutoController.getInstancia.
+    BuscaProduto(StrToIntDef(edtCodigo.Text, 0)));
 
     if (vObjProduto <> nil) then
-      CarregaDadosTela
+       CarregaDadosTela
     else
     begin
       TMessageUtil.Alerta('Nenhum Produto encontrado');
       LimpaTela;
 
-      if (edtDescricaoProd.CanFocus) then
-          edtDescricaoProd.SetFocus;
+      if (edtCodigo.CanFocus) then
+          edtCodigo.SetFocus;
 
       exit;
     end;
@@ -600,7 +611,7 @@ begin
   except
     on E: Exception do
     begin
-      raise Exception.Create('Falha ao incluir os dados do cliente [View]: '#13 + e.Message);
+      raise Exception.Create('Falha ao incluir os dados do Produto [View]: '#13 + e.Message);
     end;
   end;
 end;
@@ -640,20 +651,23 @@ begin
     if vEstadoTela = etIncluir then
     begin
       if vObjProduto = nil then
-        vObjProduto := TProduto.Create;
+         vObjProduto := TProduto.Create;
     end
     else if vEstadoTela = etAlterar then
     begin
       if vObjProduto = nil then
-        exit;
+         exit;
     end;
     if vObjProduto = nil then
-      exit;
+       exit;
 
-    vObjProduto.Unidade_ID := 0;
+//    vObjProduto.ID                := 0;
     vObjProduto.QuantidadeEstoque := edtQuantidade.Value;
-    vObjProduto.PrecoVenda := edtPreco.Value;
-    vObjProduto.Descricao := edtDescricaoProd.Text;
+    vObjProduto.PrecoVenda        := edtPreco.Value;
+    vObjProduto.Descricao         := edtDescricaoProd.Text;
+
+
+    TProdutoController.getInstancia.GravaProduto(vObjProduto);
 
     Result := True;
   except
@@ -689,7 +703,7 @@ begin
   begin
     TMessageUtil.Alerta('Decrição do produto não pode ficar em branco.');
     if edtDescricaoProd.CanFocus then
-      edtDescricaoProd.SetFocus;
+       edtDescricaoProd.SetFocus;
     exit;
   end;
   Result := True;
@@ -697,22 +711,53 @@ end;
 
 procedure TfrmProduto.CarregaDadosTela;
 var
-  i: Integer;
+   xObjUnidadeProduto : TUnidadeProduto;
 begin
-
    if (vObjProduto = nil) then
       exit;
 
-   
-   edtDescricaoProd.Text := vObjProduto.Descricao;
-   edtPreco.Value := vObjProduto.PrecoVenda;
+   edtCodigo.Text             := IntToStr(vObjProduto.ID);
+   edtDescricaoProd.Text          := vObjProduto.Descricao;
    edtQuantidade.Value := vObjProduto.QuantidadeEstoque;
+   edtPreco.Value             := vObjProduto.PrecoVenda;
 
+   try
+      if vObjProduto.Unidade_ID <> 0 then
+      begin
+         xObjUnidadeProduto := nil;
+         xObjUnidadeProduto := TUnidadeProduto.create;
+         //xObjUnidadeProduto := TUnidadeProdController.BuscaUnidade(vObjProduto.Unidade_ID);
+         cmbUnidade.Text := xObjUnidadeProduto.Unidade;
+         edtDescricaoUnidade.Text := xObjUnidadeProduto.Descricao;
+
+         if  xObjUnidadeProduto <> nil then
+             edtDescricaoUnidade.Text :=  xObjUnidadeProduto.Descricao;
+      end;
+   finally
+      if xObjUnidadeProduto <> nil then
+         FreeAndNil(xObjUnidadeProduto);
+   end;
+
+   btnCancelar.Enabled := True;
+   btnAlterar.Enabled  := True;
+   btnExcluir.Enabled  := True;
+
+   if  vEstadoTela = etAlterar then
+   begin
+      edtDescricaoProd.Enabled         := true;
+      edtQuantidade.Enabled := true;
+      edtPreco.Enabled             := true;
+   end;
 end;
 
 procedure TfrmProduto.edtCodigoExit(Sender: TObject);
 begin
-//   ProcessaConsulta;
+   if vKey = VK_RETURN then
+   begin
+      ProcessaConsulta;
+   end;
+   //else
+      vKey := VK_CLEAR;
 end;
 
 
@@ -741,6 +786,8 @@ begin
          TMessageUtil.Alerta('Decrição do produto não pode ficar em branco.');
     end;
     end;
+
+
 procedure TfrmProduto.cmbUnidadeChange(Sender: TObject);
 var
    Unidade : TUnidadeProduto;

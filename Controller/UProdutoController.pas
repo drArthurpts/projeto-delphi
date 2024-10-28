@@ -14,9 +14,9 @@ type
          function ExcluiProduto(pProduto : TProduto)  : Boolean;
           function PesquisaProduto(pProduto : String) : TColProduto;
 
-         function BuscaProduto(pDescricaoProd : string)         : TProduto;
+         function BuscaProduto(pID : Integer)         : TProduto;
          function RetornaCondicaoProduto(
-                          pDescricaoProd : string)      : String;
+                          pID : Integer)      : String;
          published
             class function getInstancia               : TProdutoController;
 
@@ -31,7 +31,7 @@ var
 
 { TProdutoController }
 
-function TProdutoController.BuscaProduto(pDescricaoProd : string):  TProduto;
+function TProdutoController.BuscaProduto(pID : Integer):  TProduto;
 var
    xProdutoDAO : TProdutoDAO;
 begin
@@ -42,7 +42,7 @@ begin
          xProdutoDAO := TProdutoDAO.Create(
                             TConexao.getInstance.getConn);
 
-         Result := xProdutoDAO.Retorna(RetornaCondicaoProduto(pDescricaoProd));
+         Result := xProdutoDAO.Retorna(RetornaCondicaoProduto(pID));
        finally
          if (xProdutoDAO <> nil) then
             FreeAndNil(xProdutoDAO);
@@ -75,12 +75,12 @@ begin
 
          xProdutoDAO := TProdutoDAO.Create(TConexao.get.getConn);
 
-         if (pProduto.Descricao = EmptyStr) then
+         if (pProduto.ID = 0) then
             exit
          else
          begin
             xProdutoDAO.Deleta(
-               RetornaCondicaoProduto(pProduto.Descricao));
+               RetornaCondicaoProduto(pProduto.ID));
 
          end;
 
@@ -98,7 +98,7 @@ begin
        begin
           TConexao.get.cancelaTransacao;
           Raise Exception.Create(
-               'Falha ao escluir os dados do Produto [Controller]: ' + #13 +
+               'Falha ao excluir os dados do Produto [Controller]: ' + #13 +
                 e.Message);
        end;
 
@@ -131,7 +131,7 @@ begin
          else
          begin
             xProdutoDAO.Atualiza(
-            pProduto, RetornaCondicaoProduto(pProduto.Descricao));
+            pProduto, RetornaCondicaoProduto(pProduto.ID));
          end;
 
          TConexao.get.confirmaTransacao;
@@ -185,16 +185,16 @@ begin
 end;
 
 function TProdutoController.RetornaCondicaoProduto(
-  pDescricaoProd: string): String;
+  pID: Integer): string;
 var
    xChave : String;
 
 begin
-   xChave := 'DESCRICAO';
+   xChave := 'ID';
 
    Result :=
    'WHERE ' +                                                       #13+
-   '      ' + xChave+ ' = ' + QuotedStr(pDescricaoProd) + ' '#13;
+   '      ' + xChave+ ' = ' + QuotedStr(IntToStr(pId)) + ' '#13;
 end;
 
 end.

@@ -16,7 +16,7 @@ type
 
          function BuscaProduto(pID : Integer)         : TProduto;
          function RetornaCondicaoProduto(
-                          pID_Produto : Integer)      : String;
+                          pID : Integer)      : String;
          published
             class function getInstancia               : TProdutoController;
 
@@ -31,7 +31,7 @@ var
 
 { TProdutoController }
 
-function TProdutoController.BuscaProduto(pID: Integer): TProduto;
+function TProdutoController.BuscaProduto(pID : Integer):  TProduto;
 var
    xProdutoDAO : TProdutoDAO;
 begin
@@ -75,12 +75,12 @@ begin
 
          xProdutoDAO := TProdutoDAO.Create(TConexao.get.getConn);
 
-         if (pProduto.Id = 0) then
-            Exit
+         if (pProduto.ID = 0) then
+            exit
          else
          begin
             xProdutoDAO.Deleta(
-               RetornaCondicaoProduto(pProduto.Id));
+               RetornaCondicaoProduto(pProduto.ID));
 
          end;
 
@@ -124,14 +124,14 @@ begin
          Result := False;
          xProdutoDAO := TProdutoDAO.Create(TConexao.get.getConn);
 
-         if pProduto.Id = 0 then
+         if pProduto.Descricao = EmptyStr then
          begin
             xProdutoDAO.Insere(pProduto);
          end
          else
          begin
             xProdutoDAO.Atualiza(
-            pProduto, RetornaCondicaoProduto(pProduto.Id));
+            pProduto, RetornaCondicaoProduto(pProduto.ID));
          end;
 
          TConexao.get.confirmaTransacao;
@@ -185,7 +185,7 @@ begin
 end;
 
 function TProdutoController.RetornaCondicaoProduto(
-  pID_Produto: Integer): String;
+  pID: Integer): string;
 var
    xChave : String;
 
@@ -194,7 +194,7 @@ begin
 
    Result :=
    'WHERE ' +                                                       #13+
-   '      ' + xChave+ ' = ' + QuotedStr(IntToStr(pID_Produto))+ ' '#13;
+   '      ' + xChave+ ' = ' + QuotedStr(IntToStr(pId)) + ' '#13;
 end;
 
 end.
