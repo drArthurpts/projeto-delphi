@@ -469,6 +469,7 @@ object frmProduto: TfrmProduto
       CharCase = ecUpperCase
       ItemHeight = 13
       TabOrder = 3
+      OnChange = cmbUnidadeChange
       Items.Strings = (
         '')
     end

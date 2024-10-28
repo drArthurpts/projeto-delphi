@@ -49,6 +49,7 @@ type
     procedure FormKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure btnConfirmarClick(Sender: TObject);
     procedure edtCodigoExit(Sender: TObject);
+    procedure cmbUnidadeChange(Sender: TObject);
 
   private
     { Private declarations }
@@ -740,5 +741,21 @@ begin
          TMessageUtil.Alerta('Decrição do produto não pode ficar em branco.');
     end;
     end;
+procedure TfrmProduto.cmbUnidadeChange(Sender: TObject);
+var
+   Unidade : TUnidadeProduto;
+begin
+   if cmbUnidade.ItemIndex >= 0 then
+   begin
+      Unidade := TUnidadeProduto(cmbUnidade.Items.Objects[cmbUnidade.ItemIndex]);
+
+      edtDescricaoUnidade.Text := Unidade.Descricao;
+   end
+   else
+   begin
+      edtDescricaoUnidade.Text := '';
+   end;
+end;
+
 end.
 

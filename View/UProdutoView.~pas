@@ -15,10 +15,8 @@ type
     pnlArea: TPanel;
     edtDescricaoProd: TEdit;
     lblUnidade: TLabel;
-    edtCodigo: TEdit;
     edtDescricaoUnidade: TEdit;
     Label1: TLabel;
-    lblCodigo: TLabel;
     lblQuantidade: TLabel;
     lblPreco: TLabel;
     btnIncluir: TBitBtn;
@@ -33,7 +31,7 @@ type
     btnSpeed: TSpeedButton;
     edtPreco: TNumEdit;
     edtQuantidade: TNumEdit;
-    Label2: TLabel;
+    lblDescProd: TLabel;
     cmbUnidade: TComboBox;
     ClientDataSet1: TClientDataSet;
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
@@ -134,7 +132,7 @@ begin
         CamposEnabled(True);
         stbBarraStatus.Panels[0].Text := 'Inclusão';
 
-        edtCodigo.Enabled := False;
+
 
         if edtDescricaoProd.CanFocus then
           edtDescricaoProd.SetFocus;
@@ -153,9 +151,8 @@ begin
 
         CamposEnabled(False);
 
-        if (edtCodigo.Text <> EmptyStr) then
+        if (edtDescricaoProd.Text <> EmptyStr) then
         begin
-          edtCodigo.Enabled := False;
           btnAlterar.Enabled := True;
           btnExcluir.Enabled := True;
           btnListar.Enabled := True;
@@ -166,11 +163,10 @@ begin
         end
         else
         begin
-          lblCodigo.Enabled := True;
-          edtCodigo.Enabled := True;
+          edtDescricaoProd.Enabled := True;
 
-          if edtCodigo.CanFocus then
-            edtCodigo.SetFocus;
+          if edtDescricaoProd.CanFocus then
+            edtDescricaoProd.SetFocus;
 
         end;
       end;
@@ -178,22 +174,23 @@ begin
       begin
         stbBarraStatus.Panels[0].Text := 'Alteração';
 
-        if (edtCodigo.Text <> EmptyStr) then
+        if (edtDescricaoProd.Text <> EmptyStr) then
         begin
           CamposEnabled(True);
 
-          edtCodigo.Enabled := False;
+          edtDescricaoProd.Enabled := True;
           btnAlterar.Enabled := False;
           btnConfirmar.Enabled := True;
 
         end
         else
         begin
-          lblCodigo.Enabled := True;
-          edtCodigo.Enabled := True;
 
-          if (edtCodigo.CanFocus) then
-            edtCodigo.SetFocus;
+          lblDescProd.Enabled := True;
+          edtDescricaoProd.Enabled := True;
+
+          if (edtDescricaoProd.CanFocus) then
+              edtDescricaoProd.SetFocus;
         end;
       end;
       etExcluir:
@@ -204,30 +201,30 @@ begin
 
         stbBarraStatus.Panels[0].text := 'Exclusão';
 
-        if (edtCodigo.Text <> EmptyStr) then
-          ProcessaExclusao
+        if (edtDescricaoProd.Text <> EmptyStr) then
+           ProcessaExclusao
         else
         begin
-          lblCodigo.Enabled := True;
-          edtCodigo.Enabled := True;
+          lblDescProd.Enabled := True;
+          edtDescricaoProd.Enabled := True;
 
-          if (edtCodigo.CanFocus) then
-            edtCodigo.SetFocus;
+          if (edtDescricaoProd.CanFocus) then
+              edtDescricaoProd.SetFocus;
         end;
       end;
     etListar:
       begin
         stbBarraStatus.Panels[0].Text := 'Listagem';
 
-        if (edtCodigo.Text <> EmptyStr) then
+        if (edtDescricaoProd.Text <> EmptyStr) then
           ProcessaListagem
         else
         begin
-          lblCodigo.Enabled := True;
-          edtCodigo.Enabled := True;
+          lblDescProd.Enabled := True;
+          edtDescricaoProd.Enabled := True;
 
-          if edtCodigo.CanFocus then
-            edtCodigo.SetFocus;
+          if edtDescricaoProd.CanFocus then
+            edtDescricaoProd.SetFocus;
         end;
       end;
        etPesquisar:
@@ -241,7 +238,7 @@ begin
 
          if (frmProdutoPesqView.mProdutoID <> 0) then
          begin
-            edtCodigo.Text := IntToStr(frmProdutoPesqView.mProdutoID);
+            edtDescricaoProd.Text := IntToStr(frmProdutoPesqView.mProdutoID);
             vEstadoTela    := etConsultar;
             ProcessaConsulta;
          end
@@ -445,29 +442,29 @@ begin
   try
     Result := False;
 
-    if (edtCodigo.Text = EmptyStr) then
+    if (edtDescricaoProd.Text = EmptyStr) then
     begin
-      TMessageUtil.Alerta('Código do Produto não pode ficar em branco.');
+      TMessageUtil.Alerta('Produto não pode ficar em branco.');
 
-      if (edtCodigo.CanFocus) then
-        edtCodigo.SetFocus;
+      if (edtDescricaoProd.CanFocus) then
+          edtDescricaoProd.SetFocus;
 
       Exit;
     end;
 
-    vObjProduto := TProduto(TProdutoController.getInstancia.BuscaProduto(StrToIntDef(edtCodigo.Text, 0)));
+    vObjProduto := TProduto(TProdutoController.getInstancia.BuscaProduto(edtDescricaoProd.Text));
 
     if (vObjProduto <> nil) then
       CarregaDadosTela
     else
     begin
-      TMessageUtil.Alerta('Nenhum Produto encontrado para o código informado');
+      TMessageUtil.Alerta('Nenhum Produto encontrado');
       LimpaTela;
 
-      if (edtCodigo.CanFocus) then
-        edtCodigo.SetFocus;
+      if (edtDescricaoProd.CanFocus) then
+          edtDescricaoProd.SetFocus;
 
-      Exit;
+      exit;
     end;
 
     DefineEstadoTela;
@@ -484,56 +481,106 @@ end;
 
 function TfrmProduto.ProcessaExclusao: Boolean;
 begin
-  try
-    Result := False;
+//  try
+//    Result := False;
+//
+//    if (edtDescricaoProd.Text <> EmptyStr) and (Trim(edtDescricaoProd.Text) = EmptyStr) then
+//    begin
+//      ProcessaConsulta;
+//      exit;
+//    end;
+//
+//    if (vObjProduto = nil) then
+//    begin
+//      TMessageUtil.Alerta('Não foi possível carregar todos os dados cadastrados do Produto.');
+//      LimpaTela;
+//      vEstadoTela := etPadrao;
+//      DefineEstadoTela;
+//      exit;
+//    end;
+//
+//    try
+//      if TMessageUtil.Pergunta('Confirma a exclusão do Produto?') then
+//      begin
+//        Screen.Cursor := crHourGlass;
+//
+//        TProdutoController.getInstancia.ExcluiProduto(vObjProduto);
+//
+//        TMessageUtil.Informacao('Produto excluído com sucesso.');
+//      end
+//      else
+//      begin
+//        LimpaTela;
+//        vEstadoTela := etPadrao;
+//        DefineEstadoTela;
+//        exit;
+//      end;
+//    finally
+//      Screen.Cursor := crDefault;
+//      Application.ProcessMessages;
+//    end;
+//
+//    Result := True;
+//
+//    LimpaTela;
+//    vEstadoTela := etPadrao;
+//    DefineEstadoTela;
+//  except
+//    on E: Exception do
+//    begin
+//      raise Exception.Create('Falha ao excluir os dados do Produto [View]: ' + #13 + e.Message);
+//    end;
+//  end;
 
-    if (edtCodigo.Text <> EmptyStr) and (Trim(edtDescricaoProd.Text) = EmptyStr) then
-    begin
-      ProcessaConsulta;
-      exit;
-    end;
+   try
+      Result := False;
 
-    if (vObjProduto = nil) then
-    begin
-      TMessageUtil.Alerta('Não foi possível carregar todos os dados cadastrados do Produto.');
+      if (vObjProduto = nil) then
+      begin
+         TMessageUtil.Alerta(
+            'Não foi possível carregar todos os dados cadastrados do Produto.');
+         LimpaTela;
+         vEstadoTela := etPadrao;
+         DefineEstadoTela;
+         Exit;
+      end;
+
+      try
+          if TMessageUtil.Pergunta('Confirma a exclusão do produto?') then
+          begin
+             Screen.Cursor := crHourGlass;
+
+             TProdutoController.getInstancia
+             .ExcluiProduto(vObjProduto);
+
+             TMessageUtil.Informacao('Produto excluído com sucesso.');
+          end
+          else
+          begin
+              LimpaTela;
+              vEstadoTela := etPadrao;
+              DefineEstadoTela;
+              Exit;
+          end;
+      finally
+         Screen.Cursor := crDefault;
+         Application.ProcessMessages;
+      end;
+
+      Result := True;
+
+      
       LimpaTela;
       vEstadoTela := etPadrao;
       DefineEstadoTela;
-      exit;
-    end;
-
-    try
-      if TMessageUtil.Pergunta('Confirma a exclusão do Produto?') then
+   except
+      on E: Exception do
       begin
-        Screen.Cursor := crHourGlass;
-
-        TProdutoController.getInstancia.ExcluiProduto(vObjProduto);
-
-        TMessageUtil.Informacao('Produto excluído com sucesso.');
-      end
-      else
-      begin
-        LimpaTela;
-        vEstadoTela := etPadrao;
-        DefineEstadoTela;
-        exit;
+         Raise Exception.Create(
+            'Falha ao excluir os dados do Produto [View]: ' + #13 +
+         e.Message);
       end;
-    finally
-      Screen.Cursor := crDefault;
-      Application.ProcessMessages;
-    end;
-
-    Result := True;
-
-    LimpaTela;
-    vEstadoTela := etPadrao;
-    DefineEstadoTela;
-  except
-    on E: Exception do
-    begin
-      raise Exception.Create('Falha ao excluir os dados do Produto [View]: ' + #13 + e.Message);
-    end;
-  end;
+   end;
 end;
 
 function TfrmProduto.ProcessaInclusao: Boolean;
@@ -655,7 +702,7 @@ begin
    if (vObjProduto = nil) then
       exit;
 
-   edtCodigo.Text := IntToStr(vObjProduto.Id);
+   
    edtDescricaoProd.Text := vObjProduto.Descricao;
    edtPreco.Value := vObjProduto.PrecoVenda;
    edtQuantidade.Value := vObjProduto.QuantidadeEstoque;

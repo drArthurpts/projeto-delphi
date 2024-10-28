@@ -388,16 +388,9 @@ object frmProduto: TfrmProduto
       Height = 13
       Caption = 'Unidade'
     end
-    object lblCodigo: TLabel
-      Left = 5
-      Top = 18
-      Width = 36
-      Height = 13
-      Caption = 'C'#243'digo '
-    end
     object lblQuantidade: TLabel
-      Left = 397
-      Top = 43
+      Left = 408
+      Top = 16
       Width = 70
       Height = 13
       Caption = 'Quantidade '
@@ -409,7 +402,7 @@ object frmProduto: TfrmProduto
       ParentFont = False
     end
     object lblPreco: TLabel
-      Left = 428
+      Left = 299
       Top = 17
       Width = 38
       Height = 13
@@ -427,8 +420,8 @@ object frmProduto: TfrmProduto
       Width = 15
       Height = 16
     end
-    object Label2: TLabel
-      Left = 120
+    object lblDescProd: TLabel
+      Left = 6
       Top = 17
       Width = 45
       Height = 13
@@ -441,41 +434,32 @@ object frmProduto: TfrmProduto
       ParentFont = False
     end
     object edtDescricaoProd: TEdit
-      Left = 168
+      Left = 54
       Top = 10
       Width = 237
       Height = 21
       CharCase = ecUpperCase
       TabOrder = 0
     end
-    object edtCodigo: TEdit
-      Left = 52
-      Top = 11
-      Width = 49
-      Height = 21
-      CharCase = ecUpperCase
-      TabOrder = 1
-      OnExit = edtCodigoExit
-    end
     object edtPreco: TNumEdit
-      Left = 464
+      Left = 335
       Top = 11
+      Width = 57
+      Height = 21
+      Alignment = taRightJustify
+      Decimals = 2
+      ShowSeparator = True
+      TabOrder = 1
+    end
+    object edtQuantidade: TNumEdit
+      Left = 476
+      Top = 9
       Width = 57
       Height = 21
       Alignment = taRightJustify
       Decimals = 2
       ShowSeparator = True
       TabOrder = 2
-    end
-    object edtQuantidade: TNumEdit
-      Left = 465
-      Top = 36
-      Width = 57
-      Height = 21
-      Alignment = taRightJustify
-      Decimals = 2
-      ShowSeparator = True
-      TabOrder = 3
     end
     object cmbUnidade: TComboBox
       Left = 53
@@ -484,13 +468,13 @@ object frmProduto: TfrmProduto
       Height = 21
       CharCase = ecUpperCase
       ItemHeight = 13
-      TabOrder = 4
+      TabOrder = 3
       Items.Strings = (
         '')
     end
   end
   object edtDescricaoUnidade: TEdit
-    Left = 169
+    Left = 153
     Top = 39
     Width = 217
     Height = 21

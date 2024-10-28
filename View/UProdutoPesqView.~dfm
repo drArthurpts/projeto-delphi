@@ -171,6 +171,7 @@ object frmProdutoPesqView: TfrmProdutoPesqView
         Top = 24
         Width = 278
         Height = 21
+        CharCase = ecUpperCase
         TabOrder = 0
       end
       object btnFiltrar: TBitBtn
