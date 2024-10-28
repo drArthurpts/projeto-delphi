@@ -485,7 +485,6 @@ object frmProduto: TfrmProduto
       CharCase = ecUpperCase
       ItemHeight = 13
       TabOrder = 4
-      OnChange = cmbUnidadeChange
       Items.Strings = (
         '')
     end
@@ -497,5 +496,11 @@ object frmProduto: TfrmProduto
     Height = 21
     CharCase = ecUpperCase
     TabOrder = 3
+  end
+  object ClientDataSet1: TClientDataSet
+    Aggregates = <>
+    Params = <>
+    Left = 352
+    Top = 132
   end
 end

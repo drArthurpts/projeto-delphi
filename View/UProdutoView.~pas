@@ -5,8 +5,8 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, ExtCtrls, ComCtrls, Buttons, UEnumerationUtil, NumEdit,
-  UProduto, UProdutoController, Math, UUnidadeProduto, UUnidadeProdutoDAO
-  ,UConexao;
+  UProduto, UProdutoController, UUnidadeProdController,Math, UUnidadeProduto, UUnidadeProdutoDAO
+  ,UConexao, DB, DBClient;
 
 type
   TfrmProduto = class(TForm)
@@ -35,6 +35,7 @@ type
     edtQuantidade: TNumEdit;
     Label2: TLabel;
     cmbUnidade: TComboBox;
+    ClientDataSet1: TClientDataSet;
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure btnIncluirClick(Sender: TObject);
@@ -50,7 +51,6 @@ type
     procedure FormKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure btnConfirmarClick(Sender: TObject);
     procedure edtCodigoExit(Sender: TObject);
-    procedure cmbUnidadeChange(Sender: TObject);
 
   private
     { Private declarations }
@@ -81,7 +81,7 @@ var
   frmProduto      : TfrmProduto;
   vObjUnidadeProd : TUnidadeProduto;
   TUnidadesDAO    : TUnidadeProdutoDAO;
-  Conexao        :  TConexao
+  Conexao        :  TConexao;
 
 
 implementation
@@ -372,6 +372,7 @@ end;
 procedure TfrmProduto.FormShow(Sender: TObject);
 begin
   DefineEstadoTela;
+  CarregaDadoscmb;
 end;
 
 procedure TfrmProduto.btnCancelarClick(Sender: TObject);
@@ -674,14 +675,23 @@ var
    i              : Integer;
 
 begin
+   xListaUnidades := TColUnidadeProd.Create;
 
+    xListaUnidades :=
+            TUnidadeProdController.getInstancia.PesquisaUnidade(Trim(cmbUnidade.Text));
 
-end;
+    try
+       cmbUnidade.Items.Clear;
 
-procedure TfrmProduto.cmbUnidadeChange(Sender: TObject);
-begin
-   case
-end;
+        for i := 0 to xListaUnidades.Count - 1 do
+        begin
+            Unidade := xListaUnidades[i];
+            cmbUnidade.Items.AddObject(Unidade.Unidade, Unidade);
+        end;
 
+    except
+         TMessageUtil.Alerta('Decrição do produto não pode ficar em branco.');
+    end;
+    end;
 end.
 
