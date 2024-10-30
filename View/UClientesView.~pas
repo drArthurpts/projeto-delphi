@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, ComCtrls, StdCtrls, ExtCtrls, Mask, Buttons, UEnumerationUtil,
-  UCliente, UPessoaController, UEndereco, UClassFuncoes, frxClass, DB,
+  UCliente, UPessoaController,UUnidadeProduto ,UEndereco, UClassFuncoes, frxClass, DB,
   DBClient, frxDBSet, frxExportXLS, frxExportPDF;
 
 type
@@ -112,6 +112,7 @@ type
 
 var
   frmClientes: TfrmClientes;
+  
 
 implementation
 

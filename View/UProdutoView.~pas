@@ -5,8 +5,8 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, ExtCtrls, ComCtrls, Buttons, UEnumerationUtil, NumEdit,
-  UProduto, UProdutoController, UUnidadeProdController,Math, UUnidadeProduto, UUnidadeProdutoDAO
-  ,UConexao, DB, DBClient;
+  UProduto, UProdutoController, UUnidadeProdController,Math, UUnidadeProduto,
+  UUnidadeProdutoDAO,UConexao, DB, DBClient;
 
 type
   TfrmProduto = class(TForm)

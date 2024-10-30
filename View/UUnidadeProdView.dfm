@@ -1,8 +1,9 @@
 object frmUnidadeProd: TfrmUnidadeProd
-  Left = 300
-  Top = 112
+  Left = 576
+  Top = 342
   Width = 600
   Height = 229
+  BorderIcons = [biSystemMenu]
   Caption = 'Unidade de Produto'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -10,7 +11,6 @@ object frmUnidadeProd: TfrmUnidadeProd
   Font.Height = -11
   Font.Name = 'MS Sans Serif'
   Font.Style = []
-  FormStyle = fsMDIChild
   KeyPreview = True
   OldCreateOrder = False
   Position = poScreenCenter

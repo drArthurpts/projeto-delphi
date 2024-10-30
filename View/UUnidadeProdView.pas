@@ -119,6 +119,7 @@ procedure TfrmUnidadeProd.FormClose(Sender: TObject;
   var Action: TCloseAction);
 begin
    Action := caFree;
+   Action := caHide;
    frmUnidadeProd := nil;
 end;
 
@@ -385,7 +386,7 @@ begin
 
         end;
         if not Result then
-         Exit;
+         exit;
       except
          on E : Exception do
          TMessageUtil.Alerta(E.Message);

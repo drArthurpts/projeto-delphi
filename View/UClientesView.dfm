@@ -1,6 +1,6 @@
 object frmClientes: TfrmClientes
-  Left = 264
-  Top = 193
+  Left = 351
+  Top = 230
   Width = 627
   Height = 357
   BorderIcons = [biSystemMenu]
@@ -11,7 +11,6 @@ object frmClientes: TfrmClientes
   Font.Height = -11
   Font.Name = 'MS Sans Serif'
   Font.Style = []
-  FormStyle = fsMDIChild
   KeyPreview = True
   OldCreateOrder = False
   Position = poScreenCenter
