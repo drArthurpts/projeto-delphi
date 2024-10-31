@@ -1,8 +1,8 @@
 object frmUnidadePesq: TfrmUnidadePesq
-  Left = -8
-  Top = -8
-  Width = 1382
-  Height = 744
+  Left = 541
+  Top = 311
+  Width = 419
+  Height = 235
   Caption = 'Pesquisa de Unidade'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -17,15 +17,15 @@ object frmUnidadePesq: TfrmUnidadePesq
   TextHeight = 13
   object stbBarraStatus: TStatusBar
     Left = 0
-    Top = 686
-    Width = 1366
+    Top = 177
+    Width = 403
     Height = 19
     Panels = <>
   end
   object pnlBotoes: TPanel
     Left = 0
-    Top = 645
-    Width = 1366
+    Top = 136
+    Width = 403
     Height = 41
     Align = alBottom
     TabOrder = 1
@@ -141,14 +141,14 @@ object frmUnidadePesq: TfrmUnidadePesq
   object pnlFiltro: TPanel
     Left = 0
     Top = 0
-    Width = 1366
+    Width = 403
     Height = 54
     Align = alTop
     TabOrder = 2
     object grbFiltrar: TGroupBox
       Left = 1
       Top = 1
-      Width = 1364
+      Width = 401
       Height = 52
       Align = alClient
       Caption = 'Filtrar'
@@ -215,23 +215,23 @@ object frmUnidadePesq: TfrmUnidadePesq
   object pnlResultado: TPanel
     Left = 0
     Top = 54
-    Width = 1366
-    Height = 591
+    Width = 403
+    Height = 82
     Align = alClient
     TabOrder = 3
     object grbGrid: TGroupBox
       Left = 1
       Top = 1
-      Width = 1364
-      Height = 589
+      Width = 401
+      Height = 80
       Align = alClient
       Caption = 'Resultado da busca'
       TabOrder = 0
       object dbgUnidade: TDBGrid
         Left = 2
         Top = 15
-        Width = 1360
-        Height = 572
+        Width = 397
+        Height = 63
         Align = alClient
         DataSource = dtsUnidade
         TabOrder = 0
