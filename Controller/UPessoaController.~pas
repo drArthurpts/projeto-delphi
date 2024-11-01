@@ -226,7 +226,7 @@ begin
                + 'ORDER BY NOME, ID', EmptyStr);
                
 
-         Result := xPessoaDAO.RetornaLista();
+         Result := xPessoaDAO.RetornaLista(xCondicao);
        finally
           if (xPessoaDAO <> nil) then
             FreeAndNil(xPessoaDAO);

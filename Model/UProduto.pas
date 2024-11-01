@@ -21,7 +21,7 @@ type
           property Descricao        : string  read vDescricao write vDescricao;
           property QuantidadeEstoque: Double  read vQuantidadeEstoque write vQuantidadeEstoque;
           property PrecoVenda       : Double  read vPrecoVenda write vPrecoVenda;
-          property Unidade          :  string read vUnidade write vUnidade;
+          property Unidade          : string read vUnidade write vUnidade;
 
         end;
 

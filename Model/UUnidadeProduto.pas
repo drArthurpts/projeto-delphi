@@ -7,13 +7,6 @@ uses SysUtils, Classes;
 type
    TUnidadeProduto = Class(TPersistent)
 
-//      ID         INTEIRO NOT NULL /* INTEIRO = INTEGER */,
-//      ATIVO      INTEIRO /* INTEIRO = INTEGER */,
-//      UNIDADE    VARCHAR2 /* VARCHAR2 = VARCHAR(2) */,
-//      DESCRICAO  VARCHAR20 /* VARCHAR20 = VARCHAR(20) */
-
-
-
        private
           vId        : Integer;
           vAtivo     : Boolean;

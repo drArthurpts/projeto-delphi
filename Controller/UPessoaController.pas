@@ -137,7 +137,7 @@ begin
        begin
           TConexao.get.cancelaTransacao;
           Raise Exception.Create(
-               'Falha ao escluir os dados da pessoa [Controller]: ' + #13 +
+               'Falha ao excluir os dados da pessoa [Controller]: ' + #13 +
                 e.Message);
        end;
 

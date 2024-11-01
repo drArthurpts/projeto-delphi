@@ -748,8 +748,8 @@ begin
 
    if  vEstadoTela = etAlterar then
    begin
-      edtDescricaoProd.Enabled         := true;
-      edtQuantidade.Enabled := true;
+      edtDescricaoProd.Enabled     := true;
+      edtQuantidade.Enabled        := true;
       edtPreco.Enabled             := true;
    end;
 end;
