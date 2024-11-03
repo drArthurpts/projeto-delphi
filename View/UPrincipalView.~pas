@@ -25,6 +25,7 @@ type
     procedure MenClienteClick(Sender: TObject);
     procedure MenUnidadedeProdutoClick(Sender: TObject);
     procedure MenProdutosClick(Sender: TObject);
+    procedure menRelVendasClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -38,7 +39,7 @@ var
 implementation
 
 uses
-  UConexao, UClientesView, UUnidadeProdView, UProdutoView;
+  UConexao, UClientesView, UUnidadeProdView, UProdutoView, UVendaView;
 
 {$R *.dfm}
 
@@ -90,6 +91,20 @@ begin
          frmProduto := TfrmProduto.Create(Application);
 
      frmProduto.Show;
+   finally
+      Screen.Cursor := crDefault;
+
+   end;
+end;
+
+procedure TfrmPrincipal.menRelVendasClick(Sender: TObject);
+begin
+   try
+      Screen.Cursor := crHourGlass;
+     if (frmVenda = nil) then
+         frmVenda := TfrmVenda.Create(Application);
+
+     frmVenda.Show;
    finally
       Screen.Cursor := crDefault;
 

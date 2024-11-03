@@ -253,7 +253,7 @@ begin
          (frmClientes.CanFocus) then
          btnIncluir.SetFocus;
 
-         Application.ProcessMessages;    
+         Application.ProcessMessages;
       end;
       etIncluir:
       begin
@@ -265,7 +265,7 @@ begin
          chkAtivo.Checked := True;
 
          if edtNome.CanFocus then
-            edtNome.SetFocus; 
+            edtNome.SetFocus;
       end;
 
       etAlterar:

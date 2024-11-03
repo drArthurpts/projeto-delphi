@@ -10,11 +10,11 @@ uses
 type
   TfrmVenda = class(TForm)
     pnlBotoes: TPanel;
-    StatusBar1: TStatusBar;
+    StbBarraStatus: TStatusBar;
     pnlValores: TPanel;
     grbPedido: TGroupBox;
     grbProdutos: TGroupBox;
-    DBGrid1: TDBGrid;
+    dbgProduto: TDBGrid;
     dtsProduto: TDataSource;
     cdsProduto: TClientDataSet;
     cdsProdutoCdigo: TIntegerField;
@@ -33,11 +33,8 @@ type
     edtNome: TEdit;
     lblPagamento: TLabel;
     cmbPagamento: TComboBox;
-    lblDesconto: TLabel;
     lblValor: TLabel;
-    edtValor: TNumEdit;
     edtDesconto: TNumEdit;
-    edtTotal: TMaskEdit;
     Label1: TLabel;
     btnIncluir: TBitBtn;
     btnConsultar: TBitBtn;
@@ -47,7 +44,9 @@ type
     btnSair: TBitBtn;
     BitBtn1: TBitBtn;
     BitBtn2: TBitBtn;
+    edtTotal: TNumEdit;
     procedure BitBtn2Click(Sender: TObject);
+
 
 
 
@@ -61,10 +60,12 @@ type
 
     procedure CamposEnabled(pOpcao : Boolean);
     procedure LimpaTela;
-    procedure CarregaDadosTela;
+    procedure DefineEstadoTela;
     function ProcessaConfirmacao : Boolean;
     function ProcessaInclusao    : Boolean;
     function ProcessaConsulta    : Boolean;
+    function ProcessaVenda       : Boolean;
+    function ProcessaVendaItem   : Boolean;
 
 
   public
@@ -110,46 +111,47 @@ begin
 end;
 
 
-procedure TfrmVenda.CarregaDadosTela;
-var
-   xObjVenda : TVenda;
-   vObjVenda := TVenda.Create;
+
+
+procedure TfrmVenda.DefineEstadoTela;
 begin
-   if (vObjVenda = nil) then
-      exit;
+   btnIncluir.Enabled   := (vEstadoTela in [etPadrao]);
 
-   edtNumVenda.Text               := IntToStr(vObjVenda.ID);
-   edtData.Text                 := vObjVenda.;
-   edtCodigo.Text                 := IntToStr(vObjVenda.IDCliente);
+   btnConfirmar.Enabled :=
+      vEstadoTela in [etIncluir, etConsultar];
 
-
-   try
-      if vObjVenda.ID <> 0 then
+   case vEstadoTela of
+      etPadrao:
       begin
-         xObjVenda := nil;
-         xObjVenda := TVenda.create;
-         cmbUnidade.Text := xObjVenda.;
-         edtDescricaoUnidade.Text := xObjVenda.;
+         CamposEnabled(False);
+         LimpaTela;
 
-         if  xObjVenda <> nil then
-             edtDescricaoUnidade.Text :=  xObjVenda.Descricao;
+         stbBarraStatus.Panels[0].Text := EmptyStr;
+         stbBarraStatus.Panels[1].Text := EmptyStr;
+
+         if (frmVenda <> nil) and
+         (frmVenda.Active) and
+         (frmVenda.CanFocus) then
+         btnIncluir.SetFocus;
+
+         Application.ProcessMessages;
       end;
-   finally
-      if xObjVenda <> nil then
-         FreeAndNil(xObjVenda);
-   end;
+      etIncluir:
+      begin
+         stbBarraStatus.Panels[0].Text := 'Inclusão';
+         CamposEnabled(True);
 
-   btnCancelar.Enabled := True;
-   btnAlterar.Enabled  := True;
-   btnExcluir.Enabled  := True;
+         if edtCodigo.CanFocus then
+            edtCodigo.SetFocus;
 
-   if  vEstadoTela = etAlterar then
-   begin
-      edtDescricaoProd.Enabled     := true;
-      edtQuantidade.Enabled        := true;
-      edtPreco.Enabled             := true;
+         if dbgProduto.CanFocus then
+            dbgProduto.SetFocus
+      end;
+
    end;
 end;
+
+
 
 procedure TfrmVenda.LimpaTela;
 var
@@ -197,47 +199,52 @@ begin
   Result := True;
 end;
 
+//function TfrmVenda.ProcessaConsulta: Boolean;
+//begin
+//   try
+//    Result := False;
+//
+//    if (edtNumVenda.Text = EmptyStr) then
+//    begin
+//      TMessageUtil.Alerta('Número da venda não pode ficar em branco.');
+//
+//      if (edtNumVenda.CanFocus) then
+//          edtNumVenda.SetFocus;
+//
+//      Exit;
+//    end;
+//
+//    vObjVenda := TVenda(TVendaController.getInstancia.
+//    BuscaVenda(StrToIntDef(edtNumVenda.Text, 0)));
+//
+//    if (vObjVenda <> nil) then
+//       CarregaDadosTela
+//    else
+//    begin
+//      TMessageUtil.Alerta('Nenhum Produto encontrado');
+//      LimpaTela;
+//
+//      if (edtNumVenda.CanFocus) then
+//          edtNumVenda.SetFocus;
+//
+//      exit;
+//    end;
+//
+//    DefineEstadoTela;
+//    Result := True;
+//
+//   except
+//    on E: Exception do
+//    begin
+//      raise Exception.Create('Falha ao consultar os dados do Produto [View].' + #13 + e.Message);
+//
+//    end;
+//   end;
+//end;
+
 function TfrmVenda.ProcessaConsulta: Boolean;
 begin
-   try
-    Result := False;
 
-    if (edtNumVenda.Text = EmptyStr) then
-    begin
-      TMessageUtil.Alerta('Número da venda não pode ficar em branco.');
-
-      if (edtNumVenda.CanFocus) then
-          edtNumVenda.SetFocus;
-
-      Exit;
-    end;
-
-    vObjVenda := TVenda(TVendaController.getInstancia.
-    BuscaVenda(StrToIntDef(edtNumVenda.Text, 0)));
-
-    if (vObjVenda <> nil) then
-       CarregaDadosTela
-    else
-    begin
-      TMessageUtil.Alerta('Nenhum Produto encontrado');
-      LimpaTela;
-
-      if (edtNumVenda.CanFocus) then
-          edtNumVenda.SetFocus;
-
-      exit;
-    end;
-
-    DefineEstadoTela;
-    Result := True;
-  
-   except
-    on E: Exception do
-    begin
-      raise Exception.Create('Falha ao consultar os dados do Produto [View].' + #13 + e.Message);
-
-    end;
-   end;
 end;
 
 function TfrmVenda.ProcessaInclusao: Boolean;
@@ -262,6 +269,61 @@ begin
           e.Message);
        end;
    end;
+end;
+
+
+
+function TfrmVenda.ProcessaVenda: Boolean;
+begin
+   try
+      Result := False;
+
+     if (ProcessaVendaItem) then
+       begin
+         TVendaController.getInstancia.GravaVenda(
+         vObjVenda);
+         Result := True;
+       end;
+     except
+       on E : Exception do
+       begin
+          Raise  Exception.Create(
+         'Falha ao gavar os dados da venda [View]: '#13 +
+         e.Message);
+       end;
+     end;
+   end;
+
+function TfrmVenda.ProcessaVendaItem: Boolean;
+begin
+//   try
+//      Result := False;
+//
+////      if not ValidaVenda then
+////         exit;
+//
+//      if vEstadoTela = etIncluir then
+//      begin
+//         if vObjVenda  = nil then
+//            vObjVenda := TVenda.Create
+//      end
+//
+////      if vObjVenda = nil then
+////         exit;
+//
+////      vObjVenda.
+//
+//      Result := True
+//   except
+//       on E : Exception do
+//       begin
+//
+//          Raise Exception.Create(
+//          'Falha ao processar os dados da Pessoa [View]: ' + #13 + e.Message);
+//       end
+//   end;
+end;
+
 end;
 
 end.

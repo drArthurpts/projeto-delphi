@@ -1,0 +1,68 @@
+unit UVendaItem;
+
+interface
+
+uses SysUtils, Classes;
+
+type
+   TColVendaItem = Class(TPersistent)
+
+   private
+      vID            : Integer;
+      vIDVenda       : Integer;
+      vIDProduto     : Integer;
+      vQuantidade    : Integer;
+      vUnidade       : string;
+      vTotalDesc     : Double;
+      vValorUnidade  : Double;
+      vTotalItem    : Double;
+
+   public
+      constructor Create;
+      published
+         property ID                 : Integer read vID write vID;
+         property IDVenda            : Integer read vIDVenda write vIDVenda;
+         property IDProduto          : Integer read vIDProduto write vIDProduto;
+         property Quantidade         : Integer read vQuantidade write vQuantidade;
+         property Unidade            : string read vUnidade write vUnidade;
+         property TotalDesc          : Double read vTotalDesc write vTotalDesc;
+         property ValorUnidade       : Double read vValorUnidade write vValorUnidade;
+         property TotalItem          : Double read  vTotalItem write vTotalItem;
+      end;
+
+      TColItemVenda = class(TList)
+      public
+         function  Retorna(pIndex : Integer) : TColVendaItem;
+         procedure Adiciona(pVenda : TVenda);
+      end;
+
+implementation
+
+{ TColVendaItem }
+
+constructor TColVendaItem.Create;
+begin
+   Self.vID                := 0;
+   Self.vIDVenda           := 0;
+   Self.vIDProduto         := 0;
+   Self.vQuantidade        := 0;
+   Self.vUnidade           := EmptyStr;
+   Self.vTotalDesc         := 0;
+   Self.vValorUnidade      := 0;
+   Self.vTotalItem         := 0;
+end;
+
+{ TColItemVenda }
+
+procedure TColItemVenda.Adiciona(pVenda: TVenda);
+begin
+   Self.Add(TColVendaItem(pColVendaItem));
+end;
+
+function TColItemVenda.Retorna(pIndex: Integer): TColVendaItem;
+begin
+   Result := TColVendaItem(Self[pIndex]);
+end;
+
+end.
+ 

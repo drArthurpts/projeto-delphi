@@ -124,7 +124,7 @@ begin
          Result := False;
          xProdutoDAO := TProdutoDAO.Create(TConexao.get.getConn);
 
-         if pProduto.Descricao = EmptyStr then
+         if pProduto.ID = 0 then
          begin
             xProdutoDAO.Insere(pProduto);
          end

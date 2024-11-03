@@ -1,6 +1,6 @@
 object frmVenda: TfrmVenda
-  Left = 318
-  Top = 200
+  Left = 321
+  Top = 115
   Width = 890
   Height = 504
   BorderIcons = [biSystemMenu]
@@ -306,7 +306,7 @@ object frmVenda: TfrmVenda
         8637288637247C3267A567B7CDB7FFFFFFFFFFFFFFFFFFFFFFFF}
     end
   end
-  object StatusBar1: TStatusBar
+  object StbBarraStatus: TStatusBar
     Left = 0
     Top = 446
     Width = 874
@@ -339,25 +339,12 @@ object frmVenda: TfrmVenda
       Font.Style = [fsBold]
       ParentFont = False
     end
-    object lblDesconto: TLabel
-      Left = 317
-      Top = 24
-      Width = 63
-      Height = 13
-      Caption = 'Desconto (%)'
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -11
-      Font.Name = 'MS Sans Serif'
-      Font.Style = []
-      ParentFont = False
-    end
     object lblValor: TLabel
-      Left = 476
-      Top = 24
-      Width = 30
+      Left = 306
+      Top = 26
+      Width = 88
       Height = 13
-      Caption = 'Valor'
+      Caption = 'Valor Desconto'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -11
@@ -386,9 +373,9 @@ object frmVenda: TfrmVenda
       ItemHeight = 13
       TabOrder = 0
     end
-    object edtValor: TNumEdit
-      Left = 511
-      Top = 17
+    object edtDesconto: TNumEdit
+      Left = 399
+      Top = 19
       Width = 121
       Height = 21
       Alignment = taRightJustify
@@ -396,25 +383,15 @@ object frmVenda: TfrmVenda
       ShowSeparator = True
       TabOrder = 1
     end
-    object edtDesconto: TNumEdit
-      Left = 389
-      Top = 19
-      Width = 74
+    object edtTotal: TNumEdit
+      Left = 765
+      Top = 32
+      Width = 98
       Height = 21
       Alignment = taRightJustify
       Decimals = 2
       ShowSeparator = True
       TabOrder = 2
-    end
-    object edtTotal: TMaskEdit
-      Left = 766
-      Top = 29
-      Width = 90
-      Height = 21
-      EditMask = 'R$ 0'
-      MaxLength = 4
-      TabOrder = 3
-      Text = 'R$  '
     end
   end
   object grbPedido: TGroupBox
@@ -520,7 +497,7 @@ object frmVenda: TfrmVenda
     Align = alClient
     Caption = 'Produtos'
     TabOrder = 4
-    object DBGrid1: TDBGrid
+    object dbgProduto: TDBGrid
       Left = 2
       Top = 15
       Width = 870
@@ -545,7 +522,7 @@ object frmVenda: TfrmVenda
     Aggregates = <>
     Params = <>
     Left = 40
-    Top = 146
+    Top = 145
     Data = {
       960000009619E0BD01000000180000000600000000000300000096000643F364
       69676F040001000000000009446573637269E7E36F0100490000000100055749
