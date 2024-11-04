@@ -1,6 +1,6 @@
 object frmVenda: TfrmVenda
-  Left = 191
-  Top = 116
+  Left = 372
+  Top = 146
   Width = 890
   Height = 504
   BorderIcons = [biSystemMenu]
@@ -28,6 +28,7 @@ object frmVenda: TfrmVenda
       Height = 25
       Caption = '&Incluir'
       TabOrder = 0
+      OnClick = btnIncluirClick
       Glyph.Data = {
         36030000424D3603000000000000360000002800000010000000100000000100
         18000000000000030000C40E0000C40E00000000000000000000FFFFFFFFFFFF
@@ -126,7 +127,7 @@ object frmVenda: TfrmVenda
         FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFC8B89ACCB89CC6B497C3AF90C2AE90BF
         A780BBA077A890608D652DFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
     end
-    object btnConfirmar: TBitBtn
+    object btnFaturar: TBitBtn
       Left = 536
       Top = 8
       Width = 87
@@ -233,7 +234,7 @@ object frmVenda: TfrmVenda
         8CF1D399FEEBBAE3B164FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEAB968DB
         A851CF9D4EC59346B98A40B38139CE9A47DFAB53E8B863E4B25F}
     end
-    object BitBtn1: TBitBtn
+    object btnLimpar: TBitBtn
       Left = 634
       Top = 8
       Width = 86
@@ -269,14 +270,14 @@ object frmVenda: TfrmVenda
         45F9FBF9FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFB7CDB767A567247C3228
         8637288637247C3267A567B7CDB7FFFFFFFFFFFFFFFFFFFFFFFF}
     end
-    object BitBtn2: TBitBtn
+    object btnConfirmar: TBitBtn
       Left = 635
       Top = 41
       Width = 86
       Height = 26
       Caption = 'C&onfirmar'
       TabOrder = 7
-      OnClick = BitBtn2Click
+      OnClick = btnConfirmarClick
       Glyph.Data = {
         36030000424D3603000000000000360000002800000010000000100000000100
         18000000000000030000C40E0000C40E00000000000000000000FFFFFFFFFFFF
@@ -479,6 +480,7 @@ object frmVenda: TfrmVenda
       Height = 21
       CharCase = ecUpperCase
       TabOrder = 2
+      OnKeyDown = edtCodigoKeyDown
     end
     object edtNome: TEdit
       Left = 474

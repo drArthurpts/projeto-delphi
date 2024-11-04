@@ -5,7 +5,8 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, ComCtrls, ExtCtrls, StdCtrls, Buttons, NumEdit,UEnumerationUtil,
-  UVendaController, DB, DBClient, Grids, DBGrids, Mask ,UVenda;
+  UVendaController, DB, DBClient, Grids, DBGrids, Mask ,UVenda,UPessoaController,
+  UClientesView,UPessoa;
 
 type
   TfrmVenda = class(TForm)
@@ -39,13 +40,16 @@ type
     btnIncluir: TBitBtn;
     btnConsultar: TBitBtn;
     btnPesquisar: TBitBtn;
-    btnConfirmar: TBitBtn;
+    btnFaturar: TBitBtn;
     btnCancelar: TBitBtn;
     btnSair: TBitBtn;
-    BitBtn1: TBitBtn;
-    BitBtn2: TBitBtn;
+    btnLimpar: TBitBtn;
+    btnConfirmar: TBitBtn;
     edtTotal: TNumEdit;
-    procedure BitBtn2Click(Sender: TObject);
+    procedure btnConfirmarClick(Sender: TObject);
+    procedure btnIncluirClick(Sender: TObject);
+    procedure edtCodigoKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
 
 
 
@@ -57,6 +61,7 @@ type
     vEstadoTela  : TEstadoTela;
     vObjVenda    : TVenda;
     vObjColVenda : TColVenda;
+    vObjPessoa   : TPessoa;
 
     procedure CamposEnabled(pOpcao : Boolean);
     procedure LimpaTela;
@@ -65,7 +70,7 @@ type
     function ProcessaInclusao    : Boolean;
     function ProcessaConsulta    : Boolean;
     function ProcessaVenda       : Boolean;
-    function ProcessaVendaItem   : Boolean;
+    function ValidaCampos   : Boolean;
 
 
   public
@@ -85,7 +90,7 @@ uses
 
 
 
-procedure TfrmVenda.BitBtn2Click(Sender: TObject);
+procedure TfrmVenda.btnConfirmarClick(Sender: TObject);
 begin
    ProcessaConfirmacao;
 end;
@@ -109,9 +114,6 @@ begin
    end;
 
 end;
-
-
-
 
 procedure TfrmVenda.DefineEstadoTela;
 begin
@@ -141,8 +143,12 @@ begin
          stbBarraStatus.Panels[0].Text := 'Inclusão';
          CamposEnabled(True);
 
+         edtNumVenda.Enabled := False;
+
          if edtCodigo.CanFocus then
             edtCodigo.SetFocus;
+
+         edtData.Text := FormatDateTime('dd/mm/yyyy',Now);
 
          if dbgProduto.CanFocus then
             dbgProduto.SetFocus
@@ -150,8 +156,6 @@ begin
 
    end;
 end;
-
-
 
 procedure TfrmVenda.LimpaTela;
 var
@@ -278,7 +282,7 @@ begin
    try
       Result := False;
 
-     if (ProcessaVendaItem) then
+     if (ValidaCampos) then
        begin
          TVendaController.getInstancia.GravaVenda(
          vObjVenda);
@@ -294,34 +298,81 @@ begin
      end;
    end;
 
-function TfrmVenda.ProcessaVendaItem: Boolean;
+function TfrmVenda.ValidaCampos: Boolean;
 begin
-//   try
-//      Result := False;
-//
-////      if not ValidaVenda then
-////         exit;
-//
-//      if vEstadoTela = etIncluir then
-//      begin
-//         if vObjVenda  = nil then
-//            vObjVenda := TVenda.Create
-//      end
-//
-////      if vObjVenda = nil then
-////         exit;
-//
-////      vObjVenda.
-//
-//      Result := True
-//   except
-//       on E : Exception do
-//       begin
-//
-//          Raise Exception.Create(
-//          'Falha ao processar os dados da Pessoa [View]: ' + #13 + e.Message);
-//       end
-//   end;
+   try
+      Result := False;
+
+//      if not ValidaVenda then
+//         exit;
+
+      if vEstadoTela = etIncluir then
+      begin
+         if vObjVenda  = nil then
+            vObjVenda := TVenda.Create
+      end
+      else if vEstadoTela = etAlterar then
+      begin
+         if vObjVenda = nil then
+            exit;
+      end;
+
+      if vObjVenda = nil then
+         exit;
+
+//      vObjVenda.ID          := StrToInt(edtNumVenda.Text);
+      vObjVenda.IDCliente   := StrToInt(edtCodigo.Text);
+      vObjVenda.TotalAcresc := edtDesconto.Value;
+      vObjVenda.TotalVenda  := edtTotal.Value;
+
+
+      Result := True
+   except
+       on E : Exception do
+       begin
+
+          Raise Exception.Create(
+          'Falha ao processar os dados da Venda [View]: ' + #13 + e.Message);
+       end
+   end;
+end;
+
+
+procedure TfrmVenda.btnIncluirClick(Sender: TObject);
+begin
+   vEstadoTela := etIncluir;
+   DefineEstadoTela;
+end;
+
+procedure TfrmVenda.edtCodigoKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+var
+  xCodigo  : Integer;
+  NomeCliente : string;
+  xCliente : TPessoa;
+begin
+   if Key = VK_RETURN then
+   begin
+      if TryStrToInt(edtCodigo.Text, xCodigo) then
+      begin
+            xCliente := TPessoa.Create;
+            try
+            xCliente := TPessoaController.getInstancia
+                     .BuscaPessoa(StrToInt(edtCodigo.Text));
+
+             if xCliente.Nome <> '' then
+             begin
+                edtNome.Text := xCliente.Nome;
+                edtNome.Enabled := False;
+             end
+             else
+               TMessageUtil.Informacao('Cliente não encontrado!');
+             finally
+                frmClientes.Free;
+             end;
+
+      end;
+   end;
 end;
 
 

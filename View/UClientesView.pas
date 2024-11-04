@@ -78,6 +78,7 @@ type
     procedure edtCPFCNPJKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure edtCPFCNPJChange(Sender: TObject);
+   
   private
     { Private declarations }
     vKey : Word;
@@ -93,10 +94,10 @@ type
     procedure CarregaDadosTela;
     function ProcessaConfirmacao   : Boolean;
     function ProcessaInclusao      : Boolean;
+    function ProcessaConsulta      : Boolean;
     function ProcessaAlteracao     : Boolean;
     function ProcessaExclusao      : Boolean;
     function ProcessaCliente       : Boolean;
-    function ProcessaConsulta      : Boolean;
     function ProcessaListagem      : Boolean;
     function ProcessaPessoa        : Boolean;
     function ProcessaEndereco      : Boolean;
@@ -107,6 +108,7 @@ type
 
   public
     { Public declarations }
+
 
   end;
 
@@ -964,5 +966,7 @@ begin
        cdsCliente.EmptyDataSet;
    end;
 end;
+
+
 
 end.

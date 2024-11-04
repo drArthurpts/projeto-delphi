@@ -33,7 +33,9 @@ uses
   UVenda in 'Model\UVenda.pas',
   UVendaController in 'Controller\UVendaController.pas',
   UVendaDAO in 'Model\UVendaDAO.pas',
-  UVendaItem in 'Model\UVendaItem.pas';
+  UVendaItem in 'Model\UVendaItem.pas',
+  UVendaItemDAO in 'Model\UVendaItemDAO.pas',
+  UVendaItemController in 'Controller\UVendaItemController.pas';
 
 //  UVendaItemController in 'Controller\UVendaItemController.pas';
 

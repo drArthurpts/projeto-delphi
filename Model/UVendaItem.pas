@@ -15,7 +15,7 @@ type
       vUnidade       : string;
       vTotalDesc     : Double;
       vValorUnidade  : Double;
-      vTotalItem    : Double;
+      vTotalItem     : Double;
 
    public
       constructor Create;
