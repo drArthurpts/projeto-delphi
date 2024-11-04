@@ -30,7 +30,7 @@ type
          property TotalItem          : Double read  vTotalItem write vTotalItem;
       end;
 
-       TColItemVenda = class(TList)
+       TColVendaItem = class(TList)
       public
          function  Retorna(pIndex : Integer) : TVendaItem;
          procedure Adiciona(pVendaItem : TVendaItem);
@@ -53,12 +53,12 @@ begin
 end;
 
 
-procedure TColItemVenda.Adiciona(pVendaItem: TVendaItem);
+procedure TColVendaItem.Adiciona(pVendaItem: TVendaItem);
 begin
    Self.Add(TVendaItem(pVendaItem));
 end;
 
-function TColItemVenda.Retorna(pIndex: Integer): TVendaItem;
+function TColVendaItem.Retorna(pIndex: Integer): TVendaItem;
 begin
    Result := TVendaItem(Self[pIndex]);
 end;

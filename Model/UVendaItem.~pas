@@ -5,7 +5,7 @@ interface
 uses SysUtils, Classes;
 
 type
-   TColVendaItem = Class(TPersistent)
+   TVendaItem = Class(TPersistent)
 
    private
       vID            : Integer;
@@ -30,17 +30,17 @@ type
          property TotalItem          : Double read  vTotalItem write vTotalItem;
       end;
 
-      TColItemVenda = class(TList)
+       TColItemVenda = class(TList)
       public
-         function  Retorna(pIndex : Integer) : TColVendaItem;
-         procedure Adiciona(pVenda : TVenda);
+         function  Retorna(pIndex : Integer) : TVendaItem;
+         procedure Adiciona(pVendaItem : TVendaItem);
       end;
 
 implementation
 
-{ TColVendaItem }
 
-constructor TColVendaItem.Create;
+
+constructor TVendaItem.Create;
 begin
    Self.vID                := 0;
    Self.vIDVenda           := 0;
@@ -52,16 +52,15 @@ begin
    Self.vTotalItem         := 0;
 end;
 
-{ TColItemVenda }
 
-procedure TColItemVenda.Adiciona(pVenda: TVenda);
+procedure TColItemVenda.Adiciona(pVendaItem: TVendaItem);
 begin
-   Self.Add(TColVendaItem(pColVendaItem));
+   Self.Add(TVendaItem(pVendaItem));
 end;
 
-function TColItemVenda.Retorna(pIndex: Integer): TColVendaItem;
+function TColItemVenda.Retorna(pIndex: Integer): TVendaItem;
 begin
-   Result := TColVendaItem(Self[pIndex]);
+   Result := TVendaItem(Self[pIndex]);
 end;
 
 end.

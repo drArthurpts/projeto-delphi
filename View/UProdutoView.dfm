@@ -1,5 +1,5 @@
 object frmProduto: TfrmProduto
-  Left = 424
+  Left = 426
   Top = 274
   Width = 614
   Height = 225

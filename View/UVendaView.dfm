@@ -1,6 +1,6 @@
 object frmVenda: TfrmVenda
-  Left = 321
-  Top = 115
+  Left = 191
+  Top = 116
   Width = 890
   Height = 504
   BorderIcons = [biSystemMenu]

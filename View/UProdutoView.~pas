@@ -668,7 +668,7 @@ begin
     vObjProduto.QuantidadeEstoque := edtQuantidade.Value;
     vObjProduto.PrecoVenda        := edtPreco.Value;
     vObjProduto.Descricao         := edtDescricaoProd.Text;
-    vObjProduto.Unidade           := cmbUnidade.Text;
+    vObjProduto.UnidadeSaida           := cmbUnidade.Text;
 
 
     TProdutoController.getInstancia.GravaProduto(vObjProduto);
