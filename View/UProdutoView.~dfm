@@ -1,8 +1,8 @@
 object frmProduto: TfrmProduto
-  Left = -8
-  Top = -8
-  Width = 1382
-  Height = 744
+  Left = 426
+  Top = 274
+  Width = 634
+  Height = 222
   BorderIcons = [biSystemMenu]
   Caption = 'Produto'
   Color = clBtnFace
@@ -30,8 +30,8 @@ object frmProduto: TfrmProduto
   end
   object stbBarraStatus: TStatusBar
     Left = 0
-    Top = 686
-    Width = 1366
+    Top = 164
+    Width = 618
     Height = 19
     Panels = <
       item
@@ -43,8 +43,8 @@ object frmProduto: TfrmProduto
   end
   object pnlBotoes: TPanel
     Left = 0
-    Top = 595
-    Width = 1366
+    Top = 73
+    Width = 618
     Height = 91
     Align = alBottom
     TabOrder = 1
@@ -342,8 +342,8 @@ object frmProduto: TfrmProduto
   object pnlArea: TPanel
     Left = 0
     Top = 0
-    Width = 1366
-    Height = 595
+    Width = 618
+    Height = 73
     Align = alClient
     TabOrder = 2
     object lblUnidade: TLabel

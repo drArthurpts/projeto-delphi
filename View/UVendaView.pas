@@ -6,7 +6,7 @@ uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, ComCtrls, ExtCtrls, StdCtrls, Buttons, NumEdit,UEnumerationUtil,
   UVendaController, DB, DBClient, Grids, DBGrids, Mask ,UVenda,UPessoaController,
-  UClientesView,UPessoa;
+  UClientesView,UPessoa, UClientePesqView;
 
 type
   TfrmVenda = class(TForm)
@@ -50,6 +50,8 @@ type
     procedure btnIncluirClick(Sender: TObject);
     procedure edtCodigoKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure btnSairClick(Sender: TObject);
 
 
 
@@ -153,8 +155,6 @@ begin
          edtData.Clear;
          edtData.Text := FormatDateTime('dd/mm/yyyy',Now);
 
-//         if dbgProduto.CanFocus then
-//            dbgProduto.SetFocus
       end;
 
    end;
@@ -373,14 +373,37 @@ begin
              finally
                 frmClientes.Free;
              end;
-
       end;
       if (edtCodigo.Text = EmptyStr) then
       begin
-
+         if frmClientesPesq  = nil then
+         begin
+            frmClientesPesq  := TfrmClientesPesq.Create(Application);
+         end;
+            frmClientesPesq.Show;
       end;
-       end;
+   end;
 end;
 
+
+procedure TfrmVenda.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+   Action   := caFree;
+   frmVenda := nil;
+end;
+
+procedure TfrmVenda.btnSairClick(Sender: TObject);
+begin
+   if (vEstadoTela <> etPadrao) then
+   begin
+      if (TMessageUtil.Pergunta('Deseja realmente abortar essa operação?')) then
+      begin
+         vEstadoTela := etPadrao;
+         DefineEstadoTela;
+      end;
+   end
+   else
+      Close;
+end;
 
 end.

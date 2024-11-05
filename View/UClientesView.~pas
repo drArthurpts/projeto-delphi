@@ -78,7 +78,7 @@ type
     procedure edtCPFCNPJKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure edtCPFCNPJChange(Sender: TObject);
-    procedure edtCodigoChange(Sender: TObject);
+   
   private
     { Private declarations }
     vKey : Word;

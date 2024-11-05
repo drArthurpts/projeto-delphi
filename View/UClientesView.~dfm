@@ -403,7 +403,6 @@ object frmClientes: TfrmClientes
       Height = 21
       CharCase = ecUpperCase
       TabOrder = 0
-      OnChange = edtCodigoChange
       OnExit = edtCodigoExit
     end
     object chkAtivo: TCheckBox
