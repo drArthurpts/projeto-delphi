@@ -1,5 +1,5 @@
 object frmVenda: TfrmVenda
-  Left = 372
+  Left = 373
   Top = 146
   Width = 890
   Height = 504
@@ -464,14 +464,14 @@ object frmVenda: TfrmVenda
       TabOrder = 0
     end
     object edtData: TMaskEdit
-      Left = 182
+      Left = 183
       Top = 8
-      Width = 73
+      Width = 71
       Height = 21
-      EditMask = '__/__/___'
-      MaxLength = 9
+      EditMask = '!99/99/9999;1;_'
+      MaxLength = 10
       TabOrder = 1
-      Text = '__/__/___'
+      Text = '  /  /    '
     end
     object edtCodigo: TEdit
       Left = 373

@@ -54,6 +54,7 @@ type
 
 
 
+
   private
     { Private declarations }
     vKey : Word;
@@ -115,9 +116,6 @@ begin
 
 end;
 
-
-
-
 procedure TfrmVenda.DefineEstadoTela;
 begin
    btnIncluir.Enabled   := (vEstadoTela in [etPadrao]);
@@ -144,6 +142,7 @@ begin
       etIncluir:
       begin
          stbBarraStatus.Panels[0].Text := 'Inclusão';
+
          CamposEnabled(True);
 
          edtNumVenda.Enabled := False;
@@ -151,14 +150,15 @@ begin
          if edtCodigo.CanFocus then
             edtCodigo.SetFocus;
 
-         if dbgProduto.CanFocus then
-            dbgProduto.SetFocus
+         edtData.Clear;
+         edtData.Text := FormatDateTime('dd/mm/yyyy',Now);
+
+//         if dbgProduto.CanFocus then
+//            dbgProduto.SetFocus
       end;
 
    end;
 end;
-
-
 
 procedure TfrmVenda.LimpaTela;
 var
@@ -350,14 +350,37 @@ end;
 procedure TfrmVenda.edtCodigoKeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 var
-  Codigo  : Integer;
-  Cliente : TPessoa;
+  xCodigo  : Integer;
+  NomeCliente : string;
+  xCliente : TPessoa;
 begin
-    if Key = VK_RETURN then
-    begin
-        if TryStrToInt(edtCodigo, CodigoCliente) then
+   if Key = VK_RETURN then
+   begin
+      if TryStrToInt(edtCodigo.Text, xCodigo) then
+      begin
+            xCliente := TPessoa.Create;
+            try
+            xCliente := TPessoaController.getInstancia
+                     .BuscaPessoa(StrToInt(edtCodigo.Text));
 
+             if xCliente.Nome <> '' then
+             begin
+                edtNome.Text := xCliente.Nome;
+                edtNome.Enabled := False;
+             end
+             else
+               TMessageUtil.Informacao('Cliente não encontrado!');
+             finally
+                frmClientes.Free;
+             end;
 
-    end;
+      end;
+      if (edtCodigo.Text = EmptyStr) then
+      begin
+
+      end;
+       end;
 end;
+
+
 end.

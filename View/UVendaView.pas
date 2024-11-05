@@ -54,6 +54,7 @@ type
 
 
 
+
   private
     { Private declarations }
     vKey : Word;
@@ -141,6 +142,7 @@ begin
       etIncluir:
       begin
          stbBarraStatus.Panels[0].Text := 'Inclusão';
+
          CamposEnabled(True);
 
          edtNumVenda.Enabled := False;
@@ -148,10 +150,11 @@ begin
          if edtCodigo.CanFocus then
             edtCodigo.SetFocus;
 
+         edtData.Clear;
          edtData.Text := FormatDateTime('dd/mm/yyyy',Now);
 
-         if dbgProduto.CanFocus then
-            dbgProduto.SetFocus
+//         if dbgProduto.CanFocus then
+//            dbgProduto.SetFocus
       end;
 
    end;
@@ -372,7 +375,11 @@ begin
              end;
 
       end;
-   end;
+      if (edtCodigo.Text = EmptyStr) then
+      begin
+
+      end;
+       end;
 end;
 
 
