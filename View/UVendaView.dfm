@@ -1,8 +1,8 @@
 object frmVenda: TfrmVenda
-  Left = 373
-  Top = 146
-  Width = 890
-  Height = 504
+  Left = 294
+  Top = 121
+  Width = 898
+  Height = 422
   BorderIcons = [biSystemMenu]
   Caption = 'Venda'
   Color = clBtnFace
@@ -18,8 +18,8 @@ object frmVenda: TfrmVenda
   TextHeight = 13
   object pnlBotoes: TPanel
     Left = 0
-    Top = 365
-    Width = 874
+    Top = 283
+    Width = 882
     Height = 81
     Align = alBottom
     TabOrder = 0
@@ -312,8 +312,8 @@ object frmVenda: TfrmVenda
   end
   object StbBarraStatus: TStatusBar
     Left = 0
-    Top = 446
-    Width = 874
+    Top = 364
+    Width = 882
     Height = 19
     Panels = <
       item
@@ -325,8 +325,8 @@ object frmVenda: TfrmVenda
   end
   object pnlValores: TPanel
     Left = 0
-    Top = 298
-    Width = 874
+    Top = 216
+    Width = 882
     Height = 67
     Align = alBottom
     TabOrder = 2
@@ -401,7 +401,7 @@ object frmVenda: TfrmVenda
   object grbPedido: TGroupBox
     Left = 0
     Top = 0
-    Width = 874
+    Width = 882
     Height = 90
     Align = alTop
     Caption = 'Pedido'
@@ -497,16 +497,16 @@ object frmVenda: TfrmVenda
   object grbProdutos: TGroupBox
     Left = 0
     Top = 90
-    Width = 874
-    Height = 208
+    Width = 882
+    Height = 126
     Align = alClient
     Caption = 'Produtos'
     TabOrder = 4
     object dbgProduto: TDBGrid
       Left = 2
       Top = 15
-      Width = 870
-      Height = 191
+      Width = 878
+      Height = 109
       Align = alClient
       DataSource = dtsProduto
       TabOrder = 0
@@ -515,6 +515,7 @@ object frmVenda: TfrmVenda
       TitleFont.Height = -11
       TitleFont.Name = 'MS Sans Serif'
       TitleFont.Style = []
+      OnKeyPress = dbgProdutoKeyPress
     end
   end
   object dtsProduto: TDataSource
@@ -534,11 +535,11 @@ object frmVenda: TfrmVenda
       4454480200020064000A507265E76F20556E692E080004000000000010556E69
       64616465206465205361ED64610400010000000000065175616E742E04000100
       000000000B507265E76F20546F74616C08000400000000000000}
-    object cdsProdutoCdigo: TIntegerField
+    object cdsProdutoCodigo: TIntegerField
       DisplayWidth = 12
       FieldName = 'C'#243'digo'
     end
-    object cdsProdutoDescrio: TStringField
+    object cdsProdutoDesc: TStringField
       DisplayWidth = 66
       FieldName = 'Descri'#231#227'o'
       Size = 100

@@ -6,7 +6,8 @@ uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, ComCtrls, ExtCtrls, StdCtrls, Buttons, NumEdit,UEnumerationUtil,
   UVendaController, DB, DBClient, Grids, DBGrids, Mask ,UVenda,UPessoaController,
-  UClientesView,UPessoa, UClientePesqView;
+  UClientesView,UPessoa, UClientePesqView, UProdutoPesqView, UProduto,
+  UProdutoController,UProdutoView,UConexao;
 
 type
   TfrmVenda = class(TForm)
@@ -18,8 +19,8 @@ type
     dbgProduto: TDBGrid;
     dtsProduto: TDataSource;
     cdsProduto: TClientDataSet;
-    cdsProdutoCdigo: TIntegerField;
-    cdsProdutoDescrio: TStringField;
+    cdsProdutoCodigo: TIntegerField;
+    cdsProdutoDesc: TStringField;
     cdsProdutoPreoUni: TFloatField;
     cdsProdutoUnidadedeSada: TIntegerField;
     cdsProdutoQuant: TIntegerField;
@@ -52,6 +53,8 @@ type
       Shift: TShiftState);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure btnSairClick(Sender: TObject);
+    procedure dbgProdutoKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
 
 
 
@@ -73,7 +76,7 @@ type
     function ProcessaInclusao    : Boolean;
     function ProcessaConsulta    : Boolean;
     function ProcessaVenda       : Boolean;
-    function ValidaCampos   : Boolean;
+    function ValidaCampos        : Boolean;
 
 
   public
@@ -81,8 +84,9 @@ type
   end;
 
 var
-  frmVenda  : TfrmVenda;
-  vObjVenda : TVenda;
+  frmVenda   : TfrmVenda;
+  frmProduto : TfrmProduto;
+  vObjVenda  : TVenda;
 
 implementation
 
@@ -155,6 +159,7 @@ begin
          edtData.Clear;
          edtData.Text := FormatDateTime('dd/mm/yyyy',Now);
 
+         
       end;
 
    end;
@@ -404,6 +409,47 @@ begin
    end
    else
       Close;
+end;
+
+procedure TfrmVenda.dbgProdutoKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+var
+   xCodigoCampo : string;
+   xCodigo      : Integer;
+   xProduto     : TProduto;
+begin
+   if (Key = VK_RETURN) then
+   begin
+      xCodigoCampo := dbgProduto.Fields[0].AsString;
+      if (TryStrToInt(xCodigoCampo, xCodigo)) then
+      begin
+         xProduto := TProduto.Create;
+         try
+            xProduto := TProdutoController.getInstancia
+                        .BuscaProduto(StrToInt(cdsProdutoCodigo.Text));
+               if xProduto.ID <> 0 then
+               begin
+//                  dbgProduto.Columns[1].Field.Value := TProdutoController.;
+//                  cdsProdutoDesc.Enabled := False;
+
+               end
+               else
+               TMessageUtil.Informacao('Produto não encontrado!');
+             finally
+                frmProduto.Free;
+             end;
+         //Carregar os dados do produto igual o do cliente
+      end;
+      if (xCodigoCampo  =  '') then
+      begin
+         frmProdutoPesqView := TfrmProdutoPesqView.Create(Self);
+         try
+            frmProdutoPesqView.ShowModal;
+         finally
+            frmProdutoPesqView.Free;
+         end;
+      end;
+   end;
 end;
 
 end.

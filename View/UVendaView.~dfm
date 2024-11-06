@@ -1,6 +1,6 @@
 object frmVenda: TfrmVenda
-  Left = 373
-  Top = 146
+  Left = 294
+  Top = 121
   Width = 890
   Height = 504
   BorderIcons = [biSystemMenu]
@@ -515,6 +515,7 @@ object frmVenda: TfrmVenda
       TitleFont.Height = -11
       TitleFont.Name = 'MS Sans Serif'
       TitleFont.Style = []
+      OnKeyDown = dbgProdutoKeyDown
     end
   end
   object dtsProduto: TDataSource
@@ -534,11 +535,11 @@ object frmVenda: TfrmVenda
       4454480200020064000A507265E76F20556E692E080004000000000010556E69
       64616465206465205361ED64610400010000000000065175616E742E04000100
       000000000B507265E76F20546F74616C08000400000000000000}
-    object cdsProdutoCdigo: TIntegerField
+    object cdsProdutoCodigo: TIntegerField
       DisplayWidth = 12
       FieldName = 'C'#243'digo'
     end
-    object cdsProdutoDescrio: TStringField
+    object cdsProdutoDesc: TStringField
       DisplayWidth = 66
       FieldName = 'Descri'#231#227'o'
       Size = 100

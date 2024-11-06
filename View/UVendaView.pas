@@ -6,7 +6,8 @@ uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, ComCtrls, ExtCtrls, StdCtrls, Buttons, NumEdit,UEnumerationUtil,
   UVendaController, DB, DBClient, Grids, DBGrids, Mask ,UVenda,UPessoaController,
-  UClientesView,UPessoa, UClientePesqView;
+  UClientesView,UPessoa, UClientePesqView, UProdutoPesqView, UProduto,
+  UProdutoController,UProdutoView,UConexao;
 
 type
   TfrmVenda = class(TForm)
@@ -18,8 +19,8 @@ type
     dbgProduto: TDBGrid;
     dtsProduto: TDataSource;
     cdsProduto: TClientDataSet;
-    cdsProdutoCdigo: TIntegerField;
-    cdsProdutoDescrio: TStringField;
+    cdsProdutoCodigo: TIntegerField;
+    cdsProdutoDesc: TStringField;
     cdsProdutoPreoUni: TFloatField;
     cdsProdutoUnidadedeSada: TIntegerField;
     cdsProdutoQuant: TIntegerField;
@@ -52,6 +53,8 @@ type
       Shift: TShiftState);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure btnSairClick(Sender: TObject);
+    procedure dbgProdutoKeyPress(Sender: TObject; var Key: Char);
+
 
 
 
@@ -73,7 +76,7 @@ type
     function ProcessaInclusao    : Boolean;
     function ProcessaConsulta    : Boolean;
     function ProcessaVenda       : Boolean;
-    function ValidaCampos   : Boolean;
+    function ValidaCampos        : Boolean;
 
 
   public
@@ -81,8 +84,9 @@ type
   end;
 
 var
-  frmVenda  : TfrmVenda;
-  vObjVenda : TVenda;
+  frmVenda   : TfrmVenda;
+  frmProduto : TfrmProduto;
+  vObjVenda  : TVenda;
 
 implementation
 
@@ -155,6 +159,7 @@ begin
          edtData.Clear;
          edtData.Text := FormatDateTime('dd/mm/yyyy',Now);
 
+         
       end;
 
    end;
@@ -404,6 +409,38 @@ begin
    end
    else
       Close;
+end;
+
+
+
+
+
+
+procedure TfrmVenda.dbgProdutoKeyPress(Sender: TObject; var Key: Char);
+var
+   xProdutoID  : Integer;
+   xProduto    : TProduto;
+begin
+
+  if (Key = #13) then
+  begin
+    xProdutoID := dbgProduto.DataSource.DataSet.FieldByName('Código').AsInteger;
+
+    xProduto := TProdutoController.getInstancia.BuscaProduto(xProdutoID);
+
+    if xProduto <> nil then
+    begin
+      dbgProduto.DataSource.DataSet.Edit;
+      dbgProduto.DataSource.DataSet.FieldByName('Descrição').AsString := xProduto.Descricao;
+      dbgProduto.DataSource.DataSet.Post;
+    end
+    else
+    begin
+      ShowMessage('Produto não encontrado.');
+    end;
+
+  end;
+
 end;
 
 end.
