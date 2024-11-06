@@ -22,7 +22,6 @@ type
     cdsProdutoCodigo: TIntegerField;
     cdsProdutoDesc: TStringField;
     cdsProdutoPreoUni: TFloatField;
-    cdsProdutoUnidadedeSada: TIntegerField;
     cdsProdutoQuant: TIntegerField;
     cdsProdutoPreoTotal: TFloatField;
     edtNumVenda: TEdit;
@@ -47,6 +46,9 @@ type
     btnLimpar: TBitBtn;
     btnConfirmar: TBitBtn;
     edtTotal: TNumEdit;
+    cdsProdutoUnidadedeSada: TStringField;
+    edtValoComDesconto: TNumEdit;
+    Label2: TLabel;
     procedure btnConfirmarClick(Sender: TObject);
     procedure btnIncluirClick(Sender: TObject);
     procedure edtCodigoKeyDown(Sender: TObject; var Key: Word;
@@ -54,6 +56,9 @@ type
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure btnSairClick(Sender: TObject);
     procedure dbgProdutoKeyPress(Sender: TObject; var Key: Char);
+    procedure FormCreate(Sender: TObject);
+    procedure edtDescontoKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
 
 
 
@@ -72,6 +77,7 @@ type
     procedure CamposEnabled(pOpcao : Boolean);
     procedure LimpaTela;
     procedure DefineEstadoTela;
+    procedure AtualizarValorTotal;
     function ProcessaConfirmacao : Boolean;
     function ProcessaInclusao    : Boolean;
     function ProcessaConsulta    : Boolean;
@@ -378,6 +384,8 @@ begin
              finally
                 frmClientes.Free;
              end;
+             dbgProduto.SelectedIndex := 0;
+             dbgProduto.SetFocus;
       end;
       if (edtCodigo.Text = EmptyStr) then
       begin
@@ -412,10 +420,6 @@ begin
 end;
 
 
-
-
-
-
 procedure TfrmVenda.dbgProdutoKeyPress(Sender: TObject; var Key: Char);
 var
    xProdutoID  : Integer;
@@ -432,6 +436,10 @@ begin
     begin
       dbgProduto.DataSource.DataSet.Edit;
       dbgProduto.DataSource.DataSet.FieldByName('Descrição').AsString := xProduto.Descricao;
+      dbgProduto.DataSource.DataSet.FieldByName('Preço Uni.').AsFloat := xProduto.PrecoVenda;
+      dbgProduto.DataSource.DataSet.FieldByName('Unidade de Saída').AsString := xProduto.UnidadeSaida;
+      dbgProduto.DataSource.DataSet.FieldByName('Quant.').AsFloat := xProduto.QuantidadeEstoque;
+      dbgProduto.DataSource.DataSet.FieldByName('Preço Total').AsFloat := xProduto.PrecoVenda;
       dbgProduto.DataSource.DataSet.Post;
     end
     else
@@ -441,6 +449,43 @@ begin
 
   end;
 
+end;
+
+procedure TfrmVenda.FormCreate(Sender: TObject);
+begin
+   cmbPagamento.Items.Add('Pix');
+   cmbPagamento.Items.Add('Cartão de Débito');
+   cmbPagamento.Items.Add('Cartão de Crédito');
+end;
+
+procedure TfrmVenda.AtualizarValorTotal;
+var
+  xPrecoTotal  : Double;
+  xDesconto    : Double;
+  xValorTotal  : Double;
+begin
+   if dbgProduto.DataSource.DataSet.FieldByName('Preço Total').AsFloat <> 0 then
+      xPrecoTotal := dbgProduto.DataSource.DataSet.FieldByName('Preço Total').AsFloat
+   else
+      xPrecoTotal := 0;
+
+   xDesconto := xPrecoTotal * (edtDesconto.Value / 100);
+
+   xValorTotal := xPrecoTotal - xDesconto;
+
+   edtTotal.Text := FormatFloat('#,##0.00', xValorTotal);
+end;
+
+
+
+procedure TfrmVenda.edtDescontoKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+   if Key = VK_RETURN then
+   begin
+      AtualizarValorTotal;
+      Key := 0;
+   end;
 end;
 
 end.

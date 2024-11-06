@@ -22,7 +22,6 @@ type
     cdsProdutoCodigo: TIntegerField;
     cdsProdutoDesc: TStringField;
     cdsProdutoPreoUni: TFloatField;
-    cdsProdutoUnidadedeSada: TIntegerField;
     cdsProdutoQuant: TIntegerField;
     cdsProdutoPreoTotal: TFloatField;
     edtNumVenda: TEdit;
@@ -47,14 +46,17 @@ type
     btnLimpar: TBitBtn;
     btnConfirmar: TBitBtn;
     edtTotal: TNumEdit;
+    cdsProdutoUnidadedeSada: TStringField;
+    edtValoComDesconto: TNumEdit;
+    Label2: TLabel;
     procedure btnConfirmarClick(Sender: TObject);
     procedure btnIncluirClick(Sender: TObject);
     procedure edtCodigoKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure btnSairClick(Sender: TObject);
-    procedure dbgProdutoKeyDown(Sender: TObject; var Key: Word;
-      Shift: TShiftState);
+    procedure dbgProdutoKeyPress(Sender: TObject; var Key: Char);
+
 
 
 
@@ -378,6 +380,8 @@ begin
              finally
                 frmClientes.Free;
              end;
+             dbgProduto.SelectedIndex := 0;
+             dbgProduto.SetFocus;
       end;
       if (edtCodigo.Text = EmptyStr) then
       begin
@@ -411,45 +415,36 @@ begin
       Close;
 end;
 
-procedure TfrmVenda.dbgProdutoKeyDown(Sender: TObject; var Key: Word;
-  Shift: TShiftState);
-var
-   xCodigoCampo : string;
-   xCodigo      : Integer;
-   xProduto     : TProduto;
-begin
-   if (Key = VK_RETURN) then
-   begin
-      xCodigoCampo := dbgProduto.Fields[0].AsString;
-      if (TryStrToInt(xCodigoCampo, xCodigo)) then
-      begin
-         xProduto := TProduto.Create;
-         try
-            xProduto := TProdutoController.getInstancia
-                        .BuscaProduto(StrToInt(cdsProdutoCodigo.Text));
-               if xProduto.ID <> 0 then
-               begin
-//                  dbgProduto.Columns[1].Field.Value := TProdutoController.;
-//                  cdsProdutoDesc.Enabled := False;
 
-               end
-               else
-               TMessageUtil.Informacao('Produto não encontrado!');
-             finally
-                frmProduto.Free;
-             end;
-         //Carregar os dados do produto igual o do cliente
-      end;
-      if (xCodigoCampo  =  '') then
-      begin
-         frmProdutoPesqView := TfrmProdutoPesqView.Create(Self);
-         try
-            frmProdutoPesqView.ShowModal;
-         finally
-            frmProdutoPesqView.Free;
-         end;
-      end;
-   end;
+procedure TfrmVenda.dbgProdutoKeyPress(Sender: TObject; var Key: Char);
+var
+   xProdutoID  : Integer;
+   xProduto    : TProduto;
+begin
+
+  if (Key = #13) then
+  begin
+    xProdutoID := dbgProduto.DataSource.DataSet.FieldByName('Código').AsInteger;
+
+    xProduto := TProdutoController.getInstancia.BuscaProduto(xProdutoID);
+
+    if xProduto <> nil then
+    begin
+      dbgProduto.DataSource.DataSet.Edit;
+      dbgProduto.DataSource.DataSet.FieldByName('Descrição').AsString := xProduto.Descricao;
+      dbgProduto.DataSource.DataSet.FieldByName('Preço Uni.').AsFloat := xProduto.PrecoVenda;
+      dbgProduto.DataSource.DataSet.FieldByName('Unidade de Saída').AsString := xProduto.UnidadeSaida;
+      dbgProduto.DataSource.DataSet.FieldByName('Quant.').AsFloat := xProduto.QuantidadeEstoque;
+      dbgProduto.DataSource.DataSet.FieldByName('Preço Total').AsFloat := xProduto.PrecoVenda;
+      dbgProduto.DataSource.DataSet.Post;
+    end
+    else
+    begin
+      ShowMessage('Produto não encontrado.');
+    end;
+
+  end;
+
 end;
 
 end.

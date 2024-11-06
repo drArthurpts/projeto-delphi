@@ -1,10 +1,11 @@
 object frmVenda: TfrmVenda
-  Left = 294
-  Top = 121
-  Width = 898
-  Height = 422
+  Left = 260
+  Top = 192
   BorderIcons = [biSystemMenu]
+  BorderStyle = bsSingle
   Caption = 'Venda'
+  ClientHeight = 383
+  ClientWidth = 882
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -14,6 +15,7 @@ object frmVenda: TfrmVenda
   OldCreateOrder = False
   Position = poScreenCenter
   OnClose = FormClose
+  OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 13
   object pnlBotoes: TPanel
@@ -344,11 +346,11 @@ object frmVenda: TfrmVenda
       ParentFont = False
     end
     object lblValor: TLabel
-      Left = 306
+      Left = 323
       Top = 26
-      Width = 88
+      Width = 72
       Height = 13
-      Caption = 'Valor Desconto'
+      Caption = 'Desconto(%)'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -11
@@ -369,6 +371,19 @@ object frmVenda: TfrmVenda
       Font.Style = [fsBold, fsUnderline]
       ParentFont = False
     end
+    object Label2: TLabel
+      Left = 544
+      Top = 25
+      Width = 30
+      Height = 13
+      Caption = 'Valor'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
     object cmbPagamento: TComboBox
       Left = 150
       Top = 20
@@ -386,6 +401,7 @@ object frmVenda: TfrmVenda
       Decimals = 2
       ShowSeparator = True
       TabOrder = 1
+      OnKeyDown = edtDescontoKeyDown
     end
     object edtTotal: TNumEdit
       Left = 765
@@ -396,6 +412,16 @@ object frmVenda: TfrmVenda
       Decimals = 2
       ShowSeparator = True
       TabOrder = 2
+    end
+    object edtValoComDesconto: TNumEdit
+      Left = 578
+      Top = 18
+      Width = 121
+      Height = 21
+      Alignment = taRightJustify
+      Decimals = 2
+      ShowSeparator = True
+      TabOrder = 3
     end
   end
   object grbPedido: TGroupBox
@@ -526,15 +552,45 @@ object frmVenda: TfrmVenda
   object cdsProduto: TClientDataSet
     Active = True
     Aggregates = <>
+    FieldDefs = <
+      item
+        Name = 'C'#243'digo'
+        DataType = ftInteger
+      end
+      item
+        Name = 'Descri'#231#227'o'
+        DataType = ftString
+        Size = 100
+      end
+      item
+        Name = 'Pre'#231'o Uni.'
+        DataType = ftFloat
+      end
+      item
+        Name = 'Quant.'
+        DataType = ftInteger
+      end
+      item
+        Name = 'Pre'#231'o Total'
+        DataType = ftFloat
+      end
+      item
+        Name = 'Unidade de Sa'#237'da'
+        DataType = ftString
+        Size = 20
+      end>
+    IndexDefs = <>
     Params = <>
+    StoreDefs = True
     Left = 40
     Top = 145
     Data = {
-      960000009619E0BD01000000180000000600000000000300000096000643F364
+      A20000009619E0BD010000001800000006000000000003000000A2000643F364
       69676F040001000000000009446573637269E7E36F0100490000000100055749
-      4454480200020064000A507265E76F20556E692E080004000000000010556E69
-      64616465206465205361ED64610400010000000000065175616E742E04000100
-      000000000B507265E76F20546F74616C08000400000000000000}
+      4454480200020064000A507265E76F20556E692E080004000000000006517561
+      6E742E04000100000000000B507265E76F20546F74616C080004000000000010
+      556E6964616465206465205361ED646101004900000001000557494454480200
+      020014000000}
     object cdsProdutoCodigo: TIntegerField
       DisplayWidth = 12
       FieldName = 'C'#243'digo'
@@ -548,9 +604,9 @@ object frmVenda: TfrmVenda
       DisplayWidth = 14
       FieldName = 'Pre'#231'o Uni.'
     end
-    object cdsProdutoUnidadedeSada: TIntegerField
-      DisplayWidth = 18
+    object cdsProdutoUnidadedeSada: TStringField
       FieldName = 'Unidade de Sa'#237'da'
+      Size = 2
     end
     object cdsProdutoQuant: TIntegerField
       DisplayWidth = 8
