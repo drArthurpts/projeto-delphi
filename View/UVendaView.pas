@@ -47,7 +47,7 @@ type
     btnConfirmar: TBitBtn;
     edtTotal: TNumEdit;
     cdsProdutoUnidadedeSada: TStringField;
-    edtValoComDesconto: TNumEdit;
+    edtValorComDesconto: TNumEdit;
     Label2: TLabel;
     procedure btnConfirmarClick(Sender: TObject);
     procedure btnIncluirClick(Sender: TObject);
@@ -58,6 +58,13 @@ type
     procedure dbgProdutoKeyPress(Sender: TObject; var Key: Char);
     procedure FormCreate(Sender: TObject);
     procedure edtDescontoKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure dbgProdutoKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure cdsProdutoAfterPost(DataSet: TDataSet);
+    procedure cdsProdutoAfterDelete(DataSet: TDataSet);
+    procedure edtDescontoChange(Sender: TObject);
+    procedure FormKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
 
 
@@ -78,10 +85,12 @@ type
     procedure LimpaTela;
     procedure DefineEstadoTela;
     procedure AtualizarValorTotal;
+    procedure CalculaTotalVenda;
     function ProcessaConfirmacao : Boolean;
     function ProcessaInclusao    : Boolean;
     function ProcessaConsulta    : Boolean;
     function ProcessaVenda       : Boolean;
+    function ProcessaVendaItem   : Boolean;
     function ValidaCampos        : Boolean;
 
 
@@ -335,9 +344,11 @@ begin
          exit;
 
 //      vObjVenda.ID          := StrToInt(edtNumVenda.Text);
-      vObjVenda.IDCliente   := StrToInt(edtCodigo.Text);
-      vObjVenda.TotalAcresc := edtDesconto.Value;
-      vObjVenda.TotalVenda  := edtTotal.Value;
+      vObjVenda.ID_Cliente     := StrToInt(edtCodigo.Text);
+      vObjVenda.TotalAcrescimo := edtDesconto.Value;
+      vObjVenda.TotalVenda     := edtTotal.Value;
+      vObjVenda.TotalDesconto := edtDesconto.Value;
+      vObjVenda.DataVenda      := StrToDate(edtData.Text);
 
 
       Result := True
@@ -432,6 +443,9 @@ begin
 
     xProduto := TProdutoController.getInstancia.BuscaProduto(xProdutoID);
 
+    if (xProduto = nil) then
+        cdsProdutoCodigo.ReadOnly := False;
+
     if xProduto <> nil then
     begin
       dbgProduto.DataSource.DataSet.Edit;
@@ -441,12 +455,9 @@ begin
       dbgProduto.DataSource.DataSet.FieldByName('Quant.').AsFloat := xProduto.QuantidadeEstoque;
       dbgProduto.DataSource.DataSet.FieldByName('Preço Total').AsFloat := xProduto.PrecoVenda;
       dbgProduto.DataSource.DataSet.Post;
-    end
-    else
-    begin
-      ShowMessage('Produto não encontrado.');
-    end;
+      cdsProdutoCodigo.ReadOnly := True;
 
+    end
   end;
 
 end;
@@ -470,10 +481,9 @@ begin
       xPrecoTotal := 0;
 
    xDesconto := xPrecoTotal * (edtDesconto.Value / 100);
+   xValorTotal := xDesconto;
 
-   xValorTotal := xPrecoTotal - xDesconto;
-
-   edtTotal.Text := FormatFloat('#,##0.00', xValorTotal);
+   edtValorComDesconto.Text := FormatFloat('#,##0.00', xValorTotal);
 end;
 
 
@@ -486,6 +496,95 @@ begin
       AtualizarValorTotal;
       Key := 0;
    end;
+end;
+
+procedure TfrmVenda.dbgProdutoKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+   if Key = VK_RETURN then
+  begin
+    if dbgProduto.DataSource.DataSet.RecNo = dbgProduto.DataSource.DataSet.RecordCount then
+    begin
+      dbgProduto.DataSource.DataSet.Append;
+    end;
+
+    Key := 0;
+  end;
+end;
+
+procedure TfrmVenda.cdsProdutoAfterPost(DataSet: TDataSet);
+begin
+   CalculaTotalVenda;
+
+end;
+
+procedure TfrmVenda.cdsProdutoAfterDelete(DataSet: TDataSet);
+begin
+   CalculaTotalVenda;
+end;
+
+procedure TfrmVenda.CalculaTotalVenda;
+var
+   xTotalVenda, xPrecoTotal, xDesconto: Double;
+begin
+    dbgProduto.DataSource.DataSet.DisableControls; // Desabilita o controle visual para evitar piscadas
+  try
+    dbgProduto.DataSource.DataSet.First;
+    while not dbgProduto.DataSource.DataSet.Eof do
+    begin
+      xPrecoTotal := dbgProduto.DataSource.DataSet.FieldByName('Preço Total').AsFloat;
+      xTotalVenda := xTotalVenda + xPrecoTotal;
+      dbgProduto.DataSource.DataSet.Next;
+    end;
+  finally
+    dbgProduto.DataSource.DataSet.EnableControls;
+  end;
+
+
+  xDesconto := xTotalVenda * (edtDesconto.Value / 100);
+
+
+  xTotalVenda := xTotalVenda - xDesconto;
+
+
+  edtTotal.Text := FormatFloat('#,##0.00', xTotalVenda);
+end;
+
+procedure TfrmVenda.edtDescontoChange(Sender: TObject);
+begin
+   CalculaTotalVenda;
+end;
+
+procedure TfrmVenda.FormKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+    vKey := Key;
+
+      case vKey of
+         VK_RETURN:
+         begin
+           Perform(WM_NEXTDLGCTL, 0, 0);
+         end;
+
+         VK_ESCAPE:
+         begin
+         if (vEstadoTela <> etPadrao) then
+         begin
+         if (TMessageUtil.Pergunta(
+         'Deseja realmente abortar essa operação?')) then
+         begin
+            vEstadoTela := etPadrao;
+            DefineEstadoTela;
+            end;
+         end
+         else
+         begin
+           if (TMessageUtil.Pergunta(
+           'Deseja sair da rotina? ')) then
+              Close;
+              end;
+         end;
+      end;
 end;
 
 end.

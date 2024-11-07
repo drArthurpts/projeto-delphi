@@ -15,6 +15,8 @@ object frmVenda: TfrmVenda
   OldCreateOrder = False
   Position = poScreenCenter
   OnClose = FormClose
+  OnCreate = FormCreate
+  OnKeyDown = FormKeyDown
   PixelsPerInch = 96
   TextHeight = 13
   object pnlBotoes: TPanel
@@ -345,11 +347,11 @@ object frmVenda: TfrmVenda
       ParentFont = False
     end
     object lblValor: TLabel
-      Left = 306
+      Left = 323
       Top = 26
-      Width = 88
+      Width = 72
       Height = 13
-      Caption = 'Valor Desconto'
+      Caption = 'Desconto(%)'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -11
@@ -400,6 +402,8 @@ object frmVenda: TfrmVenda
       Decimals = 2
       ShowSeparator = True
       TabOrder = 1
+      OnChange = edtDescontoChange
+      OnKeyDown = edtDescontoKeyDown
     end
     object edtTotal: TNumEdit
       Left = 765
@@ -411,7 +415,7 @@ object frmVenda: TfrmVenda
       ShowSeparator = True
       TabOrder = 2
     end
-    object edtValoComDesconto: TNumEdit
+    object edtValorComDesconto: TNumEdit
       Left = 578
       Top = 18
       Width = 121
@@ -539,6 +543,7 @@ object frmVenda: TfrmVenda
       TitleFont.Height = -11
       TitleFont.Name = 'MS Sans Serif'
       TitleFont.Style = []
+      OnKeyDown = dbgProdutoKeyDown
       OnKeyPress = dbgProdutoKeyPress
     end
   end
@@ -580,6 +585,8 @@ object frmVenda: TfrmVenda
     IndexDefs = <>
     Params = <>
     StoreDefs = True
+    AfterPost = cdsProdutoAfterPost
+    AfterDelete = cdsProdutoAfterDelete
     Left = 40
     Top = 145
     Data = {
