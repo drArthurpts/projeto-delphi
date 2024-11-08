@@ -11,7 +11,7 @@ type
          function GravaVenda(pVendaItem : TVendaItem)  : Boolean;
 
 
-         function PesquisaVenda(pVendaItem : String)   : TColVenda;
+         function PesquisaVenda(pVendaItem : String)   : TColVendaItem;
 
          function BuscaVenda(pID : Integer)            : TVendaItem;
          function RetornaCondicaoVenda(
@@ -71,11 +71,43 @@ begin
 end;
 
 function TVendaItemController.GravaVenda(pVendaItem: TVendaItem): Boolean;
+var
+   xVendaItemDAO : TVendaItemDAO;
+   xAux : Integer;
 begin
+   try
+      try
+         TConexao.get.iniciaTransacao;
+         Result := False;
+         xVendaItemDAO := TVendaDAO.Create(TConexao.get.getConn);
 
+         if pVenda.ID = 0 then
+         begin
+            xVendaItemDAO.Insere(pVenda);
+         end
+         else
+         begin
+            xVendaItemDAO.Atualiza(
+            pVenda, RetornaCondicaoVenda(pVenda.ID));
+         end;
+
+         TConexao.get.confirmaTransacao;
+      finally
+          if (xVendaItemDAO <> nil) then
+               FreeAndNil(xVendaItemDAO);
+      end;
+   except
+      on E : Exception do
+      begin
+         TConexao.get.cancelaTransacao;
+         Raise Exception.Create(
+         'Falha ao gravar os dados da Venda [Controller]. ' + #13 +
+         e.Message);
+      end;
+   end;
 end;
 
-function TVendaItemController.PesquisaVenda(pVendaItem: String): TColVenda;
+function TVendaItemController.PesquisaVenda(pVendaItem: String): TColVendaItem;
 begin
 
 end;

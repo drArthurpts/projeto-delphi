@@ -33,7 +33,7 @@ end;
 constructor TVendaItemDAO.Create(pConexao: TSQLConnection);
 begin
    inherited Create;
-   vEntidade := 'VENDAITEM';
+   vEntidade := 'VENDA_ITEM';
    vConexao  := pConexao;
    vClass    := TVendaItem;
 end;

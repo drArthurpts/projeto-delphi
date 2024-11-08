@@ -62,17 +62,52 @@ end;
 
 constructor TVendaItemController.Create;
 begin
-
+   inherited Create;
 end;
 
 class function TVendaItemController.getInstancia: TVendaItemController;
 begin
+   if _instance = nil then
+      _instance := TVendaItemController.Create;
 
+   Result := _instance;
 end;
 
 function TVendaItemController.GravaVenda(pVendaItem: TVendaItem): Boolean;
+var
+   xVendaItemDAO : TVendaItemDAO;
+   xAux : Integer;
 begin
+   try
+      try
+         TConexao.get.iniciaTransacao;
+         Result := False;
+         xVendaItemDAO := TVendaItemDAO.Create(TConexao.get.getConn);
 
+         if pVendaItem.ID = 0 then
+         begin
+            xVendaItemDAO.Insere(pVendaItem);
+         end
+         else
+         begin
+            xVendaItemDAO.Atualiza(
+            pVendaItem, RetornaCondicaoVenda(pVendaItem.ID));
+         end;
+
+         TConexao.get.confirmaTransacao;
+      finally
+          if (xVendaItemDAO <> nil) then
+               FreeAndNil(xVendaItemDAO);
+      end;
+   except
+      on E : Exception do
+      begin
+         TConexao.get.cancelaTransacao;
+         Raise Exception.Create(
+         'Falha ao gravar os dados do Item Venda [Controller]. ' + #13 +
+         e.Message);
+      end;
+   end;
 end;
 
 function TVendaItemController.PesquisaVenda(pVendaItem: String): TColVendaItem;
@@ -81,8 +116,15 @@ begin
 end;
 
 function TVendaItemController.RetornaCondicaoVenda(pID: Integer): String;
-begin
+var
+   xChave : String;
 
+begin
+   xChave := 'ID';
+
+   Result :=
+   'WHERE ' +                                                       #13+
+   '      ' + xChave+ ' = ' + QuotedStr(IntToStr(pID)) + ' '#13;
 end;
 
 end.

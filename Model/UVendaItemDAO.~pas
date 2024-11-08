@@ -10,7 +10,7 @@ type
       public
          constructor Create(pConexao : TSQLConnection);
          function Insere (pVendaItem : TVendaItem)                      : Boolean;
-         function InsereLista (pColVenda : TColVendaItem)           : Boolean;
+         function InsereLista (pColVendaItem : TColVendaItem)           : Boolean;
          function Atualiza(pVendaItem : TVendaItem; pCondicao : String) : Boolean;
          function Retorna (pCondicao : String)                  : TVendaItem;
          function RetornaLista (pCondicao : String = '')        : TColVendaItem;

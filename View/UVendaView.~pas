@@ -7,7 +7,7 @@ uses
   Dialogs, ComCtrls, ExtCtrls, StdCtrls, Buttons, NumEdit,UEnumerationUtil,
   UVendaController, DB, DBClient, Grids, DBGrids, Mask ,UVenda,UPessoaController,
   UClientesView,UPessoa, UClientePesqView, UProdutoPesqView, UProduto,
-  UProdutoController,UProdutoView,UConexao;
+  UProdutoController,UProdutoView,UConexao,UVendaItemController;
 
 type
   TfrmVenda = class(TForm)
@@ -76,10 +76,11 @@ type
     { Private declarations }
     vKey : Word;
 
-    vEstadoTela  : TEstadoTela;
-    vObjVenda    : TVenda;
-    vObjColVenda : TColVenda;
-    vObjPessoa   : TPessoa;
+    vEstadoTela   : TEstadoTela;
+    vObjVenda     : TVenda;
+    vObjColVenda  : TColVenda;
+    vObjPessoa    : TPessoa;
+    vObjVendaItem :  TVendaItem;
 
     procedure CamposEnabled(pOpcao : Boolean);
     procedure LimpaTela;
@@ -90,6 +91,7 @@ type
     function ProcessaInclusao    : Boolean;
     function ProcessaConsulta    : Boolean;
     function ProcessaVenda       : Boolean;
+    function ProcessaVendaItem   : Boolean;
     function ValidaCampos        : Boolean;
 
 
@@ -346,6 +348,7 @@ begin
       vObjVenda.ID_Cliente     := StrToInt(edtCodigo.Text);
       vObjVenda.TotalAcrescimo := edtDesconto.Value;
       vObjVenda.TotalVenda     := edtTotal.Value;
+      vObjVenda.TotalDesconto := edtDesconto.Value;
       vObjVenda.DataVenda      := StrToDate(edtData.Text);
 
 
@@ -583,6 +586,26 @@ begin
               end;
          end;
       end;
+end;
+
+function TfrmVenda.ProcessaVendaItem: Boolean;
+begin
+   try
+      Result := False;
+
+     if (ValidaCampos) then
+       begin
+         TVendaItemController.getInstancia.GravaVenda(vObjVendaItem);
+         Result := True;
+       end;
+   except
+       on E : Exception do
+       begin
+          Raise  Exception.Create(
+         'Falha ao gavar os dados da venda [View]: '#13 +
+         e.Message);
+       end;
+   end;
 end;
 
 end.

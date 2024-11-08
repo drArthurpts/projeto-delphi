@@ -6,8 +6,8 @@ uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, ComCtrls, ExtCtrls, StdCtrls, Buttons, NumEdit,UEnumerationUtil,
   UVendaController, DB, DBClient, Grids, DBGrids, Mask ,UVenda,UPessoaController,
-  UClientesView,UPessoa, UClientePesqView, UProdutoPesqView, UProduto,
-  UProdutoController,UProdutoView,UConexao;
+  UClientesView,UPessoa,UVendaItem, UClientePesqView, UProdutoPesqView, UProduto,
+  UProdutoController,UProdutoView,UConexao,UVendaItemController;
 
 type
   TfrmVenda = class(TForm)
@@ -76,10 +76,11 @@ type
     { Private declarations }
     vKey : Word;
 
-    vEstadoTela  : TEstadoTela;
-    vObjVenda    : TVenda;
-    vObjColVenda : TColVenda;
-    vObjPessoa   : TPessoa;
+    vEstadoTela   : TEstadoTela;
+    vObjVenda     : TVenda;
+    vObjColVenda  : TColVenda;
+    vObjPessoa    : TPessoa;
+    vObjVendaItem :  TVendaItem;
 
     procedure CamposEnabled(pOpcao : Boolean);
     procedure LimpaTela;
@@ -92,6 +93,7 @@ type
     function ProcessaVenda       : Boolean;
     function ProcessaVendaItem   : Boolean;
     function ValidaCampos        : Boolean;
+    function ValidaCamposItem    : Boolean;
 
 
   public
@@ -585,6 +587,68 @@ begin
               end;
          end;
       end;
+end;
+
+function TfrmVenda.ProcessaVendaItem: Boolean;
+begin
+   try
+      Result := False;
+
+     if (ValidaCamposItem) then
+       begin
+         TVendaItemController.getInstancia.GravaVenda(vObjVendaItem);
+         Result := True;
+       end;
+   except
+       on E : Exception do
+       begin
+          Raise  Exception.Create(
+         'Falha ao gavar os dados da venda [View]: '#13 +
+         e.Message);
+       end;
+   end;
+end;
+
+function TfrmVenda.ValidaCamposItem: Boolean;
+begin
+   try
+      Result := False;
+
+//      if not ValidaVenda then
+//         exit;
+
+      if vEstadoTela = etIncluir then
+      begin
+         if vObjVendaItem  = nil then
+            vObjVendaItem := TVendaItem.Create
+      end
+      else if vEstadoTela = etAlterar then
+      begin
+         if vObjVendaItem = nil then
+            exit;
+      end;
+
+      if vObjVendaItem = nil then
+         exit;
+
+//      vObjVenda.ID          := StrToInt(edtNumVenda.Text);
+      vObjVendaItem.IDProduto     := StrToInt(cdsProdutoCodigo.Text);
+      vObjVendaItem.Quantidade    := cdsProdutoQuant.Value;
+      vObjVendaItem.Unidade       := cdsProdutoUnidadedeSada.Text;
+      vObjVendaItem.TotalDesc     := edtDesconto.Value;
+      vObjVendaItem.ValorUnidade  := cdsProdutoPreoUni.Value;
+      vObjVendaItem.TotalItem     := cdsProdutoPreoTotal.Value;
+
+
+      Result := True
+   except
+       on E : Exception do
+       begin
+
+          Raise Exception.Create(
+          'Falha ao processar os dados do Item Venda [View]: ' + #13 + e.Message);
+       end
+   end;
 end;
 
 end.
