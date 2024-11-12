@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, ComCtrls, ExtCtrls, StdCtrls, Buttons, NumEdit,UEnumerationUtil,
+  Dialogs, ComCtrls,UClassFuncoes, ExtCtrls, StdCtrls, Buttons, NumEdit,UEnumerationUtil,
   UVendaController, DB, DBClient, Grids, DBGrids, Mask ,UVenda,UPessoaController,
   UClientesView,UPessoa,UVendaItem, UClientePesqView, UProdutoPesqView, UProduto,
   UProdutoController,UProdutoView,UConexao,UVendaItemController;
@@ -66,11 +66,8 @@ type
     procedure edtDescontoChange(Sender: TObject);
     procedure FormKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
-
-
-
-
-
+    procedure cdsProdutoQuantChange(Sender: TField);
+    procedure edtCodigoChange(Sender: TObject);
 
   private
     { Private declarations }
@@ -175,10 +172,7 @@ begin
 
          edtData.Clear;
          edtData.Text := FormatDateTime('dd/mm/yyyy',Now);
-
-         
       end;
-
    end;
 end;
 
@@ -199,6 +193,11 @@ begin
          (Components[i] as TComboBox).Clear;
          (Components[i] as TComboBox).ItemIndex := -1;
          end;
+      if (Components[i] is TNumEdit) then
+         (Components[i] as TNumEdit).Text := EmptyStr;
+
+      cdsProduto.EmptyDataSet;
+
 
    end;
    if (vObjVenda <> nil) then
@@ -281,7 +280,7 @@ begin
    try
       Result := False;
 
-      if ProcessaVenda then
+      if (ProcessaVenda and ProcessaVendaItem) then
       begin
          TMessageUtil.Informacao('Venda realizada com sucesso! ' + #13 +
                                  'Código da venda: ' + IntToStr(vObjVenda.Id));
@@ -377,6 +376,7 @@ var
   xCodigo  : Integer;
   NomeCliente : string;
   xCliente : TPessoa;
+  xCodigoReplace : string;
 begin
    if Key = VK_RETURN then
    begin
@@ -409,6 +409,8 @@ begin
             frmClientesPesq.Show;
       end;
    end;
+//   xCodigoReplace := TFuncoes.SoNumero(edtCodigo.Text);
+//   edtCodigo.Text := xCodigoReplace;
 end;
 
 
@@ -454,14 +456,16 @@ begin
       dbgProduto.DataSource.DataSet.FieldByName('Descrição').AsString := xProduto.Descricao;
       dbgProduto.DataSource.DataSet.FieldByName('Preço Uni.').AsFloat := xProduto.PrecoVenda;
       dbgProduto.DataSource.DataSet.FieldByName('Unidade de Saída').AsString := xProduto.UnidadeSaida;
-      dbgProduto.DataSource.DataSet.FieldByName('Quant.').AsFloat := xProduto.QuantidadeEstoque;
+      dbgProduto.DataSource.DataSet.FieldByName('Quant.').AsFloat := 1;
       dbgProduto.DataSource.DataSet.FieldByName('Preço Total').AsFloat := xProduto.PrecoVenda;
       dbgProduto.DataSource.DataSet.Post;
       cdsProdutoCodigo.ReadOnly := True;
+      cdsProdutoDesc.ReadOnly   := True;
+      cdsProdutoPreoTotal.ReadOnly := True;
 
+      dbgProduto.SelectedIndex := 4;
     end
   end;
-
 end;
 
 procedure TfrmVenda.FormCreate(Sender: TObject);
@@ -473,19 +477,29 @@ end;
 
 procedure TfrmVenda.AtualizarValorTotal;
 var
+  i : Integer;
   xPrecoTotal  : Double;
   xDesconto    : Double;
+  xValorItem   : Double;
+  xQuantidade  : Integer;
   xValorTotal  : Double;
 begin
-   if dbgProduto.DataSource.DataSet.FieldByName('Preço Total').AsFloat <> 0 then
-      xPrecoTotal := dbgProduto.DataSource.DataSet.FieldByName('Preço Total').AsFloat
-   else
-      xPrecoTotal := 0;
+   xValorTotal := 0;
 
-   xDesconto := xPrecoTotal * (edtDesconto.Value / 100);
-   xValorTotal := xDesconto;
+    for i := 0 to dbgProduto.DataSource.DataSet.RecordCount - 1 do
+   begin
+      dbgProduto.DataSource.DataSet.RecNo := i + 1; // Mover para cada linha
+      xValorItem := dbgProduto.DataSource.DataSet.FieldByName('Preço Uni.').AsFloat;
+      xQuantidade := dbgProduto.DataSource.DataSet.FieldByName('Quant.').AsInteger;
+      xValorTotal := xValorTotal + (xValorItem * xQuantidade);
+   end;
 
-   edtValorComDesconto.Text := FormatFloat('#,##0.00', xValorTotal);
+  if TryStrToFloat(edtDesconto.Text, xValorItem) then
+     xValorTotal := xValorTotal - (xValorTotal * (xValorItem / 100));
+
+  xDesconto := (edtDesconto.Value/100) * xValorItem;
+  edtValorComDesconto.Text := FormatFloat('0.00', xDesconto);
+  edtTotal.Text := FormatFloat('0.00', xValorTotal);
 end;
 
 
@@ -508,6 +522,7 @@ begin
     if dbgProduto.DataSource.DataSet.RecNo = dbgProduto.DataSource.DataSet.RecordCount then
     begin
       dbgProduto.DataSource.DataSet.Append;
+      dbgProduto.SelectedIndex := 0;
     end;
 
     Key := 0;
@@ -632,12 +647,12 @@ begin
          exit;
 
 //      vObjVenda.ID          := StrToInt(edtNumVenda.Text);
-      vObjVendaItem.IDProduto     := StrToInt(cdsProdutoCodigo.Text);
-      vObjVendaItem.Quantidade    := cdsProdutoQuant.Value;
-      vObjVendaItem.Unidade       := cdsProdutoUnidadedeSada.Text;
-      vObjVendaItem.TotalDesc     := edtDesconto.Value;
-      vObjVendaItem.ValorUnidade  := cdsProdutoPreoUni.Value;
-      vObjVendaItem.TotalItem     := cdsProdutoPreoTotal.Value;
+      vObjVendaItem.ID_Produto        := StrToInt(cdsProdutoCodigo.Text);
+      vObjVendaItem.Quantidade        := cdsProdutoQuant.Value;
+      vObjVendaItem.UnidadeSaida      := cdsProdutoUnidadedeSada.Text;
+      vObjVendaItem.ValorDesconto     := edtDesconto.Value;
+      vObjVendaItem.ValorUnitario     := cdsProdutoPreoUni.Value;
+      vObjVendaItem.TotalItem         := cdsProdutoPreoTotal.Value;
 
 
       Result := True
@@ -649,6 +664,33 @@ begin
           'Falha ao processar os dados do Item Venda [View]: ' + #13 + e.Message);
        end
    end;
+end;
+
+procedure TfrmVenda.cdsProdutoQuantChange(Sender: TField);
+var
+  xPrecoUnitario, xPrecoTotal : Double;
+  xQuantidade : Integer;
+  DataSet : TDataSet;
+begin
+  if dbgProduto.SelectedField.FieldName = 'Quant.' then
+  begin
+    xQuantidade := dbgProduto.DataSource.DataSet.FieldByName('Quant.').AsInteger;
+    xPrecoUnitario := dbgProduto.DataSource.DataSet.FieldByName('Preço Uni.').AsFloat;
+    xPrecoTotal := xQuantidade * xPrecoUnitario;
+
+
+    dbgProduto.DataSource.DataSet.Edit;
+    dbgProduto.DataSource.DataSet.FieldByName('Preço Total').AsFloat := xPrecoTotal;
+//    dbgProduto.DataSource.DataSet.Post;
+  end;
+end;
+
+procedure TfrmVenda.edtCodigoChange(Sender: TObject);
+var
+   xCodigoReplace : string;
+begin
+   xCodigoReplace := TFuncoes.SoNumero(edtCodigo.Text);
+   edtCodigo.Text := xCodigoReplace;
 end;
 
 end.

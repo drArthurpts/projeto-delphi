@@ -1,6 +1,6 @@
 object frmVenda: TfrmVenda
-  Left = 260
-  Top = 192
+  Left = 245
+  Top = 207
   BorderIcons = [biSystemMenu]
   BorderStyle = bsSingle
   Caption = 'Venda'
@@ -511,6 +511,7 @@ object frmVenda: TfrmVenda
       Height = 21
       CharCase = ecUpperCase
       TabOrder = 2
+      OnChange = edtCodigoChange
       OnKeyDown = edtCodigoKeyDown
     end
     object edtNome: TEdit
@@ -616,6 +617,7 @@ object frmVenda: TfrmVenda
     object cdsProdutoQuant: TIntegerField
       DisplayWidth = 8
       FieldName = 'Quant.'
+      OnChange = cdsProdutoQuantChange
     end
     object cdsProdutoPreoTotal: TFloatField
       DisplayWidth = 12
