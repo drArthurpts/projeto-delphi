@@ -1,5 +1,5 @@
 object frmClientes: TfrmClientes
-  Left = 351
+  Left = 352
   Top = 230
   Width = 627
   Height = 357

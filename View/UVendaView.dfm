@@ -1,6 +1,6 @@
 object frmVenda: TfrmVenda
-  Left = 245
-  Top = 207
+  Left = 262
+  Top = 168
   BorderIcons = [biSystemMenu]
   BorderStyle = bsSingle
   Caption = 'Venda'
@@ -17,6 +17,7 @@ object frmVenda: TfrmVenda
   OnClose = FormClose
   OnCreate = FormCreate
   OnKeyDown = FormKeyDown
+  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object pnlBotoes: TPanel
@@ -69,6 +70,7 @@ object frmVenda: TfrmVenda
       Height = 25
       Caption = '&Consultar'
       TabOrder = 1
+      OnClick = btnConsultarClick
       Glyph.Data = {
         36030000424D3603000000000000360000002800000010000000100000000100
         18000000000000030000C40E0000C40E00000000000000000000FFFFFFFFFFFF
@@ -537,7 +539,7 @@ object frmVenda: TfrmVenda
       Width = 878
       Height = 109
       Align = alClient
-      DataSource = dtsProduto
+      DataSource = dtsProdutoVenda
       TabOrder = 0
       TitleFont.Charset = DEFAULT_CHARSET
       TitleFont.Color = clWindowText
@@ -548,12 +550,12 @@ object frmVenda: TfrmVenda
       OnKeyPress = dbgProdutoKeyPress
     end
   end
-  object dtsProduto: TDataSource
-    DataSet = cdsProduto
+  object dtsProdutoVenda: TDataSource
+    DataSet = cdsProdutos
     Left = 6
     Top = 145
   end
-  object cdsProduto: TClientDataSet
+  object cdsProdutos: TClientDataSet
     Active = True
     Aggregates = <>
     FieldDefs = <
@@ -586,8 +588,8 @@ object frmVenda: TfrmVenda
     IndexDefs = <>
     Params = <>
     StoreDefs = True
-    AfterPost = cdsProdutoAfterPost
-    AfterDelete = cdsProdutoAfterDelete
+    AfterPost = cdsProdutosAfterPost
+    AfterDelete = cdsProdutosAfterDelete
     Left = 40
     Top = 145
     Data = {
@@ -597,29 +599,29 @@ object frmVenda: TfrmVenda
       6E742E04000100000000000B507265E76F20546F74616C080004000000000010
       556E6964616465206465205361ED646101004900000001000557494454480200
       020014000000}
-    object cdsProdutoCodigo: TIntegerField
+    object cdsProdutosCodigo: TIntegerField
       DisplayWidth = 12
       FieldName = 'C'#243'digo'
     end
-    object cdsProdutoDesc: TStringField
+    object cdsProdutosDesc: TStringField
       DisplayWidth = 66
       FieldName = 'Descri'#231#227'o'
       Size = 100
     end
-    object cdsProdutoPreoUni: TFloatField
+    object cdsProdutosPreoUni: TFloatField
       DisplayWidth = 14
       FieldName = 'Pre'#231'o Uni.'
     end
-    object cdsProdutoUnidadedeSada: TStringField
+    object cdsProdutosUnidadedeSada: TStringField
       FieldName = 'Unidade de Sa'#237'da'
       Size = 2
     end
-    object cdsProdutoQuant: TIntegerField
+    object cdsProdutosQuant: TIntegerField
       DisplayWidth = 8
       FieldName = 'Quant.'
-      OnChange = cdsProdutoQuantChange
+      OnChange = cdsProdutosQuantChange
     end
-    object cdsProdutoPreoTotal: TFloatField
+    object cdsProdutosPreoTotal: TFloatField
       DisplayWidth = 12
       FieldName = 'Pre'#231'o Total'
     end

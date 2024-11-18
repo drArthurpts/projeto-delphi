@@ -12,10 +12,11 @@ type
       vID_Venda          : Integer;
       vID_Produto        : Integer;
       vQuantidade        : Integer;
-      vUnidadeSaida    : string;
+      vUnidadeSaida      : string;
       vValorDesconto     : Double;
       vValorUnitario     : Double;
       vTotalItem         : Double;
+      vDescricao_Produto : string;
 
    public
       constructor Create;
@@ -27,7 +28,8 @@ type
          property UnidadeSaida       : string read vUnidadeSaida write vUnidadeSaida;
          property ValorDesconto      : Double read vValorDesconto write vValorDesconto;
          property ValorUnitario      : Double read vValorUnitario write vValorUnitario;
-         property TotalItem          : Double read  vTotalItem write vTotalItem;
+         property TotalItem          : Double read vTotalItem write vTotalItem;
+         property Descricao_Produto  : string read vDescricao_Produto write vDescricao_Produto;
       end;
 
        TColVendaItem = class(TList)
@@ -49,6 +51,7 @@ begin
    Self.vValorDesconto     := 0;
    Self.vValorUnitario     := 0;
    Self.vTotalItem         := 0;
+   Self.vDescricao_Produto := EmptyStr;
 end;
 
 

@@ -8,12 +8,12 @@ type
    TVendaItemController = class
       public
          constructor Create;
-         function GravaVenda(pVendaItem : TVendaItem)  : Boolean;
+         function GravaVenda(pColVendaItem : TColVendaItem)  : Boolean;
 
 
          function PesquisaVenda(pVendaItem : String)   : TColVendaItem;
 
-         function BuscaVenda(pID : Integer)            : TVendaItem;
+         function BuscaVenda(pID : Integer)            : TColVendaItem;
          function RetornaCondicaoVenda(
                           pID : Integer)               : String;
          published
@@ -33,7 +33,7 @@ var
 
 { TVendaItemController }
 
-function TVendaItemController.BuscaVenda(pID: Integer): TVendaItem;
+function TVendaItemController.BuscaVenda(pID: Integer): TColVendaItem;
 var
    xVendaItemDAO : TVendaItemDAO;
 begin
@@ -44,7 +44,7 @@ begin
          xVendaItemDAO := TVendaItemDAO.Create(
                             TConexao.getInstance.getConn);
 
-         Result := xVendaItemDAO.Retorna(RetornaCondicaoVenda(pID));
+         Result := xVendaItemDAO.RetornaLista(RetornaCondicaoVenda(pID));
        finally
          if (xVendaItemDAO <> nil) then
             FreeAndNil(xVendaItemDAO);
@@ -73,7 +73,7 @@ begin
    Result := _instance;
 end;
 
-function TVendaItemController.GravaVenda(pVendaItem: TVendaItem): Boolean;
+function TVendaItemController.GravaVenda(pColVendaItem: TColVendaItem): Boolean;
 var
    xVendaItemDAO : TVendaItemDAO;
    xAux : Integer;
@@ -84,17 +84,10 @@ begin
          Result := False;
          xVendaItemDAO := TVendaItemDAO.Create(TConexao.get.getConn);
 
-         if pVendaItem.ID = 0 then
-         begin
-            xVendaItemDAO.Insere(pVendaItem);
-         end
-         else
-         begin
-            xVendaItemDAO.Atualiza(
-            pVendaItem, RetornaCondicaoVenda(pVendaItem.ID));
-         end;
-
+         if pColVendaItem.Retorna(0).ID = 0 then
+            xVendaItemDAO.InsereLista(pColVendaItem);
          TConexao.get.confirmaTransacao;
+
       finally
           if (xVendaItemDAO <> nil) then
                FreeAndNil(xVendaItemDAO);
@@ -120,7 +113,7 @@ var
    xChave : String;
 
 begin
-   xChave := 'ID';
+   xChave := 'ID_VENDA';
 
    Result :=
    'WHERE ' +                                                       #13+
