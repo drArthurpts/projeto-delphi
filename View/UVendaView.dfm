@@ -178,6 +178,7 @@ object frmVenda: TfrmVenda
       Caption = '&Cancelar'
       Enabled = False
       TabOrder = 4
+      OnClick = btnCancelarClick
       Glyph.Data = {
         36030000424D3603000000000000360000002800000010000000100000000100
         18000000000000030000C40E0000C40E00000000000000000000FFFFFF5B57D9
@@ -611,6 +612,7 @@ object frmVenda: TfrmVenda
     object cdsProdutosPreoUni: TFloatField
       DisplayWidth = 14
       FieldName = 'Pre'#231'o Uni.'
+      DisplayFormat = ' #,##0.00'
     end
     object cdsProdutosUnidadedeSada: TStringField
       FieldName = 'Unidade de Sa'#237'da'
@@ -624,6 +626,7 @@ object frmVenda: TfrmVenda
     object cdsProdutosPreoTotal: TFloatField
       DisplayWidth = 12
       FieldName = 'Pre'#231'o Total'
+      DisplayFormat = ' #,##0.00'
     end
   end
 end
