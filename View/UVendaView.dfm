@@ -549,6 +549,7 @@ object frmVenda: TfrmVenda
       TitleFont.Style = []
       OnKeyDown = dbgProdutoKeyDown
       OnKeyPress = dbgProdutoKeyPress
+      OnKeyUp = dbgProdutoKeyUp
     end
   end
   object dtsProdutoVenda: TDataSource

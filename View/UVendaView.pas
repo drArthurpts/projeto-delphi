@@ -71,6 +71,8 @@ type
     procedure btnConsultarClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure btnCancelarClick(Sender: TObject);
+    procedure dbgProdutoKeyUp(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
 
   private
     { Private declarations }
@@ -84,7 +86,6 @@ type
     vObjColVendaItem  : TColVendaItem;
 
     procedure CamposEnabled(pOpcao : Boolean);
-    procedure PercorreProduto (pProduto : TProduto);
     procedure LimpaTela;
     procedure DefineEstadoTela;
     procedure CarregaDadosTela;
@@ -98,6 +99,7 @@ type
     function ValidaCampos        : Boolean;
     function ValidaCamposItem    : Boolean;
     function CarregaCliente      : Boolean;
+    function ProdutoAdicionado   : Integer;
 
 
   public
@@ -527,8 +529,36 @@ begin
       xProdutoID := dbgProduto.DataSource.DataSet.FieldByName('Código').AsInteger;
       xProduto := TProdutoController.getInstancia.BuscaProduto(xProdutoID);
 
+       if ProdutoAdicionado(xProdutoID) then
+       begin
+         ShowMessage('O produto já foi adicionado ao grid!');
+         DataSet.Edit;
+         DataSet.FieldByName('Código').Clear;
+         DataSet.Post;
+         Exit;
+       end;
+
+
       if (xProduto = nil) then
          cdsProdutosCodigo.ReadOnly := False;
+      dbgProduto.DataSource.DataSet.First;
+      while not dbgProduto.DataSource.DataSet.Eof do
+      begin
+         if (dbgProduto.DataSource.DataSet.FieldByName('Código').AsInteger = xProdutoID) and
+         (dbgProduto.DataSource.DataSet.FieldByName('Descrição').AsString <> EmptyStr) then
+         begin
+            dbgProduto.DataSource.DataSet.Edit;
+            dbgProduto.DataSource.DataSet.FieldByName('Código').Clear;
+            dbgProduto.DataSource.DataSet.FieldByName('Quant.').AsFloat :=
+               dbgProduto.DataSource.DataSet.FieldByName('Quant.').AsFloat + 1;
+            dbgProduto.DataSource.DataSet.FieldByName('Preço Total').AsFloat :=
+               dbgProduto.DataSource.DataSet.FieldByName('Preço Uni.').AsFloat *
+               dbgProduto.DataSource.DataSet.FieldByName('Quant.').AsFloat;
+            dbgProduto.DataSource.DataSet.Post;
+            exit;
+         end;
+         dbgProduto.DataSource.DataSet.Next;
+      end;
 
       if xProduto <> nil then
       begin
@@ -539,10 +569,17 @@ begin
          dbgProduto.DataSource.DataSet.FieldByName('Quant.').AsFloat := 1;
          dbgProduto.DataSource.DataSet.FieldByName('Preço Total').AsFloat := xProduto.PrecoVenda;
          dbgProduto.DataSource.DataSet.Post;
-
          dbgProduto.SelectedIndex := 4;
-      end
+
+      end;
+      if dbgProduto.DataSource.DataSet.RecNo = dbgProduto.DataSource.DataSet.RecordCount then
+      begin
+         dbgProduto.DataSource.DataSet.Append;
+         dbgProduto.SelectedIndex := 0;
+      end;
    end;
+//   dbgProduto.DataSource.DataSet.Edit;
+//   dbgProduto.DataSource.DataSet.FieldByName('Código').Clear;
 end;
 
 procedure TfrmVenda.FormCreate(Sender: TObject);
@@ -591,17 +628,27 @@ end;
 procedure TfrmVenda.dbgProdutoKeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
-  if Key = VK_RETURN then
-  begin
-    if dbgProduto.DataSource.DataSet.RecNo = dbgProduto.DataSource.DataSet.RecordCount then
-    begin
-      dbgProduto.DataSource.DataSet.Append;
-      dbgProduto.SelectedIndex := 0;
-      vCriouRegistro := True;
-    end;
-
-    Key := 0;
-  end;
+//  if Key = VK_RETURN then
+//  begin
+//    if dbgProduto.DataSource.DataSet.RecNo = dbgProduto.DataSource.DataSet.RecordCount then
+//    begin
+//      dbgProduto.DataSource.DataSet.Append;
+//      dbgProduto.SelectedIndex := 0;
+//      vCriouRegistro := True;
+//    end;
+//    Key := 0;
+//  end;
+   if Key = VK_DELETE then
+   begin
+      if MessageDlg('Deseja realmente excluir esta linha?', mtConfirmation, [mbYes, mbNo], 0) = mrYes then
+      begin
+         if dbgProduto.DataSource.DataSet.RecordCount > 0 then
+         begin
+            dbgProduto.DataSource.DataSet.Delete;
+            AtualizarValorTotal;
+         end;
+       end;
+   end;
 end;
 
 procedure TfrmVenda.cdsProdutosAfterPost(DataSet: TDataSet);
@@ -618,7 +665,7 @@ procedure TfrmVenda.CalculaTotalVenda;
 var
    xTotalVenda, xPrecoTotal, xDesconto: Double;
 begin
-    dbgProduto.DataSource.DataSet.DisableControls; // Desabilita o controle visual para evitar piscadas
+    dbgProduto.DataSource.DataSet.DisableControls;
   try
     dbgProduto.DataSource.DataSet.First;
     while not dbgProduto.DataSource.DataSet.Eof do
@@ -892,41 +939,36 @@ begin
    DefineEstadoTela;
 end;
 
-procedure TfrmVenda.PercorreProduto(pProduto: TProduto);
-//var
-//   xEncontrado : Boolean;
+procedure TfrmVenda.dbgProdutoKeyUp(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
 begin
-//   xEncontrado := False;
-//   dbgProduto.DataSource.DataSet.First;
-//
-//   while not dbgProduto.DataSource.DataSet.Eof do
-//   begin
-//    if dbgProduto.DataSource.DataSet.FieldByName('Código').AsInteger = pProduto.Codigo then
-//    begin
-//      Encontrado := True;
-//      dbgProduto.DataSource.DataSet.Edit;
-//      dbgProduto.DataSource.DataSet.FieldByName('Quant.').AsFloat :=
-//        dbgProduto.DataSource.DataSet.FieldByName('Quant.').AsFloat + 1;
-//      dbgProduto.DataSource.DataSet.FieldByName('Preço Total').AsFloat :=
-//        dbgProduto.DataSource.DataSet.FieldByName('Quant.').AsFloat * pProduto.PrecoVenda;
-//      dbgProduto.DataSource.DataSet.Post;
-//      Break;
-//    end;
-//    dbgProduto.DataSource.DataSet.Next;
-//  end;
-//
-//  if not Encontrado then
-//  begin
-//    dbgProduto.DataSource.DataSet.Append;
-//    dbgProduto.DataSource.DataSet.FieldByName('Código').AsInteger := pProduto.Codigo;
-//    dbgProduto.DataSource.DataSet.FieldByName('Descrição').AsString := pProduto.Descricao;
-//    dbgProduto.DataSource.DataSet.FieldByName('Quant.').AsFloat := 1;
-//    dbgProduto.DataSource.DataSet.FieldByName('Preço Uni.').AsFloat := pProduto.PrecoVenda;
-//    dbgProduto.DataSource.DataSet.FieldByName('Preço Total').AsFloat := pProduto.PrecoVenda;
-//    dbgProduto.DataSource.DataSet.Post;
-//  end;
-//
-//  AtualizarValorTotalVenda;
+   Key := 0;
+end;
+
+
+function TfrmVenda.ProdutoAdicionado: Integer;
+var
+  CurrentBookmark: TBookmark;
+  DataSet: TDataSet;
+begin
+  Result := False;
+  DataSet := dbgProduto.DataSource.DataSet;
+  CurrentBookmark := DataSet.GetBookmark;
+  try
+    DataSet.First;
+    while not DataSet.Eof do
+    begin
+      if (DataSet.FieldByName('Código').AsInteger = Codigo) then
+      begin
+        Result := True;
+        Break;
+      end;
+      DataSet.Next;
+    end;
+  finally
+    DataSet.GotoBookmark(CurrentBookmark);
+    DataSet.FreeBookmark(CurrentBookmark);
+  end;
 end;
 
 end.
