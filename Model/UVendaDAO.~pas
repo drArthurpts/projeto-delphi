@@ -60,6 +60,7 @@ function TVendaDAO.RetornaColecaoVenda(pDataIni, pDataFim: String;
   pCodVenda: Integer): TColVenda;
 var
    xQryColVenda: TSQLQuery;
+   vConexao: TSQLConnection;
 begin
    try
       try
