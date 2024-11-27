@@ -15,6 +15,7 @@ type
       vTotalAcrescimo : Double;
       vTotalDesconto  : Double;
       vTotalVenda     : Double;
+      vNomeCliente    : string;
 
    public
       constructor Create;
@@ -26,6 +27,7 @@ type
          property TotalAcrescimo  : Double read vTotalAcrescimo write vTotalAcrescimo;
          property TotalDesconto   : Double read vTotalDesconto write vTotalDesconto;
          property TotalVenda      : Double read vTotalVenda write vTotalVenda;
+         property NomeCliente     : String read vNomeCliente write vNomeCliente;
 
       end;
 

@@ -11,7 +11,8 @@ type
          function GravaVenda(pVenda : TVenda)       : Boolean;
 
 
-         function PesquisaVenda(pVenda : String)   : TColVenda;
+         function PesquisaVenda(pCodigoVenda : Integer;
+                  pDataInicio : String; pDataFim : String) : TColVenda;
 
          function BuscaVenda(pID : Integer)         : TVenda;
          function RetornaCondicaoVenda(
@@ -111,34 +112,33 @@ begin
 end;
 
 
-function TVendaController.PesquisaVenda(pVenda: String): TColVenda;
+function TVendaController.PesquisaVenda(pCodigoVenda: Integer;
+  pDataInicio : String ; pDataFim: String): TColVenda;
 var
    xVendaDAO : TVendaDAO;
    xCondicao : string;
 begin
    try
-       try
+      try
          Result := nil;
 
-         xVendaDAO := TVendaDAO.Create(TConexao.get.getConn);
+         xVendaDAO :=
+            TVendaDAO.Create(TConexao.getInstance.getConn);
 
-         xCondicao :=
-            IfThen(pVenda <> EmptyStr,
-               'WHERE  ' + #13+
-               '    (ID LIKE ''%' + pVenda + '%'') '+ #13
-               + 'ORDER BY ID', EmptyStr);
+         xVendaDAO.RetornaColecaoVenda(pDataInicio, pDataFim, 0);
 
 
          Result := xVendaDAO.RetornaLista(xCondicao);
-       finally
-          if (xVendaDAO <> nil) then
-              FreeAndNil(xVendaDAO);
-       end;
+
+      finally
+         if (xVendaDAO <> nil) then
+            FreeAndNil(xVendaDAO);
+      end;
    except
       on E : Exception do
       begin
-         Raise Exception.Create(
-            'Falha ao buscar os dados da Venda [Controller]: ' + #13 +
+         raise Exception.Create(
+            'Falha ao pesquisar dados da venda. [Controller]'#13 +
             e.Message);
       end;
    end;

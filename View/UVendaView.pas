@@ -73,6 +73,7 @@ type
     procedure btnCancelarClick(Sender: TObject);
     procedure dbgProdutoKeyUp(Sender: TObject; var Key: Word;
       Shift: TShiftState);
+    procedure btnPesquisarClick(Sender: TObject);
 
   private
     { Private declarations }
@@ -99,8 +100,6 @@ type
     function ValidaCampos        : Boolean;
     function ValidaCamposItem    : Boolean;
     function CarregaCliente      : Boolean;
-    function ProdutoAdicionado   : Integer;
-
 
   public
     { Public declarations }
@@ -115,7 +114,7 @@ var
 implementation
 
 uses
-   uMessageUtil,Types, UVendaDAO;
+   uMessageUtil,Types, UVendaDAO, UVendaPesqView;
 {$R *.dfm}
 
 
@@ -155,6 +154,7 @@ begin
    btnConsultar.Enabled := (vEstadoTela in [etPadrao]);
    btnCancelar.Enabled :=
       vEstadoTela in [etIncluir,etConsultar];
+    btnPesquisar.Enabled := (vEstadoTela in [etPadrao]);
 
    case vEstadoTela of
       etPadrao:
@@ -210,6 +210,25 @@ begin
 
             if edtNumVenda.CanFocus then
                edtNumVenda.SetFocus;
+         end;
+      end;
+      etPesquisar:
+      begin
+         if (frmVendaPesqView = nil) then
+         frmVendaPesqView := TTfrmVendaPesqView.Create(Application);
+
+         frmVendaPesqView.ShowModal;
+
+         if (frmVendaPesqView.mVendaID <> 0) then
+         begin
+            edtNumVenda.Text := IntToStr(frmVendaPesqView.mVendaID);
+            vEstadoTela := etConsultar;
+            ProcessaConsulta;
+         end
+         else
+         begin
+            vEstadoTela := etPadrao;
+            DefineEstadoTela;
          end;
       end;
 end;
@@ -512,49 +531,55 @@ var
    xProduto    : TProduto;
    xEnter      : Integer;
 begin
+
    if Key = #13 then
    begin
+      if (dbgProduto.SelectedIndex = 4)then
+      begin
+         dbgProduto.DataSource.DataSet.Append;
+         dbgProduto.SelectedIndex := 0;
+         Exit;
+      end;
+
       if (dbgProduto.DataSource.DataSet.FieldByName('Código').AsInteger = 0) and
-         (vCriouRegistro = false) then
+         (dbgProduto.SelectedIndex = 0) then
       begin
          if not Assigned(frmProdutoPesqView) then
             frmProdutoPesqView := TfrmProdutoPesqView.Create(Application);
 
          frmProdutoPesqView.ShowModal;
          exit;
-      end
-      else
-         vCriouRegistro := false;
+      end;
 
       xProdutoID := dbgProduto.DataSource.DataSet.FieldByName('Código').AsInteger;
       xProduto := TProdutoController.getInstancia.BuscaProduto(xProdutoID);
 
-       if ProdutoAdicionado(xProdutoID) then
-       begin
-         ShowMessage('O produto já foi adicionado ao grid!');
-         DataSet.Edit;
-         DataSet.FieldByName('Código').Clear;
-         DataSet.Post;
-         Exit;
-       end;
-
-
       if (xProduto = nil) then
          cdsProdutosCodigo.ReadOnly := False;
+
       dbgProduto.DataSource.DataSet.First;
+      
       while not dbgProduto.DataSource.DataSet.Eof do
       begin
          if (dbgProduto.DataSource.DataSet.FieldByName('Código').AsInteger = xProdutoID) and
-         (dbgProduto.DataSource.DataSet.FieldByName('Descrição').AsString <> EmptyStr) then
+            (dbgProduto.DataSource.DataSet.FieldByName('Descrição').AsString <> EmptyStr) then
          begin
             dbgProduto.DataSource.DataSet.Edit;
-            dbgProduto.DataSource.DataSet.FieldByName('Código').Clear;
             dbgProduto.DataSource.DataSet.FieldByName('Quant.').AsFloat :=
                dbgProduto.DataSource.DataSet.FieldByName('Quant.').AsFloat + 1;
             dbgProduto.DataSource.DataSet.FieldByName('Preço Total').AsFloat :=
                dbgProduto.DataSource.DataSet.FieldByName('Preço Uni.').AsFloat *
                dbgProduto.DataSource.DataSet.FieldByName('Quant.').AsFloat;
             dbgProduto.DataSource.DataSet.Post;
+
+            dbgProduto.DataSource.DataSet.Last;
+
+            if dbgProduto.DataSource.DataSet.FieldByName('Descrição').AsString = '' then
+            begin
+                dbgProduto.DataSource.DataSet.Edit;
+                dbgProduto.DataSource.DataSet.FieldByName('Código').Clear;
+            end;
+
             exit;
          end;
          dbgProduto.DataSource.DataSet.Next;
@@ -570,16 +595,9 @@ begin
          dbgProduto.DataSource.DataSet.FieldByName('Preço Total').AsFloat := xProduto.PrecoVenda;
          dbgProduto.DataSource.DataSet.Post;
          dbgProduto.SelectedIndex := 4;
+      end;
 
-      end;
-      if dbgProduto.DataSource.DataSet.RecNo = dbgProduto.DataSource.DataSet.RecordCount then
-      begin
-         dbgProduto.DataSource.DataSet.Append;
-         dbgProduto.SelectedIndex := 0;
-      end;
    end;
-//   dbgProduto.DataSource.DataSet.Edit;
-//   dbgProduto.DataSource.DataSet.FieldByName('Código').Clear;
 end;
 
 procedure TfrmVenda.FormCreate(Sender: TObject);
@@ -946,29 +964,10 @@ begin
 end;
 
 
-function TfrmVenda.ProdutoAdicionado: Integer;
-var
-  CurrentBookmark: TBookmark;
-  DataSet: TDataSet;
+procedure TfrmVenda.btnPesquisarClick(Sender: TObject);
 begin
-  Result := False;
-  DataSet := dbgProduto.DataSource.DataSet;
-  CurrentBookmark := DataSet.GetBookmark;
-  try
-    DataSet.First;
-    while not DataSet.Eof do
-    begin
-      if (DataSet.FieldByName('Código').AsInteger = Codigo) then
-      begin
-        Result := True;
-        Break;
-      end;
-      DataSet.Next;
-    end;
-  finally
-    DataSet.GotoBookmark(CurrentBookmark);
-    DataSet.FreeBookmark(CurrentBookmark);
-  end;
+   vEstadoTela := etPesquisar;
+   DefineEstadoTela;
 end;
 
 end.

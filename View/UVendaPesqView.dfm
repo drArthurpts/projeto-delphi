@@ -1,6 +1,6 @@
 object TfrmVendaPesqView: TTfrmVendaPesqView
-  Left = 366
-  Top = 241
+  Left = 378
+  Top = 279
   Width = 536
   Height = 297
   Caption = 'Pesquisa de Venda'
@@ -39,28 +39,28 @@ object TfrmVendaPesqView: TTfrmVendaPesqView
     object lblDataInicio: TLabel
       Left = 134
       Top = 16
-      Width = 53
+      Width = 54
       Height = 13
       Caption = 'Data In'#237'cio'
     end
     object Label1: TLabel
       Left = 210
       Top = 34
-      Width = 16
+      Width = 54
       Height = 13
       Caption = 'At'#233
     end
     object Label2: TLabel
       Left = 235
       Top = 16
-      Width = 42
+      Width = 54
       Height = 13
       Caption = 'Data Fim'
     end
     object edtCodigo: TEdit
       Left = 43
       Top = 29
-      Width = 70
+      Width = 54
       Height = 21
       CharCase = ecUpperCase
       TabOrder = 0
@@ -68,10 +68,11 @@ object TfrmVendaPesqView: TTfrmVendaPesqView
     object btnFiltrar: TBitBtn
       Left = 408
       Top = 25
-      Width = 75
+      Width = 54
       Height = 25
       Caption = '&Filtrar'
       TabOrder = 1
+      OnClick = btnFiltrarClick
       Glyph.Data = {
         36030000424D3603000000000000360000002800000010000000100000000100
         18000000000000030000C40E0000C40E00000000000000000000FFFFFFFFFFFF
@@ -100,20 +101,20 @@ object TfrmVendaPesqView: TTfrmVendaPesqView
         29E0AA43E2AF52E4AF54F9ECD3F4DAACEFCB88F0CA7DEFC56DEFC56CF0C56BF4
         CC7AF4CD7BF0C56DEFC56CEFC66DF0CA7EF2CD8AF4DBADF9ECD3}
     end
-    object edtData: TMaskEdit
+    object edtDataInicio: TMaskEdit
       Left = 134
       Top = 29
-      Width = 71
+      Width = 54
       Height = 21
       EditMask = '!99/99/9999;1;_'
       MaxLength = 10
       TabOrder = 2
       Text = '  /  /    '
     end
-    object MaskEdit1: TMaskEdit
+    object edtDataFim: TMaskEdit
       Left = 235
       Top = 29
-      Width = 71
+      Width = 54
       Height = 21
       EditMask = '!99/99/9999;1;_'
       MaxLength = 10
@@ -141,6 +142,8 @@ object TfrmVendaPesqView: TTfrmVendaPesqView
       TitleFont.Height = -11
       TitleFont.Name = 'MS Sans Serif'
       TitleFont.Style = []
+      OnDblClick = dbgVendaDblClick
+      OnKeyDown = dbgVendaKeyDown
     end
     object pnlBotoes: TPanel
       Left = 2
@@ -156,6 +159,7 @@ object TfrmVendaPesqView: TTfrmVendaPesqView
         Height = 25
         Caption = '&Confirmar'
         TabOrder = 0
+        OnClick = btnConfirmarClick
         Glyph.Data = {
           36030000424D3603000000000000360000002800000010000000100000000100
           18000000000000030000C40E0000C40E00000000000000000000FFFFFFFFFFFF
@@ -191,6 +195,7 @@ object TfrmVendaPesqView: TTfrmVendaPesqView
         Height = 25
         Caption = '&Limpar'
         TabOrder = 1
+        OnClick = btnLimparClick
         Glyph.Data = {
           36030000424D3603000000000000360000002800000010000000100000000100
           18000000000000030000C40E0000C40E00000000000000000000FFFFFFFFFFFF
@@ -226,6 +231,7 @@ object TfrmVendaPesqView: TTfrmVendaPesqView
         Height = 25
         Caption = '&Sair'
         TabOrder = 2
+        OnClick = btnSairClick
         Glyph.Data = {
           36030000424D3603000000000000360000002800000010000000100000000100
           18000000000000030000C40E0000C40E00000000000000000000FFFFFFFFFFFF
@@ -264,13 +270,33 @@ object TfrmVendaPesqView: TTfrmVendaPesqView
   object cdsVenda: TClientDataSet
     Active = True
     Aggregates = <>
+    FieldDefs = <
+      item
+        Name = 'ID'
+        DataType = ftInteger
+      end
+      item
+        Name = 'NomeCliente'
+        DataType = ftString
+        Size = 50
+      end
+      item
+        Name = 'Data'
+        DataType = ftDate
+      end
+      item
+        Name = 'Valor'
+        DataType = ftFloat
+      end>
+    IndexDefs = <>
     Params = <>
+    StoreDefs = True
     Left = 42
     Top = 130
     Data = {
       600000009619E0BD010000001800000004000000000003000000600002494404
       000100000000000B4E6F6D65436C69656E746501004900000001000557494454
-      48020002003200044461746104000100000000000556616C6F72080004000000
+      48020002003200044461746104000600000000000556616C6F72080004000000
       00000000}
     object cdsVendaID: TIntegerField
       FieldName = 'ID'
@@ -279,7 +305,7 @@ object TfrmVendaPesqView: TTfrmVendaPesqView
       FieldName = 'NomeCliente'
       Size = 50
     end
-    object cdsVendaData: TIntegerField
+    object cdsVendaData: TDateField
       FieldName = 'Data'
     end
     object cdsVendaValor: TFloatField
