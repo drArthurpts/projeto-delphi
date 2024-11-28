@@ -31,6 +31,7 @@ type
     cdsVendaNomeCliente: TStringField;
     cdsVendaValor: TFloatField;
     cdsVendaData: TDateField;
+    cdsVendaDesconto: TFloatField;
     procedure FormKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure btnConfirmarClick(Sender: TObject);
@@ -153,8 +154,9 @@ begin
             begin
                cdsVenda.Append;
                cdsVendaID.Value          := xListaVenda.Retorna(xAux).ID;
-               cdsVendaNomeCliente.Text := xListaVenda.Retorna(xAux).NomeCliente;
+               cdsVendaNomeCliente.Text  := xListaVenda.Retorna(xAux).NomeCliente;
                cdsVendaData.Value        := xListaVenda.Retorna(xAux).DataVenda;
+               cdsVendaDesconto.Value    := xListaVenda.Retorna(xAux).TotalAcrescimo;
                cdsVendaValor.Value       := xListaVenda.Retorna(xAux).TotalVenda;
                cdsVenda.Post;
             end;

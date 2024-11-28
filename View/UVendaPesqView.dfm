@@ -1,7 +1,7 @@
 object TfrmVendaPesqView: TTfrmVendaPesqView
   Left = 378
   Top = 279
-  Width = 536
+  Width = 601
   Height = 297
   Caption = 'Pesquisa de Venda'
   Color = clBtnFace
@@ -17,14 +17,14 @@ object TfrmVendaPesqView: TTfrmVendaPesqView
   object StatusBar1: TStatusBar
     Left = 0
     Top = 239
-    Width = 520
+    Width = 585
     Height = 19
     Panels = <>
   end
   object GroupBox1: TGroupBox
     Left = 0
     Top = 0
-    Width = 520
+    Width = 585
     Height = 73
     Align = alTop
     Caption = 'Filtrar'
@@ -125,7 +125,7 @@ object TfrmVendaPesqView: TTfrmVendaPesqView
   object GroupBox2: TGroupBox
     Left = 0
     Top = 73
-    Width = 520
+    Width = 585
     Height = 166
     Align = alClient
     Caption = 'Resultado Busca'
@@ -133,7 +133,7 @@ object TfrmVendaPesqView: TTfrmVendaPesqView
     object dbgVenda: TDBGrid
       Left = 2
       Top = 13
-      Width = 516
+      Width = 639
       Height = 98
       DataSource = dtsVenda
       TabOrder = 0
@@ -148,7 +148,7 @@ object TfrmVendaPesqView: TTfrmVendaPesqView
     object pnlBotoes: TPanel
       Left = 2
       Top = 112
-      Width = 516
+      Width = 581
       Height = 52
       Align = alBottom
       TabOrder = 1
@@ -287,6 +287,10 @@ object TfrmVendaPesqView: TTfrmVendaPesqView
       item
         Name = 'Valor'
         DataType = ftFloat
+      end
+      item
+        Name = 'Desconto'
+        DataType = ftFloat
       end>
     IndexDefs = <>
     Params = <>
@@ -294,10 +298,10 @@ object TfrmVendaPesqView: TTfrmVendaPesqView
     Left = 42
     Top = 130
     Data = {
-      600000009619E0BD010000001800000004000000000003000000600002494404
+      710000009619E0BD010000001800000005000000000003000000710002494404
       000100000000000B4E6F6D65436C69656E746501004900000001000557494454
       48020002003200044461746104000600000000000556616C6F72080004000000
-      00000000}
+      000008446573636F6E746F08000400000000000000}
     object cdsVendaID: TIntegerField
       FieldName = 'ID'
     end
@@ -310,6 +314,9 @@ object TfrmVendaPesqView: TTfrmVendaPesqView
     end
     object cdsVendaValor: TFloatField
       FieldName = 'Valor'
+    end
+    object cdsVendaDesconto: TFloatField
+      FieldName = 'Desconto'
     end
   end
 end

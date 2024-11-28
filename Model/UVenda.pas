@@ -47,6 +47,7 @@ begin
     Self.vTotalAcrescimo := 0;
     Self.vTotalDesconto  := 0;
     Self.TotalVenda      := 0;
+    Self.vNomeCliente    := EmptyStr;
 end;
 
 { TColVenda }

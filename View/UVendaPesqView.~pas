@@ -153,7 +153,7 @@ begin
             begin
                cdsVenda.Append;
                cdsVendaID.Value          := xListaVenda.Retorna(xAux).ID;
-               cdsVendaNomeCliente.Value := xListaVenda.Retorna(xAux).NomeCliente;
+               cdsVendaNomeCliente.Text := xListaVenda.Retorna(xAux).NomeCliente;
                cdsVendaData.Value        := xListaVenda.Retorna(xAux).DataVenda;
                cdsVendaValor.Value       := xListaVenda.Retorna(xAux).TotalVenda;
                cdsVenda.Post;
