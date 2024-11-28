@@ -33,6 +33,13 @@ type
     cdsVendaData: TDateField;
     procedure FormKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
+    procedure btnConfirmarClick(Sender: TObject);
+    procedure btnLimparClick(Sender: TObject);
+    procedure btnSairClick(Sender: TObject);
+    procedure dbgVendaKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure dbgVendaDblClick(Sender: TObject);
+    procedure btnFiltrarClick(Sender: TObject);
   private
     { Private declarations }
     procedure LimparTela;
@@ -40,8 +47,9 @@ type
     procedure ProcessaConfirmacao;
   public
     { Public declarations }
-    mVendaID : Integer;
-    vKey     : Word;
+    mVendaID     : Integer;
+    mNomeCliente : string;
+    vKey         : Word;
   end;
 
 var
@@ -104,6 +112,7 @@ begin
    if (not cdsVenda.IsEmpty) then
    begin
       mVendaID         := cdsVendaID.Value;
+      mNomeCliente     := cdsVendaNomeCliente.EditMask;
       Self.ModalResult := mrOk;
       LimparTela;
       Close;
@@ -181,4 +190,41 @@ begin
    end;
 end;
 
+procedure TTfrmVendaPesqView.btnConfirmarClick(Sender: TObject);
+begin
+   ProcessaConfirmacao;
+end;
+
+procedure TTfrmVendaPesqView.btnLimparClick(Sender: TObject);
+begin
+   mVendaID := 0;
+   mNomeCliente := EmptyStr;
+   LimparTela;
+end;
+
+procedure TTfrmVendaPesqView.btnSairClick(Sender: TObject);
+begin
+   LimparTela;
+   Close;
+end;
+
+procedure TTfrmVendaPesqView.dbgVendaKeyDown(Sender: TObject;
+  var Key: Word; Shift: TShiftState);
+begin
+   if (Key = VK_RETURN) and
+      (btnConfirmar.CanFocus) then
+       btnConfirmar.SetFocus;
+end;
+
+procedure TTfrmVendaPesqView.dbgVendaDblClick(Sender: TObject);
+begin
+   ProcessaConfirmacao;
+end;
+
+procedure TTfrmVendaPesqView.btnFiltrarClick(Sender: TObject);
+begin
+   mVendaID := 0;
+   mNomeCliente := EmptyStr;
+   ProcessaPesquisa;
+end;
 end.
