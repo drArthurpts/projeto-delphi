@@ -29,9 +29,6 @@ uses UVendaDAO;
 var
    _instance : TVendaController;
 
-
-
-
 { TVendaController }
 
 function TVendaController.BuscaVenda(pID: Integer): TVenda;
@@ -77,37 +74,31 @@ end;
 function TVendaController.GravaVenda(pVenda: TVenda): Boolean;
 var
    xVendaDAO : TVendaDAO;
-   xAux : Integer;
 begin
    try
       try
          TConexao.get.iniciaTransacao;
          Result := False;
+         xVendaDAO := nil;
+
          xVendaDAO := TVendaDAO.Create(TConexao.get.getConn);
 
-         if pVenda.ID = 0 then
-         begin
+         if (pVenda.ID = 0) then
             xVendaDAO.Insere(pVenda);
-         end
-         else
-         begin
-            xVendaDAO.Atualiza(
-            pVenda, RetornaCondicaoVenda(pVenda.ID));
-         end;
 
          TConexao.get.confirmaTransacao;
       finally
-          if (xVendaDAO <> nil) then
-               FreeAndNil(xVendaDAO);
+         if (xVendaDAO <> nil) then
+            FreeAndNil(xVendaDAO);
       end;
    except
-      on E : Exception do
-      begin
+       on E: Exception do
+       begin
          TConexao.get.cancelaTransacao;
          Raise Exception.Create(
-         'Falha ao gravar os dados da Venda [Controller]. ' + #13 +
-         e.Message);
-      end;
+            'Falha ao gravar dados da venda. [Controller]'+ #13 +
+            e.Message);
+       end;
    end;
 end;
 
@@ -116,20 +107,22 @@ function TVendaController.PesquisaVenda(pCodigoVenda: Integer;
   pDataInicio : String ; pDataFim: String): TColVenda;
 var
    xVendaDAO : TVendaDAO;
+   xListaVendaC : TColVenda;
    xCondicao : string;
+   xVenda    : TVenda;
 begin
    try
       try
          Result := nil;
 
-         xVendaDAO :=
-            TVendaDAO.Create(TConexao.getInstance.getConn);
+         xListaVendaC := nil;
+         xListaVendaC := TColVenda.Create;
 
-         xVendaDAO.RetornaColecaoVenda(pDataInicio, pDataFim, 0);
+         xVendaDAO := TVendaDAO.Create(TConexao.getInstance.getConn);
+         xListaVendaC :=
+            xVendaDAO.RetornaColecaoVenda(pDataInicio, pDataFim, pCodigoVenda);
 
-
-         Result := xVendaDAO.RetornaLista(xCondicao);
-
+         Result := xListaVendaC;
       finally
          if (xVendaDAO <> nil) then
             FreeAndNil(xVendaDAO);
@@ -144,6 +137,7 @@ begin
    end;
 end;
 
+
 function TVendaController.RetornaCondicaoVenda(pID: Integer): String;
 var
    xChave : String;
@@ -152,7 +146,7 @@ begin
    xChave := 'ID';
 
    Result :=
-   'WHERE ' +                                                       #13+
+   'WHERE ' +                                               #13+
    '      ' + xChave+ ' = ' + QuotedStr(IntToStr(pID)) + ' '#13;
 end;
 

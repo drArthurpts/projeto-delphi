@@ -3,7 +3,7 @@ unit UVendaDAO;
 interface
 
 uses SqlExpr, DBXpress, SimpleDS, Db , Classes , SysUtils, DateUtils,
-     StdCtrls, UGenericDAO, UVenda, UConexao,UPessoaController;
+     StdCtrls, UGenericDAO, UVenda, UConexao,UPessoaController,UPessoa;
 
 
 type
@@ -57,7 +57,7 @@ end;
 function TVendaDAO.RetornaColecaoVenda(pDataIni, pDataFim: String;
   pCodVenda: Integer): TColVenda;
 var
-   xQryColVenda: TSQLQuery;
+   xQryColVenda : TSQLQuery;
    xVenda       : TVenda;
    xColVenda    : TColVenda;
 begin
@@ -65,54 +65,50 @@ begin
       try
          xColVenda := nil;
          xColVenda := TColVenda.Create;
+
          xVenda := nil;
+
          xQryColVenda := nil;
-         xQryColVenda := TSQLQuery.Create(nil);
+         xQryColVenda := TSQLQuery.Create(Nil);
          xQryColVenda.SQLConnection := vConexao;
          xQryColVenda.Close;
          xQryColVenda.SQL.Clear;
-         xQryColVenda.SQL.Text := 
-            'SELECT * FROM VENDA                               ' +
-            ' WHERE (DATAVENDA BETWEEN :DATAINIC AND :DATAFIM )';
+         xQryColVenda.SQL.Text :=
+            'SELECT * FROM VENDA                               '+
+            ' WHERE DATAVENDA BETWEEN :DATAINIC AND :DATAFIM ';
+
 
          if pCodVenda > 0 then
          begin
             xQryColVenda.SQL.Text := xQryColVenda.SQL.Text +
             '   AND VENDA.ID = :CODVENDA';
-            xQryColVenda.ParamByName('CODVENDA').AsString := IntToStr(pCodVenda);
+            xQryColVenda.ParamByName('CODVENDA').AsString:= IntToStr(pCodVenda);
          end;
 
          xQryColVenda.ParamByName('DATAINIC').AsDate := StrToDate(pDataIni);
          xQryColVenda.ParamByName('DATAFIM').AsDate := StrToDate(pDataFim);
 
-         if pCodVenda > 0 then
-            xQryColVenda.ParamByName('CODVENDA').AsInteger := pCodVenda;
-
          xQryColVenda.Open;
 
-         while not xQryColVenda.Eof do
+         if not xQryColVenda.IsEmpty then
          begin
-            xVenda := TVenda.Create;
-            xVenda.ID := xQryColVenda.FieldByName('ID').AsInteger;
-            xVenda.DataVenda := xQryColVenda.FieldByName('DataVenda').AsDateTime;
-            xVenda.TotalAcrescimo := xQryColVenda.FieldByName('TotalAcrescimo').AsFloat;
-            xVenda.TotalVenda := xQryColVenda.FieldByName('TotalVenda').AsFloat;
-
-            // Busca o NomeCliente pelo ClienteID usando o TPessoaController
-            if not xQryColVenda.FieldByName('ClienteID').IsNull then
-               xVenda.NomeCliente := TPessoaController.getInstancia.(
-                  xQryColVenda.FieldByName('ClienteID').AsInteger
-               );
-
-            xColVenda.Add(xVenda);
-            xQryColVenda.Next;
+            xQryColVenda.First;
+            while not xQryColVenda.Eof do
+            begin
+               xVenda := TVenda.Create;
+               xVenda.ID          := xQryColVenda.FieldByName('ID').AsInteger;
+               xVenda.DataVenda   := (xQryColVenda.FieldByName('DATAVENDA').AsDateTime);
+               xVenda.TotalVenda  := xQryColVenda.FieldByName('TOTALVENDA').AsFloat;
+               xVenda.ID_Cliente  := xQryColVenda.FieldByName('ID_CLIENTE').AsInteger;
+               xColVenda.Adiciona(xVenda);
+               xQryColVenda.Next;
+            end;
          end;
-
-         Result := xColVenda;
-
+        Result := xColVenda;
       except
          on E: Exception do
-            raise Exception.Create('Falha ao buscar vendas no banco de dados: ' + E.Message);
+            raise Exception.Create('Falha ao buscar vendas no banco de dados.' +
+               E.Message);
       end;
    finally
       if xQryColVenda <> nil then

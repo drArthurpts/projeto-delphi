@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, ExtCtrls, ComCtrls, StdCtrls, Grids, DBGrids, Mask, Buttons, DB,
-  DBClient, uMessageUtil, UVenda, UClassFuncoes, UVendaController;
+  DBClient, uMessageUtil, UVenda, UClassFuncoes, UVendaController, UPessoaController;
 
 type
   TTfrmVendaPesqView = class(TForm)
@@ -28,9 +28,10 @@ type
     dtsVenda: TDataSource;
     cdsVenda: TClientDataSet;
     cdsVendaID: TIntegerField;
-    cdsVendaNomeCliente: TStringField;
     cdsVendaValor: TFloatField;
     cdsVendaData: TDateField;
+    cdsVendaDesconto: TFloatField;
+    cdsVendaNomeCliente: TStringField;
     procedure FormKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure btnConfirmarClick(Sender: TObject);
@@ -134,7 +135,11 @@ var
 begin
    try
       try
+         xID_Venda := 0;
          xListaVenda := TColVenda.Create;
+
+         if (edtCodigo.Text <> EmptyStr) then
+            xID_Venda := StrToInt(edtCodigo.Text);
 
          if (TFuncoes.SoNumero(edtDataInicio.Text) = EmptyStr) then
             edtDataInicio.Text := '01/01/1999';
@@ -142,7 +147,7 @@ begin
          if (TFuncoes.SoNumero(edtDataFim.Text) = EmptyStr) then
             edtDataFim.Text := '01/01/2999';
 
-             xListaVenda :=
+         xListaVenda :=
                TVendaController.getInstancia.PesquisaVenda(xID_Venda, edtDataInicio.Text, edtDataFim.Text);
 
          cdsVenda.EmptyDataSet;
@@ -151,15 +156,20 @@ begin
          begin
             for xAux := 0 to pred(xListaVenda.Count) do
             begin
+               if xListaVenda.Retorna(xAux).ID <> 0 then
+               begin
                cdsVenda.Append;
-               cdsVendaID.Value          := xListaVenda.Retorna(xAux).ID;
-               cdsVendaNomeCliente.Text := xListaVenda.Retorna(xAux).NomeCliente;
-               cdsVendaData.Value        := xListaVenda.Retorna(xAux).DataVenda;
-               cdsVendaValor.Value       := xListaVenda.Retorna(xAux).TotalVenda;
+               cdsVendaID.Value             := xListaVenda.Retorna(xAux).ID;
+               cdsVendaNomeCliente.Text     := TPessoaController.getInstancia.BuscaPessoa(xListaVenda.Retorna(xAux).ID_Cliente).Nome;
+//               ShowMessage('NomeCliente: ' + xListaVenda.Retorna(xAux).NomeCliente);
+//               cdsVendaNomeCliente.Text     := xListaVenda.Retorna(xAux).NomeCliente;
+               cdsVendaData.Value           := xListaVenda.Retorna(xAux).DataVenda;
+               cdsVendaDesconto.Value       := xListaVenda.Retorna(xAux).TotalAcrescimo;
+               cdsVendaValor.Value          := xListaVenda.Retorna(xAux).TotalVenda;
                cdsVenda.Post;
+               end;
             end;
          end;
-
          if (cdsVenda.RecordCount = 0) then
          begin
             if edtDataInicio.CanFocus then
@@ -171,11 +181,9 @@ begin
          else
          begin
             cdsVenda.First;
-
             if dbgVenda.CanFocus then
                dbgVenda.SetFocus;
          end;
-
       finally
          if (xListaVenda <> nil) then
             FreeAndNil(xListaVenda);

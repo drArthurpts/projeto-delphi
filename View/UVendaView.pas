@@ -169,7 +169,12 @@ begin
          (frmVenda.Active) and
          (frmVenda.CanFocus) then
          btnIncluir.SetFocus;
-
+         cmbPagamento.Items.Clear;
+         cmbPagamento.Enabled := True;
+         cmbPagamento.Items.Add('Cartão de crédito');
+         cmbPagamento.Items.Add('Cartão de Débito');
+         cmbPagamento.Items.Add('Dinheiro');
+         cmbPagamento.Items.Add('Pix');
          Application.ProcessMessages;
       end;
 
@@ -255,8 +260,6 @@ begin
          (Components[i] as TNumEdit).Text := EmptyStr;
 
       cdsProdutos.EmptyDataSet;
-
-
    end;
    if (vObjVenda <> nil) then
    FreeAndNil(vObjVenda);
@@ -358,7 +361,7 @@ begin
             Raise Exception.Create(
                'Falha ao incluir os dados da venda[View]: '#13 +
                e.Message);
-         end;
+          end;
       end;
    finally
       if vObjVenda <> nil then
@@ -646,16 +649,6 @@ end;
 procedure TfrmVenda.dbgProdutoKeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
-//  if Key = VK_RETURN then
-//  begin
-//    if dbgProduto.DataSource.DataSet.RecNo = dbgProduto.DataSource.DataSet.RecordCount then
-//    begin
-//      dbgProduto.DataSource.DataSet.Append;
-//      dbgProduto.SelectedIndex := 0;
-//      vCriouRegistro := True;
-//    end;
-//    Key := 0;
-//  end;
    if Key = VK_DELETE then
    begin
       if MessageDlg('Deseja realmente excluir esta linha?', mtConfirmation, [mbYes, mbNo], 0) = mrYes then
@@ -941,13 +934,12 @@ begin
 end;
 procedure TfrmVenda.FormShow(Sender: TObject);
 begin
-    DefineEstadoTela;
+   DefineEstadoTela;
    cmbPagamento.Items.Clear;
    cmbPagamento.Items.Add('Cartão de crédito');
    cmbPagamento.Items.Add('Cartão de Débito');
    cmbPagamento.Items.Add('Dinheiro');
    cmbPagamento.Items.Add('Pix');
-
    cdsProdutos.Open;
 end;
 

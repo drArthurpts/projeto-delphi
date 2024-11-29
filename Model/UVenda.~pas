@@ -15,7 +15,8 @@ type
       vTotalAcrescimo : Double;
       vTotalDesconto  : Double;
       vTotalVenda     : Double;
-      vNomeCliente    : string;
+      vNomeCliente    : String;
+
 
    public
       constructor Create;
@@ -36,7 +37,7 @@ type
          function  Retorna(pIndex : Integer) : TVenda;
          procedure Adiciona(pVenda : TVenda);
       end;
-implementations
+implementation
 
 constructor TVenda.Create;
 begin

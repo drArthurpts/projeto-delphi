@@ -75,7 +75,6 @@ begin
    try
       try
          Result := nil;
-
          xPessoaDAO := TPessoaDAO.Create(TConexao.getInstance.getConn);
          Result := xPessoaDAO.Retorna(RetornaCondicaoPessoa(pID));
       finally

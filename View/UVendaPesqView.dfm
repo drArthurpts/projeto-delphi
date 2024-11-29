@@ -1,7 +1,7 @@
 object TfrmVendaPesqView: TTfrmVendaPesqView
-  Left = 378
-  Top = 279
-  Width = 601
+  Left = 224
+  Top = 263
+  Width = 528
   Height = 297
   Caption = 'Pesquisa de Venda'
   Color = clBtnFace
@@ -17,14 +17,14 @@ object TfrmVendaPesqView: TTfrmVendaPesqView
   object StatusBar1: TStatusBar
     Left = 0
     Top = 239
-    Width = 585
+    Width = 512
     Height = 19
     Panels = <>
   end
   object GroupBox1: TGroupBox
     Left = 0
     Top = 0
-    Width = 585
+    Width = 512
     Height = 73
     Align = alTop
     Caption = 'Filtrar'
@@ -125,16 +125,17 @@ object TfrmVendaPesqView: TTfrmVendaPesqView
   object GroupBox2: TGroupBox
     Left = 0
     Top = 73
-    Width = 585
+    Width = 512
     Height = 166
     Align = alClient
     Caption = 'Resultado Busca'
     TabOrder = 2
     object dbgVenda: TDBGrid
       Left = 2
-      Top = 13
-      Width = 639
-      Height = 98
+      Top = 15
+      Width = 508
+      Height = 97
+      Align = alClient
       DataSource = dtsVenda
       TabOrder = 0
       TitleFont.Charset = DEFAULT_CHARSET
@@ -148,7 +149,7 @@ object TfrmVendaPesqView: TTfrmVendaPesqView
     object pnlBotoes: TPanel
       Left = 2
       Top = 112
-      Width = 581
+      Width = 508
       Height = 52
       Align = alBottom
       TabOrder = 1
@@ -305,10 +306,6 @@ object TfrmVendaPesqView: TTfrmVendaPesqView
     object cdsVendaID: TIntegerField
       FieldName = 'ID'
     end
-    object cdsVendaNomeCliente: TStringField
-      FieldName = 'NomeCliente'
-      Size = 50
-    end
     object cdsVendaData: TDateField
       FieldName = 'Data'
     end
@@ -317,6 +314,9 @@ object TfrmVendaPesqView: TTfrmVendaPesqView
     end
     object cdsVendaDesconto: TFloatField
       FieldName = 'Desconto'
+    end
+    object cdsVendaNomeCliente: TStringField
+      FieldName = 'NomeCliente'
     end
   end
 end
