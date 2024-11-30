@@ -78,6 +78,9 @@ type
     procedure edtCPFCNPJKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure edtCPFCNPJChange(Sender: TObject);
+    procedure edtNomeKeyPress(Sender: TObject; var Key: Char);
+    procedure edtEnderecoKeyPress(Sender: TObject; var Key: Char);
+    procedure edtNumeroChange(Sender: TObject);
    
   private
     { Private declarations }
@@ -967,6 +970,21 @@ begin
    end;
 end;
 
+procedure TfrmClientes.edtNomeKeyPress(Sender: TObject; var Key: Char);
+begin
+   if Key in ['0'..'9'] then
+       Key := #0;
+end;
 
+procedure TfrmClientes.edtEnderecoKeyPress(Sender: TObject; var Key: Char);
+begin
+   if Key in ['0'..'9'] then
+      Key := #0;
+end;
+
+procedure TfrmClientes.edtNumeroChange(Sender: TObject);
+begin
+   edtNumero.Text := TFuncoes.SoNumero(edtNumero.Text);
+end;
 
 end.

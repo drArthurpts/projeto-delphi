@@ -35,7 +35,8 @@ uses
   UVendaDAO in 'Model\UVendaDAO.pas',
   UVendaItem in 'Model\UVendaItem.pas',
   UVendaItemDAO in 'Model\UVendaItemDAO.pas',
-  UVendaItemController in 'Controller\UVendaItemController.pas';
+  UVendaItemController in 'Controller\UVendaItemController.pas',
+  UVendaPesqView in 'View\UVendaPesqView.pas' {TfrmVendaPesqView};
 
 //  UVendaItemController in 'Controller\UVendaItemController.pas';
 

@@ -460,6 +460,7 @@ object frmClientes: TfrmClientes
       Height = 21
       CharCase = ecUpperCase
       TabOrder = 5
+      OnKeyPress = edtNomeKeyPress
     end
     object grbEndereco: TGroupBox
       Left = 32
@@ -469,7 +470,7 @@ object frmClientes: TfrmClientes
       Caption = ' Endere'#231'o'
       TabOrder = 6
       object lblEndereco: TLabel
-        Left = 25
+        Left = 22
         Top = 22
         Width = 55
         Height = 13
@@ -548,6 +549,7 @@ object frmClientes: TfrmClientes
         CharCase = ecUpperCase
         MaxLength = 100
         TabOrder = 0
+        OnKeyPress = edtEnderecoKeyPress
       end
       object edtNumero: TEdit
         Left = 80
@@ -556,6 +558,7 @@ object frmClientes: TfrmClientes
         Height = 21
         CharCase = ecUpperCase
         TabOrder = 1
+        OnChange = edtNumeroChange
       end
       object edtComplemento: TEdit
         Left = 248

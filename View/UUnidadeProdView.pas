@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, ExtCtrls, ComCtrls, Buttons, UEnumerationUtil,
-  UUnidadeProduto, UUnidadeProdController;
+  UUnidadeProduto, UUnidadeProdController,UClassFuncoes;
 
 type
   TfrmUnidadeProd = class(TForm)
@@ -45,6 +45,9 @@ type
     procedure edtCodigoExit(Sender: TObject);
     procedure edtUnidadeChange(Sender: TObject);
     procedure edtDescricaoChange(Sender: TObject);
+    procedure edtUnidadeKeyPress(Sender: TObject; var Key: Char);
+    procedure edtDescricaoKeyPress(Sender: TObject; var Key: Char);
+    procedure edtCodigoChange(Sender: TObject);
 
   private
     { Private declarations }
@@ -79,7 +82,7 @@ var
 implementation
 
 uses
-   uMessageUtil, UClassFuncoes, UUnidadePesqView;
+   uMessageUtil, UUnidadePesqView;
 {$R *.dfm}
 
 procedure TfrmUnidadeProd.FormKeyDown(Sender: TObject; var Key: Word;
@@ -201,8 +204,8 @@ begin
 
          edtCodigo.Enabled := False;
 
-         if edtCodigo.CanFocus then
-            edtCodigo.SetFocus;
+         if edtUnidade.CanFocus then
+            edtUnidade.SetFocus;
       end;
 
       etConsultar:
@@ -648,7 +651,6 @@ procedure TfrmUnidadeProd.edtCodigoExit(Sender: TObject);
 begin
    if vKey = VK_RETURN then
       ProcessaConsulta;
-
    vKey := VK_CLEAR;
 end;
 
@@ -661,6 +663,25 @@ end;
 procedure TfrmUnidadeProd.edtDescricaoChange(Sender: TObject);
 begin
    edtDescricao.Text := TFuncoes.removeCaracterEspecial(edtDescricao.Text, True);
+end;
+
+procedure TfrmUnidadeProd.edtUnidadeKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+   if Key in ['0'..'9'] then
+      Key := #0;
+end;
+
+procedure TfrmUnidadeProd.edtDescricaoKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+    if Key in ['0'..'9'] then
+       Key := #0;
+end;
+
+procedure TfrmUnidadeProd.edtCodigoChange(Sender: TObject);
+begin
+   edtCodigo.Text := TFuncoes.SoNumero(edtCodigo.Text);
 end;
 
 end.

@@ -361,7 +361,7 @@ begin
             Raise Exception.Create(
                'Falha ao incluir os dados da venda[View]: '#13 +
                e.Message);
-         end;
+          end;
       end;
    finally
       if vObjVenda <> nil then

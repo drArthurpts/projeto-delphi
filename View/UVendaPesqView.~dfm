@@ -132,9 +132,10 @@ object TfrmVendaPesqView: TTfrmVendaPesqView
     TabOrder = 2
     object dbgVenda: TDBGrid
       Left = 2
-      Top = 13
-      Width = 639
-      Height = 98
+      Top = 15
+      Width = 508
+      Height = 97
+      Align = alClient
       DataSource = dtsVenda
       TabOrder = 0
       TitleFont.Charset = DEFAULT_CHARSET

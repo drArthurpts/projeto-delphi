@@ -379,6 +379,7 @@ object frmUnidadeProd: TfrmUnidadeProd
       Width = 68
       Height = 21
       TabOrder = 0
+      OnChange = edtCodigoChange
       OnExit = edtCodigoExit
     end
     object chkAtivo: TCheckBox
@@ -394,17 +395,21 @@ object frmUnidadeProd: TfrmUnidadeProd
       Top = 47
       Width = 65
       Height = 21
+      CharCase = ecUpperCase
       MaxLength = 2
       TabOrder = 2
       OnChange = edtUnidadeChange
+      OnKeyPress = edtUnidadeKeyPress
     end
     object edtDescricao: TEdit
       Left = 202
       Top = 45
       Width = 303
       Height = 21
+      CharCase = ecUpperCase
       TabOrder = 3
       OnChange = edtDescricaoChange
+      OnKeyPress = edtDescricaoKeyPress
     end
   end
 end
