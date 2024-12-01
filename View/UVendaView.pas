@@ -488,6 +488,10 @@ begin
       else
       begin
          CarregaCliente;
+         edtCodigo.Enabled := False;
+         edtNome.Enabled   := False;
+         if dbgProduto.CanFocus then
+            dbgProduto.SetFocus
       end;
    end;
    Key := VK_CLEAR;
@@ -520,7 +524,6 @@ procedure TfrmVenda.dbgProdutoKeyPress(Sender: TObject; var Key: Char);
 var
    xProdutoID  : Integer;
    xProduto    : TProduto;
-   xEnter      : Integer;
 begin
 
    if Key = #13 then
@@ -587,7 +590,6 @@ begin
          dbgProduto.DataSource.DataSet.Post;
          dbgProduto.SelectedIndex := 4;
       end;
-
    end;
 end;
 

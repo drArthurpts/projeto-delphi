@@ -191,6 +191,7 @@ begin
 
          edtData.Clear;
          edtData.Text := FormatDateTime('dd/mm/yyyy',Now);
+         edtData.Enabled := False;
       end;
 
       etConsultar:
@@ -465,46 +466,37 @@ end;
 
 procedure TfrmVenda.edtCodigoKeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
-var
-  xCodigo  : Integer;
-  NomeCliente : string;
-  xCliente : TPessoa;
-  xCodigoReplace : string;
 begin
    if Key = VK_RETURN then
    begin
-      if TryStrToInt(edtCodigo.Text, xCodigo) then
+      if (edtCodigo.Text = EmptyStr) Then
       begin
-            xCliente := TPessoa.Create;
-            try
-            xCliente := TPessoaController.getInstancia
-                     .BuscaPessoa(StrToInt(edtCodigo.Text));
-
-             if xCliente.Nome <> '' then
-             begin
-                edtNome.Text := xCliente.Nome;
-                edtNome.Enabled := False;
-             end
-             else
-               TMessageUtil.Informacao('Cliente não encontrado!');
-             finally
-                frmClientes.Free;
-             end;
-             dbgProduto.SelectedIndex := 0;
-             dbgProduto.SetFocus;
-      end;
-      if (edtCodigo.Text = EmptyStr) then
-      begin
+         Screen.Cursor := crHourGlass;
          if frmClientesPesq  = nil then
+            frmClientesPesq := TfrmClientesPesq.Create(Application);
+
+         frmClientesPesq.ShowModal;
+         if (frmClientesPesq.mClienteID <> 0) then
          begin
-            frmClientesPesq  := TfrmClientesPesq.Create(Application);
+            edtCodigo.Text := IntToStr(frmClientesPesq.mClienteID);
+            CarregaCliente;
+            edtCodigo.Enabled := False;
+            edtNome.Enabled   := False;
          end;
-            frmClientesPesq.Show;
+         Screen.Cursor := crDefault;
+      end
+      else
+      begin
+         CarregaCliente;
+         edtCodigo.Enabled := False;
+         edtNome.Enabled   := False;
+         if dbgProduto.CanFocus then
+            dbgProduto.SetFocus
       end;
    end;
-//   xCodigoReplace := TFuncoes.SoNumero(edtCodigo.Text);
-//   edtCodigo.Text := xCodigoReplace;
+   Key := VK_CLEAR;
 end;
+
 
 
 procedure TfrmVenda.FormClose(Sender: TObject; var Action: TCloseAction);

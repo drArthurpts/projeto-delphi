@@ -52,6 +52,7 @@ type
     procedure cmbUnidadeChange(Sender: TObject);
     procedure btnSpeedClick(Sender: TObject);
     procedure cmbUnidadeEnter(Sender: TObject);
+    procedure edtDescricaoProdKeyPress(Sender: TObject; var Key: Char);
 
   private
     { Private declarations }
@@ -818,6 +819,13 @@ end;
 procedure TfrmProduto.cmbUnidadeEnter(Sender: TObject);
 begin
    CarregaDadoscmb;
+end;
+
+procedure TfrmProduto.edtDescricaoProdKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+   if Key in ['0'..'9'] then
+      Key := #0;
 end;
 
 end.
