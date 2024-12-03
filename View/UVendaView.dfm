@@ -500,6 +500,8 @@ object frmVenda: TfrmVenda
       Height = 21
       CharCase = ecUpperCase
       TabOrder = 0
+      OnChange = edtNumVendaChange
+      OnKeyDown = edtNumVendaKeyDown
     end
     object edtData: TMaskEdit
       Left = 183
@@ -595,6 +597,7 @@ object frmVenda: TfrmVenda
     IndexDefs = <>
     Params = <>
     StoreDefs = True
+    AfterOpen = cdsProdutosAfterOpen
     AfterPost = cdsProdutosAfterPost
     AfterDelete = cdsProdutosAfterDelete
     Left = 40
