@@ -74,6 +74,10 @@ type
     procedure dbgProdutoKeyUp(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure btnPesquisarClick(Sender: TObject);
+    procedure dbgProdutoExit(Sender: TObject);
+    procedure btnLimparClick(Sender: TObject);
+    procedure cmbPagamentoKeyPress(Sender: TObject; var Key: Char);
+
 
   private
     { Private declarations }
@@ -117,9 +121,6 @@ uses
    uMessageUtil,Types, UVendaDAO, UVendaPesqView;
 {$R *.dfm}
 
-
-
-
 procedure TfrmVenda.btnConfirmarClick(Sender: TObject);
 begin
    ProcessaConfirmacao;
@@ -160,17 +161,17 @@ begin
       etPadrao:
       begin
          CamposEnabled(False);
+         cmbPagamento.Enabled        := False;
+         edtDesconto.Enabled         := False;
+         edtValorComDesconto.Enabled := False;
          LimpaTela;
-
          stbBarraStatus.Panels[0].Text := EmptyStr;
          stbBarraStatus.Panels[1].Text := EmptyStr;
-
          if (frmVenda <> nil) and
          (frmVenda.Active) and
          (frmVenda.CanFocus) then
          btnIncluir.SetFocus;
          cmbPagamento.Items.Clear;
-         cmbPagamento.Enabled := True;
          cmbPagamento.Items.Add('Cartão de crédito');
          cmbPagamento.Items.Add('Cartão de Débito');
          cmbPagamento.Items.Add('Dinheiro');
@@ -192,6 +193,10 @@ begin
          edtData.Clear;
          edtData.Text := FormatDateTime('dd/mm/yyyy',Now);
          edtData.Enabled := False;
+         edtNome.Enabled := False;
+         edtDesconto.Enabled := True;
+         edtValorComDesconto.Enabled := True;
+         edtTotal.Enabled := True;
       end;
 
       etConsultar:
@@ -220,6 +225,7 @@ begin
       end;
       etPesquisar:
       begin
+         stbBarraStatus.Panels[0].Text := 'Pesquisar';
          if (frmVendaPesqView = nil) then
          frmVendaPesqView := TTfrmVendaPesqView.Create(Application);
 
@@ -389,12 +395,12 @@ begin
       if (vObjVenda = nil) then
          Exit;
 
-      vObjVenda.ID_Cliente     := StrToInt(edtCodigo.Text);
-      vObjVenda.TotalDesconto  := edtDesconto.Value;
-      vObjVenda.TotalAcrescimo := edtValorComDesconto.Value;
-      vObjVenda.DataVenda      := Now;
-      vObjVenda.TotalVenda     := edtTotal.Value;
-
+      vObjVenda.ID_Cliente       := StrToInt(edtCodigo.Text);
+      vObjVenda.TotalDesconto    := edtDesconto.Value;
+      vObjVenda.DataVenda        := Now;
+      vObjVenda.TotalVenda       := edtTotal.Value;
+      vObjVenda.FormaPagamento   := cmbPagamento.Text;
+      vObjVenda.ValorSemDesconto := edtValorComDesconto.Value;
       TVendaController.getInstancia.GravaVenda(vObjVenda);
 
       Result := True;
@@ -480,19 +486,26 @@ begin
          begin
             edtCodigo.Text := IntToStr(frmClientesPesq.mClienteID);
             CarregaCliente;
-            edtCodigo.Enabled := False;
             edtNome.Enabled   := False;
+            if dbgProduto.CanFocus then
+            begin
+               dbgProduto.SetFocus;
+               dbgProduto.SelectedIndex := 0;
+            end;
          end;
          Screen.Cursor := crDefault;
       end
       else
       begin
          CarregaCliente;
-         edtCodigo.Enabled := False;
          edtNome.Enabled   := False;
          if dbgProduto.CanFocus then
-            dbgProduto.SetFocus
+            begin
+               dbgProduto.SetFocus;
+               dbgProduto.SelectedIndex := 0;
+            end;
       end;
+
    end;
    Key := VK_CLEAR;
 end;
@@ -519,67 +532,71 @@ begin
       Close;
 end;
 
-
 procedure TfrmVenda.dbgProdutoKeyPress(Sender: TObject; var Key: Char);
 var
-   xProdutoID  : Integer;
-   xProduto    : TProduto;
+   xProdutoID: Integer;
+   xProduto  : TProduto;
+   xExistente: Boolean;
 begin
-
    if Key = #13 then
    begin
-      if (dbgProduto.SelectedIndex = 4)then
+      xExistente := False;
+      if (dbgProduto.SelectedIndex = 4) then
       begin
          dbgProduto.DataSource.DataSet.Append;
          dbgProduto.SelectedIndex := 0;
          Exit;
       end;
-
       if (dbgProduto.DataSource.DataSet.FieldByName('Código').AsInteger = 0) and
          (dbgProduto.SelectedIndex = 0) then
       begin
          if not Assigned(frmProdutoPesqView) then
             frmProdutoPesqView := TfrmProdutoPesqView.Create(Application);
-
          frmProdutoPesqView.ShowModal;
-         exit;
-      end;
+         if frmProdutoPesqView.ModalResult = mrOk then
+         begin
+            xProdutoID := frmProdutoPesqView.mProdutoID;
+            xProduto := TProdutoController.getInstancia.BuscaProduto(xProdutoID);
 
+            if Assigned(xProduto) then
+            begin
+               dbgProduto.DataSource.DataSet.First;
+               while not dbgProduto.DataSource.DataSet.Eof do
+               begin
+                  if dbgProduto.DataSource.DataSet.FieldByName('Código').AsInteger = xProdutoID then
+                  begin
+                     xExistente := True;
+                     dbgProduto.DataSource.DataSet.Edit;
+                     dbgProduto.DataSource.DataSet.FieldByName('Quant.').AsFloat :=
+                        dbgProduto.DataSource.DataSet.FieldByName('Quant.').AsFloat + 1;
+                     dbgProduto.DataSource.DataSet.FieldByName('Preço Total').AsFloat :=
+                        dbgProduto.DataSource.DataSet.FieldByName('Preço Uni.').AsFloat *
+                        dbgProduto.DataSource.DataSet.FieldByName('Quant.').AsFloat;
+                     dbgProduto.DataSource.DataSet.Post;
+
+                     Break;
+                  end;
+                  dbgProduto.DataSource.DataSet.Next;
+               end;
+               if not xExistente then
+               begin
+                  dbgProduto.DataSource.DataSet.Append;
+                  dbgProduto.DataSource.DataSet.FieldByName('Código').AsInteger := xProduto.ID;
+                  dbgProduto.DataSource.DataSet.FieldByName('Descrição').AsString := xProduto.Descricao;
+                  dbgProduto.DataSource.DataSet.FieldByName('Preço Uni.').AsFloat := xProduto.PrecoVenda;
+                  dbgProduto.DataSource.DataSet.FieldByName('Unidade de Saída').AsString := xProduto.UnidadeSaida;
+                  dbgProduto.DataSource.DataSet.FieldByName('Quant.').AsFloat := 1;
+                  dbgProduto.DataSource.DataSet.FieldByName('Preço Total').AsFloat := xProduto.PrecoVenda;
+                  dbgProduto.DataSource.DataSet.Post;
+               end;
+               dbgProduto.SelectedIndex := 4;
+            end;
+         end;
+         Exit;
+      end;
       xProdutoID := dbgProduto.DataSource.DataSet.FieldByName('Código').AsInteger;
       xProduto := TProdutoController.getInstancia.BuscaProduto(xProdutoID);
-
-      if (xProduto = nil) then
-         cdsProdutosCodigo.ReadOnly := False;
-
-      dbgProduto.DataSource.DataSet.First;
-      
-      while not dbgProduto.DataSource.DataSet.Eof do
-      begin
-         if (dbgProduto.DataSource.DataSet.FieldByName('Código').AsInteger = xProdutoID) and
-            (dbgProduto.DataSource.DataSet.FieldByName('Descrição').AsString <> EmptyStr) then
-         begin
-            dbgProduto.DataSource.DataSet.Edit;
-            dbgProduto.DataSource.DataSet.FieldByName('Quant.').AsFloat :=
-               dbgProduto.DataSource.DataSet.FieldByName('Quant.').AsFloat + 1;
-            dbgProduto.DataSource.DataSet.FieldByName('Preço Total').AsFloat :=
-               dbgProduto.DataSource.DataSet.FieldByName('Preço Uni.').AsFloat *
-               dbgProduto.DataSource.DataSet.FieldByName('Quant.').AsFloat;
-            dbgProduto.DataSource.DataSet.Post;
-
-            dbgProduto.DataSource.DataSet.Last;
-
-            if dbgProduto.DataSource.DataSet.FieldByName('Descrição').AsString = '' then
-            begin
-                dbgProduto.DataSource.DataSet.Edit;
-                dbgProduto.DataSource.DataSet.FieldByName('Código').Clear;
-            end;
-
-            exit;
-         end;
-         dbgProduto.DataSource.DataSet.Next;
-      end;
-
-      if xProduto <> nil then
+      if Assigned(xProduto) then
       begin
          dbgProduto.DataSource.DataSet.Edit;
          dbgProduto.DataSource.DataSet.FieldByName('Descrição').AsString := xProduto.Descricao;
@@ -600,7 +617,7 @@ end;
 
 procedure TfrmVenda.AtualizarValorTotal;
 var
-  i : Integer;
+  i            : Integer;
   xPrecoTotal  : Double;
   xDesconto    : Double;
   xValorItem   : Double;
@@ -616,13 +633,12 @@ begin
       xValorItem := dbgProduto.DataSource.DataSet.FieldByName('Preço Uni.').AsFloat;
       xQuantidade := dbgProduto.DataSource.DataSet.FieldByName('Quant.').AsInteger;
       xValorTotal := xValorTotal + (xValorItem * xQuantidade);
+      edtValorComDesconto.Text := FormatFloat('0.00', xValorTotal);
    end;
 
   if TryStrToFloat(edtDesconto.Text, xValorItem) then
      xValorTotal := xValorTotal - (xValorTotal * (xValorItem / 100));
-
   xDesconto := (edtDesconto.Value/100) * xValorItem;
-  edtValorComDesconto.Text := FormatFloat('0.00', xDesconto);
   edtTotal.Text := FormatFloat('0.00', xValorTotal);
 end;
 
@@ -687,6 +703,8 @@ end;
 procedure TfrmVenda.edtDescontoChange(Sender: TObject);
 begin
    CalculaTotalVenda;
+   if edtDesconto.Value > 100 then
+      edtDesconto.Value := 100;
 end;
 
 procedure TfrmVenda.FormKeyDown(Sender: TObject; var Key: Word;
@@ -871,6 +889,11 @@ begin
       edtData.Text               := DateToStr(vObjVenda.DataVenda);
       edtDesconto.Value          := vObjVenda.TotalDesconto;
       edtTotal.Value             := vObjVenda.TotalVenda;
+      cmbPagamento.Text          := vObjVenda.FormaPagamento;
+      edtValorComDesconto.Value  := vObjVenda.ValorSemDesconto;
+      edtTotal.Enabled           := False;
+      edtValorComDesconto.Enabled:= False;
+      edtDesconto.Enabled        := False;
       btnCancelar.Enabled        := True;
    end;
 
@@ -907,6 +930,7 @@ begin
 
       if (xPessoa <> nil) then
          edtNome.Text := xPessoa.Nome
+
       else
       begin
          TMessageUtil.Alerta('Nenhum cliente encontrado para o código informado.');
@@ -951,6 +975,45 @@ begin
    vEstadoTela := etPesquisar;
    DefineEstadoTela;
 end;
+
+
+
+procedure TfrmVenda.dbgProdutoExit(Sender: TObject);
+begin
+//   if dbgProduto.SelectedIndex = 3 then
+//  begin
+//    dbgProduto.DataSource.DataSet.Edit;
+//    dbgProduto.DataSource.DataSet.FieldByName('Preço Total').AsFloat :=
+//      dbgProduto.DataSource.DataSet.FieldByName('Preço Uni.').AsFloat *
+//      dbgProduto.DataSource.DataSet.FieldByName('Quant.').AsFloat;
+//    dbgProduto.DataSource.DataSet.Post;
+//  end
+//  else if dbgProduto.SelectedIndex = 2 then
+//  begin
+//    dbgProduto.DataSource.DataSet.Edit;
+//    dbgProduto.DataSource.DataSet.FieldByName('Preço Total').AsFloat :=
+//      dbgProduto.DataSource.DataSet.FieldByName('Preço Uni.').AsFloat *
+//      dbgProduto.DataSource.DataSet.FieldByName('Quant.').AsFloat;
+//    dbgProduto.DataSource.DataSet.Post;
+//  end;
+end;
+
+procedure TfrmVenda.btnLimparClick(Sender: TObject);
+begin
+   LimpaTela;
+   vEstadoTela := etPadrao;
+   DefineestadoTela;
+end;
+
+procedure TfrmVenda.cmbPagamentoKeyPress(Sender: TObject; var Key: Char);
+begin
+   if (Key in ['0'..'9']) or (Length(cmbPagamento.Text) >= 20) then
+   begin
+      if not (Key in [#8, #13]) then
+         Key := #0;
+   end;
+end;
+
 
 end.
 

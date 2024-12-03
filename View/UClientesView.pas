@@ -314,13 +314,10 @@ begin
                edtCodigo.SetFocus;
          end;
       end;
-
       etConsultar:
       begin
          stbBarraStatus.Panels[0].Text := 'Consulta';
-
          CamposEnabled(False);
-
          if (edtCodigo.Text <> EmptyStr) then
          begin
             edtCodigo.Enabled    := False;
@@ -329,7 +326,6 @@ begin
             btnListar.Enabled    := True;
             btnConfirmar.Enabled := False;
             chkAtivo.Enabled     := False;
-
             if (btnAlterar.CanFocus) then
                btnAlterar.SetFocus;
          end
@@ -337,10 +333,8 @@ begin
          begin
             lblCodigo.Enabled := True;
             edtCodigo.Enabled:= True;
-
             if edtCodigo.CanFocus then
             edtCodigo.SetFocus;
-
          end;
       end;
 
@@ -359,7 +353,6 @@ begin
                edtCodigo.SetFocus;
          end;
       end;
-
       etPesquisar:
       begin
          stbBarraStatus.Panels[0].Text := 'Pesquisa';
@@ -382,7 +375,6 @@ begin
          end;
          frmClientesPesq.mClienteID   := 0;
          frmClientesPesq.mClienteNome := EmptyStr;
-
          if edtNome.CanFocus then
             edtNome.SetFocus;
       end;
@@ -861,7 +853,6 @@ begin
 
       Exit;
    end;
-
    if (Trim(edtCidade.Text) = EmptyStr) then
    begin
       TMessageUtil.Alerta(
@@ -869,7 +860,6 @@ begin
 
       if (edtCidade.CanFocus) then
          edtCidade.SetFocus;
-
       Exit;
    end;
 

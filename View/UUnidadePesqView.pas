@@ -36,9 +36,10 @@ type
     procedure btnLimparClick(Sender: TObject);
     procedure btnSairClick(Sender: TObject);
     procedure cdsUnidadeBeforeDelete(DataSet: TDataSet);
-    procedure dbgUnidadeDblClick(Sender: TObject);
     procedure dbgUnidadeKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
+    procedure dbgUnidadeDblClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
   private
     { Private declarations }
     vKey : Word;
@@ -106,8 +107,8 @@ begin
    if (edtNome.CanFocus) then
       edtNome.SetFocus;
 
-   mUnidadeID   := 0;
-   mUnidadeUnidade := EmptyStr;
+//   mUnidadeID   := 0;
+//   mUnidadeUnidade := EmptyStr;
 end;
 
 
@@ -151,7 +152,7 @@ begin
             cdsUnidade.Append;
             cdsUnidadeID.Value            := xListaUnidade.Retorna(xAux).Id;
             cdsUnidadeUnidade.Value       := xListaUnidade.Retorna(xAux).Unidade;
-            cdsUnidadeAtivo.Value         :=
+             cdsUnidadeAtivo.Value         :=
                IfThen (xListaUnidade.Retorna(xAux).Ativo, 1, 0);
             cdsUnidadeDescricao.Value     := xListaUnidade.Retorna(xAux).Descricao;
             cdsUnidade.Post;
@@ -214,17 +215,22 @@ begin
    Abort;
 end;
 
-procedure TfrmUnidadePesq.dbgUnidadeDblClick(Sender: TObject);
-begin
-   ProcessaConfirmacao;
-end;
-
 procedure TfrmUnidadePesq.dbgUnidadeKeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
    if (Key = VK_RETURN) and
       (btnConfirmar.CanFocus) then
        btnConfirmar.SetFocus;
+end;
+
+procedure TfrmUnidadePesq.dbgUnidadeDblClick(Sender: TObject);
+begin
+   ProcessaConfirmacao;
+end;
+
+procedure TfrmUnidadePesq.FormShow(Sender: TObject);
+begin
+   LimparTela;
 end;
 
 end.

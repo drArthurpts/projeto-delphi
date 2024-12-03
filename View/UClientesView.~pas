@@ -78,6 +78,9 @@ type
     procedure edtCPFCNPJKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure edtCPFCNPJChange(Sender: TObject);
+    procedure edtNomeKeyPress(Sender: TObject; var Key: Char);
+    procedure edtEnderecoKeyPress(Sender: TObject; var Key: Char);
+    procedure edtNumeroChange(Sender: TObject);
    
   private
     { Private declarations }
@@ -311,13 +314,10 @@ begin
                edtCodigo.SetFocus;
          end;
       end;
-
       etConsultar:
       begin
          stbBarraStatus.Panels[0].Text := 'Consulta';
-
          CamposEnabled(False);
-
          if (edtCodigo.Text <> EmptyStr) then
          begin
             edtCodigo.Enabled    := False;
@@ -326,7 +326,6 @@ begin
             btnListar.Enabled    := True;
             btnConfirmar.Enabled := False;
             chkAtivo.Enabled     := False;
-
             if (btnAlterar.CanFocus) then
                btnAlterar.SetFocus;
          end
@@ -334,10 +333,8 @@ begin
          begin
             lblCodigo.Enabled := True;
             edtCodigo.Enabled:= True;
-
             if edtCodigo.CanFocus then
             edtCodigo.SetFocus;
-
          end;
       end;
 
@@ -356,7 +353,6 @@ begin
                edtCodigo.SetFocus;
          end;
       end;
-
       etPesquisar:
       begin
          stbBarraStatus.Panels[0].Text := 'Pesquisa';
@@ -379,7 +375,6 @@ begin
          end;
          frmClientesPesq.mClienteID   := 0;
          frmClientesPesq.mClienteNome := EmptyStr;
-
          if edtNome.CanFocus then
             edtNome.SetFocus;
       end;
@@ -967,5 +962,21 @@ begin
    end;
 end;
 
+procedure TfrmClientes.edtNomeKeyPress(Sender: TObject; var Key: Char);
+begin
+   if Key in ['0'..'9'] then
+       Key := #0;
+end;
+
+procedure TfrmClientes.edtEnderecoKeyPress(Sender: TObject; var Key: Char);
+begin
+   if Key in ['0'..'9'] then
+      Key := #0;
+end;
+
+procedure TfrmClientes.edtNumeroChange(Sender: TObject);
+begin
+   edtNumero.Text := TFuncoes.SoNumero(edtNumero.Text);
+end;
 
 end.

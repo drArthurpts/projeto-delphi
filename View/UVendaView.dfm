@@ -1,5 +1,5 @@
 object frmVenda: TfrmVenda
-  Left = 262
+  Left = 263
   Top = 168
   BorderIcons = [biSystemMenu]
   BorderStyle = bsSingle
@@ -252,6 +252,7 @@ object frmVenda: TfrmVenda
       Caption = '&Limpar'
       Enabled = False
       TabOrder = 6
+      OnClick = btnLimparClick
       Glyph.Data = {
         36030000424D3603000000000000360000002800000010000000100000000100
         18000000000000030000C40E0000C40E00000000000000000000FFFFFFFFFFFF
@@ -324,10 +325,10 @@ object frmVenda: TfrmVenda
     Height = 19
     Panels = <
       item
-        Width = 50
+        Width = 70
       end
       item
-        Width = 50
+        Width = 70
       end>
   end
   object pnlValores: TPanel
@@ -396,6 +397,7 @@ object frmVenda: TfrmVenda
       Height = 21
       ItemHeight = 13
       TabOrder = 0
+      OnKeyPress = cmbPagamentoKeyPress
     end
     object edtDesconto: TNumEdit
       Left = 399
@@ -416,6 +418,7 @@ object frmVenda: TfrmVenda
       Height = 21
       Alignment = taRightJustify
       Decimals = 2
+      ReadOnly = True
       ShowSeparator = True
       TabOrder = 2
     end
@@ -548,6 +551,7 @@ object frmVenda: TfrmVenda
       TitleFont.Height = -11
       TitleFont.Name = 'MS Sans Serif'
       TitleFont.Style = []
+      OnExit = dbgProdutoExit
       OnKeyDown = dbgProdutoKeyDown
       OnKeyPress = dbgProdutoKeyPress
       OnKeyUp = dbgProdutoKeyUp

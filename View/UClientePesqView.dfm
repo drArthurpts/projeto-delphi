@@ -1,5 +1,5 @@
 object frmClientesPesq: TfrmClientesPesq
-  Left = 393
+  Left = 394
   Top = 248
   Width = 546
   Height = 262
@@ -13,6 +13,7 @@ object frmClientesPesq: TfrmClientesPesq
   KeyPreview = True
   OldCreateOrder = False
   Position = poScreenCenter
+  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object stbBarraStatus: TStatusBar

@@ -36,6 +36,7 @@ type
     procedure btnSairClick(Sender: TObject);
     procedure cdsProdutoBeforeDelete(DataSet: TDataSet);
     procedure dbgProdutoDblClick(Sender: TObject);
+    procedure DBGrid1DblClick(Sender: TObject);
 
   private
     { Private declarations }
@@ -211,6 +212,12 @@ begin
       if edtNome.CanFocus then
          edtNome.SetFocus;
    end;
+end;
+
+procedure TfrmProdutoPesqView.DBGrid1DblClick(Sender: TObject);
+begin
+   mProdutoID := DBGrid1.DataSource.DataSet.FieldByName('ID').AsInteger;
+   ModalResult := mrOk;
 end;
 
 end.

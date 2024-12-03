@@ -98,8 +98,10 @@ begin
                xVenda := TVenda.Create;
                xVenda.ID          := xQryColVenda.FieldByName('ID').AsInteger;
                xVenda.DataVenda   := (xQryColVenda.FieldByName('DATAVENDA').AsDateTime);
+               xVenda.TotalDesconto := xQryColVenda.FieldByName('TOTALDESCONTO').AsFloat;
                xVenda.TotalVenda  := xQryColVenda.FieldByName('TOTALVENDA').AsFloat;
                xVenda.ID_Cliente  := xQryColVenda.FieldByName('ID_CLIENTE').AsInteger;
+               xVenda.FormaPagamento := xQryColVenda.FieldByName('FORMAPAGAMENTO').AsString;
                xColVenda.Adiciona(xVenda);
                xQryColVenda.Next;
             end;

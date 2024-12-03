@@ -36,7 +36,7 @@ type
     procedure btnSairClick(Sender: TObject);
     procedure cdsProdutoBeforeDelete(DataSet: TDataSet);
     procedure dbgProdutoDblClick(Sender: TObject);
-    procedure DBGrid1CellClick(Column: TColumn);
+
   private
     { Private declarations }
     vKey : Word;

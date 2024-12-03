@@ -39,6 +39,7 @@ type
     procedure dbgClienteDblClick(Sender: TObject);
     procedure dbgClienteKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
+    procedure FormShow(Sender: TObject);
    
   private
     { Private declarations }
@@ -231,6 +232,11 @@ begin
    if (Key = VK_RETURN) and
       (btnConfirmar.CanFocus) then
       btnConfirmar.SetFocus;
+end;
+
+procedure TfrmClientesPesq.FormShow(Sender: TObject);
+begin
+   LimparTela;
 end;
 
 end.

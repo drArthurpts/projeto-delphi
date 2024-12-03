@@ -41,6 +41,9 @@ type
       Shift: TShiftState);
     procedure dbgVendaDblClick(Sender: TObject);
     procedure btnFiltrarClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure edtCodigoChange(Sender: TObject);
   private
     { Private declarations }
     procedure LimparTela;
@@ -99,6 +102,9 @@ begin
    begin
       if (Components[i] is TEdit) then
          (Components[i] as TEdit).Text := EmptyStr;
+
+      if (Components[i] is TMaskEdit) then
+         (Components[i] as TMaskEdit).Text := EmptyStr;
    end;
 
    if (not cdsVenda.IsEmpty) then
@@ -132,6 +138,7 @@ var
    xListaVenda : TColVenda;
    xID_Venda   : Integer;
    xAux        : Integer;
+   DataInicio, DataFim: TDateTime;
 begin
    try
       try
@@ -146,7 +153,20 @@ begin
 
          if (TFuncoes.SoNumero(edtDataFim.Text) = EmptyStr) then
             edtDataFim.Text := '01/01/2999';
-
+         if not TryStrToDate(edtDataInicio.Text, DataInicio) then
+         begin
+            ShowMessage('Dat inválida. Por favor, insira uma data válida.');
+            edtDataInicio.SetFocus;
+            Exit;
+         end;
+         if (TFuncoes.SoNumero(edtDataFim.Text) = EmptyStr) then
+            edtDataFim.Text := '01/01/2999'
+         else if not TryStrToDate(edtDataFim.Text, DataFim) then
+         begin
+            ShowMessage('Data inválida. Por favor, insira uma data válida.');
+            edtDataFim.SetFocus;
+            Exit;
+         end;
          xListaVenda :=
                TVendaController.getInstancia.PesquisaVenda(xID_Venda, edtDataInicio.Text, edtDataFim.Text);
 
@@ -161,10 +181,8 @@ begin
                cdsVenda.Append;
                cdsVendaID.Value             := xListaVenda.Retorna(xAux).ID;
                cdsVendaNomeCliente.Text     := TPessoaController.getInstancia.BuscaPessoa(xListaVenda.Retorna(xAux).ID_Cliente).Nome;
-//               ShowMessage('NomeCliente: ' + xListaVenda.Retorna(xAux).NomeCliente);
-//               cdsVendaNomeCliente.Text     := xListaVenda.Retorna(xAux).NomeCliente;
                cdsVendaData.Value           := xListaVenda.Retorna(xAux).DataVenda;
-               cdsVendaDesconto.Value       := xListaVenda.Retorna(xAux).TotalAcrescimo;
+               cdsVendaDesconto.Value       := xListaVenda.Retorna(xAux).TotalDesconto;
                cdsVendaValor.Value          := xListaVenda.Retorna(xAux).TotalVenda;
                cdsVenda.Post;
                end;
@@ -172,11 +190,12 @@ begin
          end;
          if (cdsVenda.RecordCount = 0) then
          begin
-            if edtDataInicio.CanFocus then
-               edtDataInicio.SetFocus;
+            if edtCodigo.CanFocus then
+               edtCodigo.SetFocus;
 
             TMessageUtil.Alerta(
                'Nenhuma venda encontrada para este filtro.');
+
          end
          else
          begin
@@ -197,6 +216,7 @@ begin
       end;
    end;
 end;
+
 
 procedure TTfrmVendaPesqView.btnConfirmarClick(Sender: TObject);
 begin
@@ -235,4 +255,25 @@ begin
    mNomeCliente := EmptyStr;
    ProcessaPesquisa;
 end;
+procedure TTfrmVendaPesqView.FormShow(Sender: TObject);
+begin
+   LimparTela;
+end;
+
+procedure TTfrmVendaPesqView.FormCreate(Sender: TObject);
+begin
+//    if dbgVenda.Columns.Count > 0 then
+//   begin
+//      dbgVenda.Columns[4].ReadOnly := True;
+//   end;
+end;
+
+procedure TTfrmVendaPesqView.edtCodigoChange(Sender: TObject);
+var
+   xCodigoReplace : string;
+begin
+   xCodigoReplace := TFuncoes.SoNumero(edtCodigo.Text);
+   edtCodigo.Text := xCodigoReplace;
+end;
+
 end.

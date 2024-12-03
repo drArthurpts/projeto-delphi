@@ -1,6 +1,6 @@
 object TfrmVendaPesqView: TTfrmVendaPesqView
-  Left = 224
-  Top = 263
+  Left = 416
+  Top = 273
   Width = 528
   Height = 297
   Caption = 'Pesquisa de Venda'
@@ -11,7 +11,9 @@ object TfrmVendaPesqView: TTfrmVendaPesqView
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   OldCreateOrder = False
+  OnCreate = FormCreate
   OnKeyDown = FormKeyDown
+  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object StatusBar1: TStatusBar
@@ -32,28 +34,28 @@ object TfrmVendaPesqView: TTfrmVendaPesqView
     object lblCodCliente: TLabel
       Left = 44
       Top = 15
-      Width = 54
+      Width = 53
       Height = 13
-      Caption = 'Cod.Cliente'
+      Caption = 'Cod.Venda'
     end
     object lblDataInicio: TLabel
       Left = 134
       Top = 16
-      Width = 54
+      Width = 53
       Height = 13
       Caption = 'Data In'#237'cio'
     end
     object Label1: TLabel
       Left = 210
       Top = 34
-      Width = 54
+      Width = 16
       Height = 13
       Caption = 'At'#233
     end
     object Label2: TLabel
       Left = 235
       Top = 16
-      Width = 54
+      Width = 42
       Height = 13
       Caption = 'Data Fim'
     end
@@ -64,11 +66,12 @@ object TfrmVendaPesqView: TTfrmVendaPesqView
       Height = 21
       CharCase = ecUpperCase
       TabOrder = 0
+      OnChange = edtCodigoChange
     end
     object btnFiltrar: TBitBtn
-      Left = 408
+      Left = 392
       Top = 25
-      Width = 54
+      Width = 70
       Height = 25
       Caption = '&Filtrar'
       TabOrder = 1
@@ -104,7 +107,7 @@ object TfrmVendaPesqView: TTfrmVendaPesqView
     object edtDataInicio: TMaskEdit
       Left = 134
       Top = 29
-      Width = 54
+      Width = 67
       Height = 21
       EditMask = '!99/99/9999;1;_'
       MaxLength = 10
@@ -114,7 +117,7 @@ object TfrmVendaPesqView: TTfrmVendaPesqView
     object edtDataFim: TMaskEdit
       Left = 235
       Top = 29
-      Width = 54
+      Width = 70
       Height = 21
       EditMask = '!99/99/9999;1;_'
       MaxLength = 10
@@ -134,9 +137,10 @@ object TfrmVendaPesqView: TTfrmVendaPesqView
       Left = 2
       Top = 15
       Width = 508
-      Height = 97
+      Height = 98
       Align = alClient
       DataSource = dtsVenda
+      ReadOnly = True
       TabOrder = 0
       TitleFont.Charset = DEFAULT_CHARSET
       TitleFont.Color = clWindowText
@@ -148,9 +152,9 @@ object TfrmVendaPesqView: TTfrmVendaPesqView
     end
     object pnlBotoes: TPanel
       Left = 2
-      Top = 112
+      Top = 113
       Width = 508
-      Height = 52
+      Height = 51
       Align = alBottom
       TabOrder = 1
       object btnConfirmar: TBitBtn

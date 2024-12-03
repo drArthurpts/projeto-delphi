@@ -9,14 +9,15 @@ type
       public
          constructor Create;
          function GravaUnidadeProd(
-                        pUnidadeProduto : TUnidadeProduto)         : Boolean;
+                        pUnidadeProduto : TUnidadeProduto; pInclusao : Boolean)         : Boolean;
 
          function ExcluiProduto(pUnidadeProduto : TUnidadeProduto) : Boolean;
+          function PesquisaUnidade(pUnidade : String) : TColUnidadeProd;
 
-         function BuscaUnidadeProd(pID : Integer)                  :
+         function BuscaUnidadeProd(pUnidade : String)                  :
          TUnidadeProduto;
          function RetornaCondicaoUnidadeProd(
-                          pID_Produto : Integer)                   : String;
+                          pUnidade : String)                   : String;
          published
             class function getInstancia                            :
             TUnidadeProdController;
@@ -35,29 +36,28 @@ var
 { TUnidadeProdController }
 
 function TUnidadeProdController.BuscaUnidadeProd(
-  pID: Integer): TUnidadeProduto;
+  pUnidade: string): TUnidadeProduto;
 var
    xUnidadeProdDAO : TUnidadeProdutoDAO;
 begin
-   try
-       try
+    try
+      try
          Result := nil;
 
-         xUnidadeProdDAO := TUnidadeProdutoDAO.Create(
-                            TConexao.getInstance.getConn);
+         xUnidadeProdDAO := TUnidadeProdutoDAO.Create(TConexao.getInstance.getConn);
 
-         Result := xUnidadeProdDAO.Retorna(RetornaCondicaoUnidadeProd(pID));
-       finally
+         Result := xUnidadeProdDAO.Retorna(RetornaCondicaoUnidadeProd(pUnidade));
+
+      finally
          if (xUnidadeProdDAO <> nil) then
             FreeAndNil(xUnidadeProdDAO);
-
-       end;
+      end;
    except
-      on E: Exception do
+      on E : Exception do
       begin
-         Raise Exception.Create(
-            'Falha ao buscar os dados. [Controller]' + #13 +
-            e.Message);
+         raise Exception.Create(
+         'Falha ao retornar dados da Unidade de Produto. [Controller]'#13 +
+         e.Message);
       end;
    end;
 end;
@@ -85,7 +85,7 @@ begin
          else
          begin
             xUnidadeProdutoDAO.Deleta(
-               RetornaCondicaoUnidadeProd(pUnidadeProduto.Id));
+               RetornaCondicaoUnidadeProd(pUnidadeProduto.Unidade));
 
          end;
 
@@ -119,7 +119,7 @@ begin
 end;
 
 function TUnidadeProdController.GravaUnidadeProd(
-  pUnidadeProduto: TUnidadeProduto): Boolean;
+  pUnidadeProduto: TUnidadeProduto; pInclusao : Boolean): Boolean;
 var
    xUnidadeProdutoDAO : TUnidadeProdutoDAO;
    xAux : Integer;
@@ -140,7 +140,7 @@ begin
          else
          begin
             xUnidadeProdutoDAO.Atualiza(
-            pUnidadeProduto, RetornaCondicaoUnidadeProd(pUnidadeProduto.Id));
+            pUnidadeProduto, RetornaCondicaoUnidadeProd(pUnidadeProduto.Unidade));
 
 
          end;
@@ -160,8 +160,42 @@ begin
    end;
    end;
 
+function TUnidadeProdController.PesquisaUnidade(
+  pUnidade: String): TColUnidadeProd;
+var
+   xUnidadeDAO : TUnidadeProdutoDAO;
+   xCondicao : string;
+begin
+   try
+       try
+         Result := nil;
+
+         xUnidadeDAO := TUnidadeProdutoDAO.Create(TConexao.get.getConn);
+
+         xCondicao :=
+            IfThen(pUnidade <> EmptyStr,
+               'WHERE  ' + #13+
+               '    (UNIDADE LIKE ''%' + pUnidade + '%'') '+ #13
+               + 'ORDER BY UNIDADE, ID', EmptyStr);
+
+
+         Result := xUnidadeDAO.RetornaLista(xCondicao);
+       finally
+          if (xUnidadeDAO <> nil) then
+            FreeAndNil(xUnidadeDAO);
+       end;
+   except
+      on E : Exception do
+      begin
+         Raise Exception.Create(
+            'Falha ao buscar os dados da pessoa [Controller]: ' + #13 +
+            e.Message);
+      end;
+   end;
+end;
+
 function TUnidadeProdController.RetornaCondicaoUnidadeProd(
-  pID_Produto: Integer): String;
+  pUnidade : String): String;
 var
    xChave : String;
 begin
@@ -169,7 +203,7 @@ begin
 
    Result :=
    'WHERE ' +                                                       #13+
-   '      ' + xChave+ ' = ' + QuotedStr(IntToStr(pID_Produto))+ ' '#13;
+   '      ' + xChave+ ' = ' + QuotedStr(pUnidade)+ ' '#13;
 end;
 
 end.

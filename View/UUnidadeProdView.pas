@@ -64,8 +64,8 @@ type
     procedure CarregaDadosTela;
     function ProcessaConfirmacao   : Boolean;
     function ProcessaInclusao      : Boolean;
-    function ProcessaProduto       : Boolean;
     function ProcessaAlteracao     : Boolean;
+    function ProcessaProduto       : Boolean;
     function ProcessaExclusao      : Boolean;
     function ProcessaConsulta      : Boolean;
     function ProcessaDescricao     : Boolean;
@@ -82,7 +82,7 @@ var
 implementation
 
 uses
-   uMessageUtil, UUnidadePesqView;
+   uMessageUtil, UUnidadePesqView, Math;
 {$R *.dfm}
 
 procedure TfrmUnidadeProd.FormKeyDown(Sender: TObject; var Key: Word;
@@ -135,8 +135,11 @@ begin
       if (Components[i] is TEdit) then
          (Components[i] as TEdit).Enabled := pOpcao;
 
-      if (Components[i] is TCheckBox) then
-         (Components[i] as TCheckBox).Checked := False;
+      if vEstadoTela <> etConsultar then
+      begin
+            if (Components[i] is TCheckBox) then
+            (Components[i] as TCheckBox).Checked := False;
+      end;
 
       if (Components[i] is TCheckBox) then
          (Components[i] as TCheckBox).Enabled := pOpcao;
@@ -196,13 +199,16 @@ begin
 
          Application.ProcessMessages;
       end;
-      
+
       etIncluir:
       begin
          stbBarraStatus.Panels[0].Text := 'Inclusão';
          CamposEnabled(True);
 
          edtCodigo.Enabled := False;
+         
+         chkAtivo.Checked := True;
+         chkAtivo.Enabled := False;
 
          if edtUnidade.CanFocus then
             edtUnidade.SetFocus;
@@ -220,7 +226,7 @@ begin
             btnAlterar.Enabled   := True;
             btnExcluir.Enabled   := True;
             btnConfirmar.Enabled := False;
-            chkAtivo.Enabled     := False;
+//            chkAtivo.Enabled     := False;
 
             if (btnAlterar.CanFocus) then
                btnAlterar.SetFocus;
@@ -274,7 +280,7 @@ begin
             edtCodigo.Enabled := True;
 
             if (edtCodigo.CanFocus) then
-               edtCodigo.SetFocus;
+                edtCodigo.SetFocus;
          end;
       end;
 
@@ -400,27 +406,33 @@ end;
 
 function TfrmUnidadeProd.ProcessaAlteracao: Boolean;
 begin
- try
+   try
       Result := False;
 
-      if ProcessaProduto then
+      if (edtUnidade.Text <> EmptyStr) and
+      (Trim(edtDescricao.Text) = EmptyStr) then
       begin
-         TMessageUtil.Informacao('Dados foram alterados com sucesso.');
+         ProcessaConsulta;
+         exit;
+      end;
+
+      if ProcessaUnidade then
+      begin
+         TMessageUtil.Informacao('Dados alterados com sucesso.');
 
          vEstadoTela := etPadrao;
          DefineEstadoTela;
-         Result := True;      
+
+         Result := True;
       end;
-
- except
-      on E : Exception do
+   except
+      on E: Exception do
       begin
-         Raise Exception.Create(
-         'Falha ao alterar os dados do produto [View]: ' +#13 +
-         e.Message);
-      end;  
-
- end;
+         raise Exception.Create(
+            'Falha ao alterar dados de Unidade. [View]: '#13+
+            e.Message);
+      end;
+   end;
 end;
 
 function TfrmUnidadeProd.ProcessaConsulta: Boolean;
@@ -465,12 +477,13 @@ begin
        on E : Exception do
        begin
          Raise Exception.Create(
-         'Falha ao consultar os dados do cliente [View].' + #13 +
+         'Falha ao consultar os dados da Unidade [View].' + #13 +
          e.Message);
 
        end;
    end;
 end;
+
 
 function TfrmUnidadeProd.ProcessaExclusao: Boolean;
 begin
@@ -480,7 +493,7 @@ try
       if (vObjUnidadeProd = nil) then
       begin
          TMessageUtil.Alerta(
-            'Não foi possível carregar todos os dados cadastrados do cliente.');
+            'Não foi possível carregar todos os dados cadastrados da unidade.');
          LimpaTela;
          vEstadoTela := etPadrao;
          DefineEstadoTela;
@@ -488,7 +501,7 @@ try
       end;
 
       try
-          if TMessageUtil.Pergunta('Confirma a exclusão do produto?') then
+          if TMessageUtil.Pergunta('Confirma a exclusão da Unidade?') then
           begin
              Screen.Cursor := crHourGlass;
 
@@ -568,7 +581,7 @@ begin
       on E : Exception do
       begin
          Raise  Exception.Create(
-         'Falha ao processar os dados dos Produtos [View]: '#13 +
+         'Falha ao processar os dados da Unidade [View]: '#13 +
          e.Message);
       end;
    end;
@@ -604,7 +617,6 @@ begin
       vObjUnidadeProd.Unidade    := edtUnidade.Text;
       vObjUnidadeProd.Descricao  := edtDescricao.Text;
       vObjUnidadeProd.Ativo      := chkAtivo.Checked;
-
       Result := True;
    except
       on E : Exception do
@@ -638,12 +650,12 @@ procedure TfrmUnidadeProd.CarregaDadosTela;
 begin
 
    if (vObjUnidadeProd = nil) then
-   Exit;
+      Exit;
 
    edtCodigo.Text          := IntToStr(vObjUnidadeProd.Id);
    edtUnidade.Text         := vObjUnidadeProd.Unidade;
    edtDescricao.Text       := vObjUnidadeProd.Descricao;
-   chkAtivo.Checked        := vObjUnidadeProd.Ativo;
+   chkAtivo.Checked  := vObjUnidadeProd.Ativo;
 
 end;
 
@@ -677,6 +689,11 @@ procedure TfrmUnidadeProd.edtDescricaoKeyPress(Sender: TObject;
 begin
     if Key in ['0'..'9'] then
        Key := #0;
+    if (Key in ['0'..'9']) or (Length(edtDescricao.Text) >= 20) then
+    begin
+      if not (Key in [#8, #13]) then
+              Key := #0;
+    end;
 end;
 
 procedure TfrmUnidadeProd.edtCodigoChange(Sender: TObject);

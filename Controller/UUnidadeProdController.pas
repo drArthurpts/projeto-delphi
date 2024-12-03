@@ -142,8 +142,6 @@ begin
          begin
             xUnidadeProdutoDAO.Atualiza(
             pUnidadeProduto, RetornaCondicaoUnidadeProd(pUnidadeProduto.Id));
-
-
          end;
          TConexao.get.confirmaTransacao;
       finally
@@ -208,4 +206,4 @@ begin
 end;
 
 end.
- 
+

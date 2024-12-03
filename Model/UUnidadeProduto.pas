@@ -51,5 +51,4 @@ function TColUnidadeProd.Retorna(pIndex: Integer): TUnidadeProduto;
 begin
    Result := TUnidadeProduto(Self[pIndex]);
 end;
-
 end.

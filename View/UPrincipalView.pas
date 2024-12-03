@@ -12,8 +12,6 @@ type
     menMenu: TMenuItem;
     MenCliente: TMenuItem;
     MenProdutos: TMenuItem;
-    menRelatorios: TMenuItem;
-    menRelVendas: TMenuItem;
     MenMovimentos: TMenuItem;
     menVendas: TMenuItem;
     menSair: TMenuItem;
@@ -25,7 +23,7 @@ type
     procedure MenClienteClick(Sender: TObject);
     procedure MenUnidadedeProdutoClick(Sender: TObject);
     procedure MenProdutosClick(Sender: TObject);
-    procedure menRelVendasClick(Sender: TObject);
+    procedure menVendasClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -45,12 +43,13 @@ uses
 
 procedure TfrmPrincipal.menSairClick(Sender: TObject);
 begin
-  Close; //Fecha o sistema
+  Close; 
 end;
 
 procedure TfrmPrincipal.FormShow(Sender: TObject);
 begin
-  stbBarraStatus.Panels[0].Text := 'Teste';
+   stbBarraStatus.Panels[0].Text :=
+      'Caminho BD: ' + TConexao.get.getCaminhoBanco;
 end;
 
 procedure TfrmPrincipal.MenClienteClick(Sender: TObject);
@@ -73,6 +72,7 @@ procedure TfrmPrincipal.MenUnidadedeProdutoClick(Sender: TObject);
 begin
    try
       Screen.Cursor := crHourGlass;
+      
      if (frmUnidadeProd = nil) then
          frmUnidadeProd := TfrmUnidadeProd.Create(Application);
 
@@ -97,7 +97,7 @@ begin
    end;
 end;
 
-procedure TfrmPrincipal.menRelVendasClick(Sender: TObject);
+procedure TfrmPrincipal.menVendasClick(Sender: TObject);
 begin
    try
       Screen.Cursor := crHourGlass;

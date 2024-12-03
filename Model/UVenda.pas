@@ -8,13 +8,15 @@ type
    TVenda = Class(TPersistent)
 
    private
-      vID             : Integer;
-      vID_Cliente     : Integer;
-      vDataVenda      : TDateTime;
-      vFaturada       : Integer;
-      vTotalAcrescimo : Double;
-      vTotalDesconto  : Double;
-      vTotalVenda     : Double;
+      vID               : Integer;
+      vID_Cliente       : Integer;
+      vDataVenda        : TDateTime;
+      vFaturada         : Integer;
+      vTotalAcrescimo   : Double;
+      vFormaPagamento   : String;
+      vTotalDesconto    : Double;
+      vValorSemDesconto : Double;
+      vTotalVenda       : Double;
 
    public
       constructor Create;
@@ -25,7 +27,9 @@ type
          property Faturada        : Integer read vFaturada write vFaturada;
          property TotalAcrescimo  : Double read vTotalAcrescimo write vTotalAcrescimo;
          property TotalDesconto   : Double read vTotalDesconto write vTotalDesconto;
+         property FormaPagamento  : string read vFormaPagamento write vFormaPagamento;
          property TotalVenda      : Double read vTotalVenda write vTotalVenda;
+         property ValorSemDesconto: Double read vValorSemDesconto write vValorSemDesconto;
 
       end;
 
@@ -38,13 +42,15 @@ implementation
 
 constructor TVenda.Create;
 begin
-    Self.vID             := 0;
-    Self.vID_Cliente     := 0;
-    Self.vDataVenda      := 0;
-    Self.vFaturada       := 0;
-    Self.vTotalAcrescimo := 0;
-    Self.vTotalDesconto  := 0;
-    Self.TotalVenda      := 0;
+    Self.vID               := 0;
+    Self.vID_Cliente       := 0;
+    Self.vDataVenda        := 0;
+    Self.vFaturada         := 0;
+    Self.vTotalAcrescimo   := 0;
+    Self.vTotalDesconto    := 0;
+    Self.vFormaPagamento   := EmptyStr;
+    Self.vValorSemDesconto := 0;
+    Self.TotalVenda        := 0;
 end;
 
 { TColVenda }
