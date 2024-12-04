@@ -37,6 +37,7 @@ type
     procedure cdsProdutoBeforeDelete(DataSet: TDataSet);
     procedure dbgProdutoDblClick(Sender: TObject);
     procedure DBGrid1DblClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
 
 
   private
@@ -219,6 +220,13 @@ procedure TfrmProdutoPesqView.DBGrid1DblClick(Sender: TObject);
 begin
    mProdutoID := DBGrid1.DataSource.DataSet.FieldByName('ID').AsInteger;
    ModalResult := mrOk;
+end;
+
+
+
+procedure TfrmProdutoPesqView.FormShow(Sender: TObject);
+begin
+   LimparTela;
 end;
 
 end.

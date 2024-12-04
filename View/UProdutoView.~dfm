@@ -1,6 +1,6 @@
 object frmProduto: TfrmProduto
-  Left = 360
-  Top = 266
+  Left = 502
+  Top = 327
   Width = 634
   Height = 222
   BorderIcons = [biSystemMenu]
@@ -497,6 +497,7 @@ object frmProduto: TfrmProduto
       TabOrder = 3
       OnChange = cmbUnidadeChange
       OnEnter = cmbUnidadeEnter
+      OnKeyPress = cmbUnidadeKeyPress
       Items.Strings = (
         '')
     end

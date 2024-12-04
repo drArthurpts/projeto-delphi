@@ -36,7 +36,6 @@ type
     lblCodigo: TLabel;
     edtCodigo: TEdit;
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
-    procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure btnIncluirClick(Sender: TObject);
     procedure btnAlterarClick(Sender: TObject);
     procedure btnExcluirClick(Sender: TObject);
@@ -55,6 +54,7 @@ type
     procedure cmbUnidadeEnter(Sender: TObject);
     procedure edtDescricaoProdKeyPress(Sender: TObject; var Key: Char);
     procedure cmbUnidadeKeyPress(Sender: TObject; var Key: Char);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
 
 
   private
@@ -310,12 +310,6 @@ begin
 
   end;
 
-end;
-
-procedure TfrmProduto.FormClose(Sender: TObject; var Action: TCloseAction);
-begin
-  Action := caFree;
-  frmProduto := nil;
 end;
 
 procedure TfrmProduto.btnIncluirClick(Sender: TObject);
@@ -822,6 +816,11 @@ procedure TfrmProduto.cmbUnidadeKeyPress(Sender: TObject; var Key: Char);
 begin
     if Key in ['0'..'9'] then
        Key := #0;
+end;
+
+procedure TfrmProduto.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+   LimpaTela;
 end;
 
 end.

@@ -13,6 +13,7 @@ object frmProdutoPesqView: TfrmProdutoPesqView
   OldCreateOrder = False
   Position = poScreenCenter
   OnKeyDown = FormKeyDown
+  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object stbBarraStatus: TStatusBar

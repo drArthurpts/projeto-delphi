@@ -6,7 +6,8 @@ uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, ExtCtrls, ComCtrls, Buttons, UEnumerationUtil, NumEdit,
   UProduto, UProdutoController, UUnidadeProdController,Math, UUnidadeProduto,
-  UUnidadeProdutoDAO,UConexao, DB, DBClient, UUnidadeProdView, UUnidadePesqView;
+  UUnidadeProdutoDAO,UConexao, DB, DBClient, UUnidadeProdView, UUnidadePesqView,
+  UClassFuncoes;
 
 type
   TfrmProduto = class(TForm)
@@ -53,6 +54,8 @@ type
     procedure btnSpeedClick(Sender: TObject);
     procedure cmbUnidadeEnter(Sender: TObject);
     procedure edtDescricaoProdKeyPress(Sender: TObject; var Key: Char);
+    procedure cmbUnidadeKeyPress(Sender: TObject; var Key: Char);
+
 
   private
     { Private declarations }
@@ -156,7 +159,7 @@ begin
         stbBarraStatus.Panels[0].Text := 'Consulta';
 
         CamposEnabled(False);
-//        cmbUnidade.Enabled   := True;
+        cmbUnidade.Enabled := False;
         edtPreco.Enabled := False;
         edtQuantidade.Enabled := False;
         edtCodigo.Enabled     := True;
@@ -173,7 +176,6 @@ begin
         begin
             lblCodigo.Enabled := True;
             edtCodigo.Enabled:= True;
-
             if edtCodigo.CanFocus then
             edtCodigo.SetFocus;
 
@@ -186,7 +188,9 @@ begin
         if (edtCodigo.Text <> EmptyStr) then
         begin
           CamposEnabled(True);
-
+          edtQuantidade.Enabled := True;
+          edtPreco.Enabled := True;
+          cmbUnidade.Enabled := True;
           edtCodigo.Enabled := False;
           btnAlterar.Enabled := False;
           btnConfirmar.Enabled := True;
@@ -237,9 +241,10 @@ begin
           stbBarraStatus.Panels[0].Text := 'Pesquisa';
 
          if (frmProdutoPesqView = nil) then
+         begin
             frmProdutoPesqView := TfrmProdutoPesqView.Create(Application);
-
-         frmProdutoPesqView.ShowModal;
+         end;
+        frmProdutoPesqView.ShowModal;
 
          if (frmProdutoPesqView.mProdutoID <> 0) then
          begin
@@ -252,8 +257,6 @@ begin
             vEstadoTela := etPadrao;
             DefineEstadoTela;
          end;
-         frmProdutoPesqView.mProdutoID   := 0;
-         frmProdutoPesqView.mProdutoDescricao := EmptyStr;
 
          if edtCodigo.CanFocus then
             edtCodigo.SetFocus;
@@ -741,6 +744,7 @@ begin
 procedure TfrmProduto.cmbUnidadeChange(Sender: TObject);
 var
    xDescricaoUnidade : TUnidadeProduto;
+   xCodigoReplace : string;
 begin
    xDescricaoUnidade := TUnidadeProduto.create;
 
@@ -753,6 +757,10 @@ begin
    end
    else
       edtDescricaoUnidade.Text := '';
+
+   xCodigoReplace := TFuncoes.SoNumero(cmbUnidade.Text);
+   cmbUnidade.Text := xCodigoReplace;
+   cmbUnidade.Text := TFuncoes.removeCaracterEspecial(cmbUnidade.Text, True);
 end;
 
 
@@ -810,6 +818,11 @@ begin
  end
 end;
 
+procedure TfrmProduto.cmbUnidadeKeyPress(Sender: TObject; var Key: Char);
+begin
+    if Key in ['0'..'9'] then
+       Key := #0;
+end;
 
 end.
 
