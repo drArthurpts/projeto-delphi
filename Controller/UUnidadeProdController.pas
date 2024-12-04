@@ -13,11 +13,12 @@ type
 
          function ExcluiProduto(pUnidadeProduto : TUnidadeProduto) : Boolean;
           function PesquisaUnidade(pUnidade : String) : TColUnidadeProd;
-
+         function BuscaDescUnidade(pUnidade : string) : TUnidadeProduto;
          function BuscaUnidadeProd(pID : Integer)                  :
          TUnidadeProduto;
          function RetornaCondicaoUnidadeProd(
                           pID_Produto : Integer)                   : String;
+         function RetornaDescUnidade (pUnidade : String)           : String;
          published
             class function getInstancia                            :
             TUnidadeProdController;
@@ -34,6 +35,33 @@ var
 
 
 { TUnidadeProdController }
+
+function TUnidadeProdController.BuscaDescUnidade(
+  pUnidade: string): TUnidadeProduto;
+var
+   xUnidadeProdDAO : TUnidadeProdutoDAO;
+begin
+     try
+       try
+         Result := nil;
+
+         xUnidadeProdDAO := TUnidadeProdutoDAO.Create(
+                            TConexao.getInstance.getConn);
+
+         Result := xUnidadeProdDAO.Retorna(RetornaDescUnidade(pUnidade));
+       finally
+         if (xUnidadeProdDAO <> nil) then
+            FreeAndNil(xUnidadeProdDAO);
+       end;
+   except
+      on E: Exception do
+      begin
+         Raise Exception.Create(
+            'Falha ao buscar os dados. [Controller]' + #13 +
+            e.Message);
+      end;
+   end;
+end;
 
 function TUnidadeProdController.BuscaUnidadeProd(
   pID: Integer): TUnidadeProduto;
@@ -203,6 +231,18 @@ begin
    Result :=
    'WHERE ' +                                                       #13+
    '      ' + xChave+ ' = ' + QuotedStr(IntToStr(pID_Produto))+ ' '#13;
+end;
+
+function TUnidadeProdController.RetornaDescUnidade(
+  pUnidade: String): String;
+var
+   xChave : String;
+begin
+   xChave := 'UNIDADE';
+
+   Result :=
+   'WHERE ' +                                                       #13+
+   '      ' + xChave+ ' = ' + QuotedStr(pUnidade)+ ' '#13;
 end;
 
 end.

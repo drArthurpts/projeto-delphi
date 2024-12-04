@@ -6,7 +6,8 @@ uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, ExtCtrls, ComCtrls, Buttons, UEnumerationUtil, NumEdit,
   UProduto, UProdutoController, UUnidadeProdController,Math, UUnidadeProduto,
-  UUnidadeProdutoDAO,UConexao, DB, DBClient, UUnidadeProdView, UUnidadePesqView;
+  UUnidadeProdutoDAO,UConexao, DB, DBClient, UUnidadeProdView, UUnidadePesqView,
+  UClassFuncoes;
 
 type
   TfrmProduto = class(TForm)
@@ -53,6 +54,8 @@ type
     procedure btnSpeedClick(Sender: TObject);
     procedure cmbUnidadeEnter(Sender: TObject);
     procedure edtDescricaoProdKeyPress(Sender: TObject; var Key: Char);
+    procedure cmbUnidadeKeyPress(Sender: TObject; var Key: Char);
+
 
   private
     { Private declarations }
@@ -64,6 +67,7 @@ type
     procedure CamposEnabled(pOpcao: Boolean);
     procedure DefineEstadoTela;
     procedure CarregaDadosTela;
+    procedure CarregaUnidadeDesc;
     procedure LimpaTela;
     procedure CarregaDadoscmb;
     function  CarregaProduto : Boolean;
@@ -75,7 +79,7 @@ type
     function  ProcessaListagem: Boolean;
     function  ProcessaUnidadeProduto: Boolean;
     function  ProcessaProduto: Boolean;
-    function  ValidaProduto: Boolean;
+    function  ValidaProduto  : Boolean;
   public
     { Public declarations }
   end;
@@ -138,7 +142,7 @@ begin
 
         edtCodigo.Enabled  := False;
         cmbUnidade.Enabled := True;
-  
+
         if edtDescricaoProd.CanFocus then
           edtDescricaoProd.SetFocus;
 
@@ -155,12 +159,14 @@ begin
         stbBarraStatus.Panels[0].Text := 'Consulta';
 
         CamposEnabled(False);
-
+        cmbUnidade.Enabled := False;
+        edtPreco.Enabled := False;
+        edtQuantidade.Enabled := False;
+        edtCodigo.Enabled     := True;
         if (edtCodigo.Text <> EmptyStr) then
         begin
           btnAlterar.Enabled   := True;
           btnExcluir.Enabled   := True;
-          cmbUnidade.Enabled   := True;
           btnConfirmar.Enabled := False;
 
           if (btnAlterar.CanFocus) then
@@ -170,7 +176,6 @@ begin
         begin
             lblCodigo.Enabled := True;
             edtCodigo.Enabled:= True;
-
             if edtCodigo.CanFocus then
             edtCodigo.SetFocus;
 
@@ -183,7 +188,9 @@ begin
         if (edtCodigo.Text <> EmptyStr) then
         begin
           CamposEnabled(True);
-
+          edtQuantidade.Enabled := True;
+          edtPreco.Enabled := True;
+          cmbUnidade.Enabled := True;
           edtCodigo.Enabled := False;
           btnAlterar.Enabled := False;
           btnConfirmar.Enabled := True;
@@ -201,10 +208,6 @@ begin
       end;
       etExcluir:
       begin
-
-        //
-
-
         stbBarraStatus.Panels[0].text := 'Exclusão';
 
         if (edtCodigo.Text <> EmptyStr) then
@@ -238,9 +241,10 @@ begin
           stbBarraStatus.Panels[0].Text := 'Pesquisa';
 
          if (frmProdutoPesqView = nil) then
+         begin
             frmProdutoPesqView := TfrmProdutoPesqView.Create(Application);
-
-         frmProdutoPesqView.ShowModal;
+         end;
+        frmProdutoPesqView.ShowModal;
 
          if (frmProdutoPesqView.mProdutoID <> 0) then
          begin
@@ -253,8 +257,6 @@ begin
             vEstadoTela := etPadrao;
             DefineEstadoTela;
          end;
-         frmProdutoPesqView.mProdutoID   := 0;
-         frmProdutoPesqView.mProdutoDescricao := EmptyStr;
 
          if edtCodigo.CanFocus then
             edtCodigo.SetFocus;
@@ -467,9 +469,11 @@ begin
 
     vObjProduto := TProduto(TProdutoController.getInstancia.
     BuscaProduto(StrToIntDef(edtCodigo.Text, 0)));
-
     if (vObjProduto <> nil) then
-       CarregaDadosTela
+    begin
+       CarregaDadosTela;
+       CarregaUnidadeDesc;
+    end
     else
     begin
       TMessageUtil.Alerta('Nenhum Produto encontrado');
@@ -491,57 +495,6 @@ end;
 
 function TfrmProduto.ProcessaExclusao: Boolean;
 begin
-//  try
-//    Result := False;
-//
-//    if (edtDescricaoProd.Text <> EmptyStr) and (Trim(edtDescricaoProd.Text) = EmptyStr) then
-//    begin
-//      ProcessaConsulta;
-//      exit;
-//    end;
-//
-//    if (vObjProduto = nil) then
-//    begin
-//      TMessageUtil.Alerta('Não foi possível carregar todos os dados cadastrados do Produto.');
-//      LimpaTela;
-//      vEstadoTela := etPadrao;
-//      DefineEstadoTela;
-//      exit;
-//    end;
-//
-//    try
-//      if TMessageUtil.Pergunta('Confirma a exclusão do Produto?') then
-//      begin
-//        Screen.Cursor := crHourGlass;
-//
-//        TProdutoController.getInstancia.ExcluiProduto(vObjProduto);
-//
-//        TMessageUtil.Informacao('Produto excluído com sucesso.');
-//      end
-//      else
-//      begin
-//        LimpaTela;
-//        vEstadoTela := etPadrao;
-//        DefineEstadoTela;
-//        exit;
-//      end;
-//    finally
-//      Screen.Cursor := crDefault;
-//      Application.ProcessMessages;
-//    end;
-//
-//    Result := True;
-//
-//    LimpaTela;
-//    vEstadoTela := etPadrao;
-//    DefineEstadoTela;
-//  except
-//    on E: Exception do
-//    begin
-//      raise Exception.Create('Falha ao excluir os dados do Produto [View]: ' + #13 + e.Message);
-//    end;
-//  end;
-
    try
       Result := False;
 
@@ -628,7 +581,6 @@ begin
 
     if (ProcessaProduto) then
     begin
-//         Gravação no banco
       TProdutoController.getInstancia.GravaProduto(vObjProduto);
       Result := True;
     end;
@@ -721,23 +673,24 @@ begin
    edtDescricaoProd.Text          := vObjProduto.Descricao;
    edtQuantidade.Value            := vObjProduto.QuantidadeEstoque;
    edtPreco.Value                 := vObjProduto.PrecoVenda;
+   cmbUnidade.Text                := vObjProduto.UnidadeSaida;
 
-   try
-      if vObjProduto.ID <> 0 then
-      begin
-         xObjUnidadeProduto := nil;
-         xObjUnidadeProduto := TUnidadeProduto.create;
-         //xObjUnidadeProduto := TUnidadeProdController.BuscaUnidade(vObjProduto.Unidade_ID);
-         cmbUnidade.Text := xObjUnidadeProduto.Unidade;
-         edtDescricaoUnidade.Text := xObjUnidadeProduto.Descricao;
-
-         if  xObjUnidadeProduto <> nil then
-             edtDescricaoUnidade.Text :=  xObjUnidadeProduto.Descricao;
-      end;
-   finally
-      if xObjUnidadeProduto <> nil then
-         FreeAndNil(xObjUnidadeProduto);
-   end;
+//   try
+//      if vObjProduto.ID <> 0 then
+//      begin
+//         xObjUnidadeProduto := nil;
+//         xObjUnidadeProduto := TUnidadeProduto.create;
+//         xObjUnidadeProduto := TUnidadeProdController.BuscaUnidadeProd(vObjProduto.ID);
+////         cmbUnidade.Text := xObjUnidadeProduto.Unidade;
+////         edtDescricaoUnidade.Text := xObjUnidadeProduto.Descricao;
+//         cmbUnidade.Text          := xObjUnidadeProduto.Unidade;
+//         if  xObjUnidadeProduto <> nil then
+//             edtDescricaoUnidade.Text :=  xObjUnidadeProduto.Descricao;
+//      end;
+//   finally
+//      if xObjUnidadeProduto <> nil then
+//         FreeAndNil(xObjUnidadeProduto);
+//   end;
 
    btnCancelar.Enabled := True;
    btnAlterar.Enabled  := True;
@@ -790,18 +743,26 @@ begin
 
 procedure TfrmProduto.cmbUnidadeChange(Sender: TObject);
 var
-   Unidade : TUnidadeProduto;
+   xDescricaoUnidade : TUnidadeProduto;
+   xCodigoReplace : string;
 begin
+   xDescricaoUnidade := TUnidadeProduto.create;
+
    if cmbUnidade.ItemIndex >= 0 then
    begin
-      Unidade := TUnidadeProduto(cmbUnidade.Items.Objects[cmbUnidade.ItemIndex]);
-      edtDescricaoUnidade.Text := Unidade.Descricao;
+      xDescricaoUnidade :=
+         TUnidadeProduto(cmbUnidade.Items.Objects[cmbUnidade.ItemIndex]);
+
+      edtDescricaoUnidade.Text := xDescricaoUnidade.Descricao;
    end
    else
-   begin
       edtDescricaoUnidade.Text := '';
-   end;
+
+   xCodigoReplace := TFuncoes.SoNumero(cmbUnidade.Text);
+   cmbUnidade.Text := xCodigoReplace;
+   cmbUnidade.Text := TFuncoes.removeCaracterEspecial(cmbUnidade.Text, True);
 end;
+
 
 procedure TfrmProduto.btnSpeedClick(Sender: TObject);
 begin
@@ -834,6 +795,33 @@ end;
 function TfrmProduto.CarregaProduto: Boolean;
 begin
 
+end;
+
+procedure TfrmProduto.CarregaUnidadeDesc;
+var
+   xUnidadeProduto : TUnidadeProduto;
+begin
+   try
+      xUnidadeProduto := nil;
+      xUnidadeProduto := TUnidadeProduto.create;
+
+      if vObjProduto.UnidadeSaida <> '' then
+      begin
+         xUnidadeProduto := TUnidadeProdController.getInstancia.BuscaDescUnidade(vObjProduto.UnidadeSaida);
+         edtDescricaoUnidade.Text := xUnidadeProduto.Descricao;
+      end
+      else
+         edtDescricaoUnidade.Text := '';
+   finally
+      if xUnidadeProduto <> nil then
+         FreeAndNil(xUnidadeProduto);
+ end
+end;
+
+procedure TfrmProduto.cmbUnidadeKeyPress(Sender: TObject; var Key: Char);
+begin
+    if Key in ['0'..'9'] then
+       Key := #0;
 end;
 
 end.

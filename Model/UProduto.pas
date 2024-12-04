@@ -12,7 +12,7 @@ type
           vDescricao        : string;
           vQuantidadeEstoque: Double;
           vPrecoVenda       : Double;
-          vUnidadeSaida          : string;
+          vUnidadeSaida     : string;
 
       public
          constructor Create;
@@ -21,7 +21,7 @@ type
           property Descricao        : string  read vDescricao write vDescricao;
           property QuantidadeEstoque: Double  read vQuantidadeEstoque write vQuantidadeEstoque;
           property PrecoVenda       : Double  read vPrecoVenda write vPrecoVenda;
-          property UnidadeSaida          : string read vUnidadeSaida write vUnidadeSaida;
+          property UnidadeSaida     : string read vUnidadeSaida write vUnidadeSaida;
 
         end;
 
@@ -38,7 +38,7 @@ begin
     Self.vDescricao         := EmptyStr;
     Self.vQuantidadeEstoque := 0;
     Self.vPrecoVenda        := 0;
-    Self.vUnidadeSaida           := EmptyStr;
+    Self.vUnidadeSaida      := EmptyStr;
 end;
 
 

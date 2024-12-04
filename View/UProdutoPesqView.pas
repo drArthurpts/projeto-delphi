@@ -38,6 +38,7 @@ type
     procedure dbgProdutoDblClick(Sender: TObject);
     procedure DBGrid1DblClick(Sender: TObject);
 
+
   private
     { Private declarations }
     vKey : Word;

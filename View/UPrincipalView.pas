@@ -85,15 +85,16 @@ end;
 
 procedure TfrmPrincipal.MenProdutosClick(Sender: TObject);
 begin
+    Screen.Cursor := crHourGlass;
    try
-      Screen.Cursor := crHourGlass;
-     if (frmProduto = nil) then
+      if not Assigned(frmProduto) then
          frmProduto := TfrmProduto.Create(Application);
 
-     frmProduto.Show;
+      frmProduto.ShowModal;
    finally
+      if Assigned(frmProduto) then
+         FreeAndNil(frmProduto); 
       Screen.Cursor := crDefault;
-
    end;
 end;
 
@@ -104,7 +105,7 @@ begin
      if (frmVenda = nil) then
          frmVenda := TfrmVenda.Create(Application);
 
-     frmVenda.Show;
+     frmVenda.ShowModal;
    finally
       Screen.Cursor := crDefault;
 
