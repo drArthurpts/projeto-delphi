@@ -60,7 +60,7 @@ begin
       if frmClientes = nil then
       frmClientes := TfrmClientes.Create(Application);
 
-  frmClientes.ShowModal;
+  frmClientes.Show;
 
 
   finally
@@ -76,7 +76,7 @@ begin
      if (frmUnidadeProd = nil) then
          frmUnidadeProd := TfrmUnidadeProd.Create(Application);
 
-     frmUnidadeProd.ShowModal;
+     frmUnidadeProd.Show;
    finally
       Screen.Cursor := crDefault;
 

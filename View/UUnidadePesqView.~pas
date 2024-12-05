@@ -107,8 +107,8 @@ begin
    if (edtNome.CanFocus) then
       edtNome.SetFocus;
 
-   mUnidadeID   := 0;
-   mUnidadeUnidade := EmptyStr;
+//   mUnidadeID   := 0;
+//   mUnidadeUnidade := EmptyStr;
 end;
 
 
