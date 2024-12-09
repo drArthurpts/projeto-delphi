@@ -86,7 +86,7 @@ type
   private
     { Private declarations }
     vKey : Word;
-
+    vGridEditavel     : Boolean;
     vEstadoTela       : TEstadoTela;
     vObjVenda         : TVenda;
     vObjColVenda      : TColVenda;
@@ -191,9 +191,8 @@ begin
          stbBarraStatus.Panels[0].Text := 'Inclusão';
 
          CamposEnabled(True);
-
          edtNumVenda.Enabled := False;
-
+         dbgProduto.Options := dbgProduto.Options + [dgEditing];
          if edtCodigo.CanFocus then
             edtCodigo.SetFocus;
 
@@ -841,6 +840,7 @@ begin
          cdsProdutosQuant.Value           := vObjColVendaItem.Retorna(xAux).Quantidade;
          cdsProdutosPreoTotal.Value       := vObjColVendaItem.Retorna(xAux).TotalItem;
          cdsProdutos.Post;
+          dbgProduto.Options := dbgProduto.Options - [dgEditing];
       end;
    end;
 end;
