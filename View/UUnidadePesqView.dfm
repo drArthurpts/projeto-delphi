@@ -1,8 +1,9 @@
 object frmUnidadePesq: TfrmUnidadePesq
-  Left = 404
-  Top = 284
-  Width = 433
+  Left = 455
+  Top = 255
+  Width = 477
   Height = 271
+  BorderIcons = [biSystemMenu]
   Caption = 'Pesquisa de Unidade'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -12,6 +13,7 @@ object frmUnidadePesq: TfrmUnidadePesq
   Font.Style = []
   KeyPreview = True
   OldCreateOrder = False
+  Position = poScreenCenter
   OnKeyDown = FormKeyDown
   OnShow = FormShow
   PixelsPerInch = 96
@@ -19,19 +21,19 @@ object frmUnidadePesq: TfrmUnidadePesq
   object stbBarraStatus: TStatusBar
     Left = 0
     Top = 213
-    Width = 417
+    Width = 461
     Height = 19
     Panels = <>
   end
   object pnlBotoes: TPanel
     Left = 0
     Top = 172
-    Width = 417
+    Width = 461
     Height = 41
     Align = alBottom
     TabOrder = 1
     object btnConfirmar: TBitBtn
-      Left = 148
+      Left = 183
       Top = 8
       Width = 75
       Height = 25
@@ -67,7 +69,7 @@ object frmUnidadePesq: TfrmUnidadePesq
         8637288637247C3267A567B7CDB7FFFFFFFFFFFFFFFFFFFFFFFF}
     end
     object btnLimpar: TBitBtn
-      Left = 235
+      Left = 270
       Top = 8
       Width = 75
       Height = 25
@@ -103,7 +105,7 @@ object frmUnidadePesq: TfrmUnidadePesq
         AF8DC2AA84AA9161A98B5DFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
     end
     object btnSair: TBitBtn
-      Left = 325
+      Left = 360
       Top = 8
       Width = 75
       Height = 25
@@ -142,14 +144,14 @@ object frmUnidadePesq: TfrmUnidadePesq
   object pnlFiltro: TPanel
     Left = 0
     Top = 0
-    Width = 417
+    Width = 461
     Height = 54
     Align = alTop
     TabOrder = 2
     object grbFiltrar: TGroupBox
       Left = 1
       Top = 1
-      Width = 415
+      Width = 459
       Height = 52
       Align = alClient
       Caption = 'Filtrar'
@@ -171,12 +173,12 @@ object frmUnidadePesq: TfrmUnidadePesq
       object edtNome: TEdit
         Left = 49
         Top = 23
-        Width = 248
+        Width = 288
         Height = 21
         TabOrder = 0
       end
       object btnFiltrar: TBitBtn
-        Left = 319
+        Left = 348
         Top = 18
         Width = 76
         Height = 25
@@ -216,14 +218,14 @@ object frmUnidadePesq: TfrmUnidadePesq
   object pnlResultado: TPanel
     Left = 0
     Top = 54
-    Width = 417
+    Width = 461
     Height = 118
     Align = alClient
     TabOrder = 3
     object grbGrid: TGroupBox
       Left = 1
       Top = 1
-      Width = 415
+      Width = 459
       Height = 116
       Align = alClient
       Caption = 'Resultado da busca'
@@ -231,10 +233,11 @@ object frmUnidadePesq: TfrmUnidadePesq
       object dbgUnidade: TDBGrid
         Left = 2
         Top = 15
-        Width = 411
+        Width = 455
         Height = 99
         Align = alClient
         DataSource = dtsUnidade
+        Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgConfirmDelete, dgCancelOnExit]
         TabOrder = 0
         TitleFont.Charset = DEFAULT_CHARSET
         TitleFont.Color = clWindowText

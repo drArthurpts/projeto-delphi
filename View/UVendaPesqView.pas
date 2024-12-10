@@ -138,7 +138,6 @@ var
    xListaVenda : TColVenda;
    xID_Venda   : Integer;
    xAux        : Integer;
-   DataInicio, DataFim: TDateTime;
 begin
    try
       try
@@ -148,27 +147,16 @@ begin
          if (edtCodigo.Text <> EmptyStr) then
             xID_Venda := StrToInt(edtCodigo.Text);
 
-         if (TFuncoes.SoNumero(edtDataInicio.Text) = EmptyStr) then
+         if (TFuncoes.SoNumero(edtDataInicio.Text) = EmptyStr) or
+            ( Length(TFuncoes.SoNumero(edtDataInicio.Text)) <> 8 )  then
             edtDataInicio.Text := '01/01/1999';
 
-         if (TFuncoes.SoNumero(edtDataFim.Text) = EmptyStr) then
+         if (TFuncoes.SoNumero(edtDataFim.Text) = EmptyStr) or
+            ( Length(TFuncoes.SoNumero(edtDataFim.Text)) <> 8 ) then
             edtDataFim.Text := '01/01/2999';
-         if not TryStrToDate(edtDataInicio.Text, DataInicio) then
-         begin
-            ShowMessage('Dat inválida. Por favor, insira uma data válida.');
-            edtDataInicio.SetFocus;
-            Exit;
-         end;
-         if (TFuncoes.SoNumero(edtDataFim.Text) = EmptyStr) then
-            edtDataFim.Text := '01/01/2999'
-         else if not TryStrToDate(edtDataFim.Text, DataFim) then
-         begin
-            ShowMessage('Data inválida. Por favor, insira uma data válida.');
-            edtDataFim.SetFocus;
-            Exit;
-         end;
-         xListaVenda :=
-               TVendaController.getInstancia.PesquisaVenda(xID_Venda, edtDataInicio.Text, edtDataFim.Text);
+
+             xListaVenda :=
+               TVendaController.getInstancia.PesquisaVenda(xId_Venda, edtDataInicio.Text, edtDataFim.Text);
 
          cdsVenda.EmptyDataSet;
 
@@ -178,31 +166,33 @@ begin
             begin
                if xListaVenda.Retorna(xAux).ID <> 0 then
                begin
-               cdsVenda.Append;
-               cdsVendaID.Value             := xListaVenda.Retorna(xAux).ID;
-               cdsVendaNomeCliente.Text     := TPessoaController.getInstancia.BuscaPessoa(xListaVenda.Retorna(xAux).ID_Cliente).Nome;
-               cdsVendaData.Value           := xListaVenda.Retorna(xAux).DataVenda;
-               cdsVendaDesconto.Value       := xListaVenda.Retorna(xAux).TotalDesconto;
-               cdsVendaValor.Value          := xListaVenda.Retorna(xAux).TotalVenda;
-               cdsVenda.Post;
+                  cdsVenda.Append;
+                  cdsVendaID.Value := xListaVenda.Retorna(xAux).ID;
+                  cdsVendaNomeCliente.Text     := TPessoaController.getInstancia.BuscaPessoa(xListaVenda.Retorna(xAux).ID_Cliente).Nome;
+                  cdsVendaData.Text :=
+                     FormatDateTime('dd/mm/yyyy',xListaVenda.Retorna(xAux).DataVenda);
+                  cdsVendaValor.Value := xListaVenda.Retorna(xAux).TotalVenda;
+                  cdsVenda.Post;
                end;
             end;
          end;
+
          if (cdsVenda.RecordCount = 0) then
          begin
-            if edtCodigo.CanFocus then
-               edtCodigo.SetFocus;
+            if edtDataInicio.CanFocus then
+               edtDataInicio.SetFocus;
 
             TMessageUtil.Alerta(
                'Nenhuma venda encontrada para este filtro.');
-
          end
          else
          begin
             cdsVenda.First;
+
             if dbgVenda.CanFocus then
                dbgVenda.SetFocus;
          end;
+
       finally
          if (xListaVenda <> nil) then
             FreeAndNil(xListaVenda);
@@ -216,6 +206,7 @@ begin
       end;
    end;
 end;
+
 
 
 procedure TTfrmVendaPesqView.btnConfirmarClick(Sender: TObject);

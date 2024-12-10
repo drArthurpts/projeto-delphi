@@ -3,6 +3,7 @@ object frmClientesPesq: TfrmClientesPesq
   Top = 248
   Width = 546
   Height = 262
+  BorderIcons = [biSystemMenu]
   Caption = 'Pesquisa de Cliente'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET

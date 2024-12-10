@@ -94,15 +94,13 @@ begin
       VK_RETURN:
       begin
          Perform(WM_NEXTDLGCTL, 0, 0);
-
       end;
 
       VK_ESCAPE:
-
       begin
       if (vEstadoTela <> etPadrao) then
          begin
-            if (TMessageUtil.Pergunta('Deseja realmente abortar essa operação?')) then
+            if (TMessageUtil.Pergunta('Deseja sair da rotina? ')) then
             begin
                vEstadoTela := etPadrao;
                DefineEstadoTela;
@@ -245,18 +243,14 @@ begin
       etAlterar:
       begin
          stbBarraStatus.Panels[0].Text := 'Alteração';
-
          if (edtCodigo.Text <> EmptyStr) then
          begin
             CamposEnabled(True);
-
+            chkAtivo.Checked        := vObjUnidadeProd.Ativo;
             edtCodigo.Enabled    := False;
             btnAlterar.Enabled   := False;
             btnConfirmar.Enabled := True;
 
-
-            if (chkAtivo.CanFocus) then
-               chkAtivo.SetFocus;
          end
          else
          begin
@@ -546,7 +540,7 @@ begin
 
          if ProcessaProduto then
          begin
-            TMessageUtil.Informacao('Produto cadastrado com sucesso! ' + #13 +
+            TMessageUtil.Informacao('Unidade cadastrada com sucesso! ' + #13 +
                                     'Código cadastrado: '+
                                     IntToStr(vObjUnidadeProd.Id));
             vEstadoTela := etPadrao;
@@ -558,7 +552,7 @@ begin
           on E : Exception do
           begin
              Raise Exception.Create(
-             'Falha ao incluir os dados do produto [View]: '#13 +
+             'Falha ao incluir os dados da Unidade [View]: '#13 +
              e.Message);
           end;
       end;
@@ -596,7 +590,6 @@ function TfrmUnidadeProd.ProcessaUnidade: Boolean;
 begin
    try
       Result := False;
-
       if not ValidaUnidadeProd then
       exit;
 
@@ -617,6 +610,9 @@ begin
       vObjUnidadeProd.Unidade    := edtUnidade.Text;
       vObjUnidadeProd.Descricao  := edtDescricao.Text;
       vObjUnidadeProd.Ativo      := chkAtivo.Checked;
+       TUnidadeProdController.getInstancia.GravaUnidadeProd(
+         vObjUnidadeProd);
+
       Result := True;
    except
       on E : Exception do
@@ -655,8 +651,7 @@ begin
    edtCodigo.Text          := IntToStr(vObjUnidadeProd.Id);
    edtUnidade.Text         := vObjUnidadeProd.Unidade;
    edtDescricao.Text       := vObjUnidadeProd.Descricao;
-   chkAtivo.Checked  := vObjUnidadeProd.Ativo;
-
+   chkAtivo.Checked        := vObjUnidadeProd.Ativo;
 end;
 
 procedure TfrmUnidadeProd.edtCodigoExit(Sender: TObject);

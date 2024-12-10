@@ -55,6 +55,10 @@ type
     procedure edtDescricaoProdKeyPress(Sender: TObject; var Key: Char);
     procedure cmbUnidadeKeyPress(Sender: TObject; var Key: Char);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure edtCodigoChange(Sender: TObject);
+    procedure edtDescricaoProdChange(Sender: TObject);
+    procedure cmbUnidadeClick(Sender: TObject);
+    procedure cmbUnidadeExit(Sender: TObject);
 
 
   private
@@ -139,7 +143,9 @@ begin
       begin
         CamposEnabled(True);
         stbBarraStatus.Panels[0].Text := 'Inclusão';
-
+        edtPreco.Enabled := True;
+        edtQuantidade.Enabled := True;
+        edtDescricaoUnidade.Enabled := False;
         edtCodigo.Enabled  := False;
         cmbUnidade.Enabled := True;
 
@@ -157,12 +163,12 @@ begin
     etConsultar:
       begin
         stbBarraStatus.Panels[0].Text := 'Consulta';
-
+        edtCodigo.Enabled     := True;
         CamposEnabled(False);
         cmbUnidade.Enabled := False;
+        edtDescricaoUnidade.Enabled := False;
         edtPreco.Enabled := False;
         edtQuantidade.Enabled := False;
-        edtCodigo.Enabled     := True;
         if (edtCodigo.Text <> EmptyStr) then
         begin
           btnAlterar.Enabled   := True;
@@ -184,16 +190,16 @@ begin
       etAlterar:
       begin
         stbBarraStatus.Panels[0].Text := 'Alteração';
-
         if (edtCodigo.Text <> EmptyStr) then
         begin
           CamposEnabled(True);
+          edtDescricaoUnidade.Enabled := False;
           edtQuantidade.Enabled := True;
           edtPreco.Enabled := True;
-          cmbUnidade.Enabled := True;
           edtCodigo.Enabled := False;
           btnAlterar.Enabled := False;
           btnConfirmar.Enabled := True;
+          cmbUnidade.Enabled   := True;
 
         end
         else
@@ -238,8 +244,7 @@ begin
       end;
        etPesquisar:
       begin
-          stbBarraStatus.Panels[0].Text := 'Pesquisa';
-
+         stbBarraStatus.Panels[0].Text := 'Pesquisa';
          if (frmProdutoPesqView = nil) then
          begin
             frmProdutoPesqView := TfrmProdutoPesqView.Create(Application);
@@ -258,8 +263,9 @@ begin
             DefineEstadoTela;
          end;
 
-         if edtCodigo.CanFocus then
-            edtCodigo.SetFocus;
+         edtCodigo.Enabled := False;
+//         if edtCodigo.CanFocus then
+//            edtCodigo.SetFocus;
       end;
       end;
 
@@ -394,7 +400,6 @@ end;
 function TfrmProduto.ProcessaConfirmacao: Boolean;
 begin
   Result := False;
-
   try
     case vEstadoTela of
       etIncluir:
@@ -467,6 +472,8 @@ begin
     begin
        CarregaDadosTela;
        CarregaUnidadeDesc;
+        if (edtDescricaoProd.CanFocus) then
+            edtDescricaoProd.SetFocus;
     end
     else
     begin
@@ -542,25 +549,31 @@ end;
 
 function TfrmProduto.ProcessaInclusao: Boolean;
 begin
-  try
-    Result := False;
+   Result := False;
+   try
+      try
+         if ProcessaUnidadeProduto then
+         begin
+            TMessageUtil.Informacao('Produto cadastrado com sucesso.'#13 +
+               'Código cadastrado: ' + IntToStr(vObjProduto.ID));
 
-    if ProcessaUnidadeProduto then
-    begin
-      TMessageUtil.Informacao('Produto cadastrado com sucesso! ' + #13+
-                              'Código cadastrado: ' + IntToStr(vObjProduto.ID));
+            vEstadoTela := etPadrao;
+            DefineEstadoTela;
 
-      vEstadoTela := etPadrao;
-      DefineEstadoTela;
-
-      Result := True;
-    end;
-  except
-    on E: Exception do
-    begin
-      raise Exception.Create('Falha ao incluir os dados do Produto [View]: '#13 + e.Message);
-    end;
-  end;
+            Result := True;
+         end;
+      except
+         on E : Exception do
+         begin
+            Raise Exception.Create(
+               'Falha ao incluir os dados do produto[View]: '#13 +
+               e.Message);
+         end;
+      end;
+   finally
+      if vObjProduto <> nil then
+         FreeAndNil(vObjProduto);
+   end;
 end;
 
 function TfrmProduto.ProcessaListagem: Boolean;
@@ -611,7 +624,7 @@ begin
     vObjProduto.QuantidadeEstoque := edtQuantidade.Value;
     vObjProduto.PrecoVenda        := edtPreco.Value;
     vObjProduto.Descricao         := edtDescricaoProd.Text;
-    vObjProduto.UnidadeSaida       := cmbUnidade.Text;
+    vObjProduto.UnidadeSaida      := cmbUnidade.Text;
 
 
     TProdutoController.getInstancia.GravaProduto(vObjProduto);
@@ -629,15 +642,13 @@ end;
 function TfrmProduto.ValidaProduto: Boolean;
 begin
   Result := False;
-
-  if (CompareValue(edtPreco.Value, 0) = EqualsValue) then
+  if Trim(edtDescricaoProd.Text) = '' then
   begin
-    TMessageUtil.Alerta('Preço do produto não pode ser 0.');
-    if edtPreco.CanFocus then
-      edtPreco.SetFocus;
+    TMessageUtil.Alerta('Decrição do produto não pode ficar em branco.');
+    if edtDescricaoProd.CanFocus then
+       edtDescricaoProd.SetFocus;
     exit;
   end;
-
   if (CompareValue(edtQuantidade.Value, 0) = EqualsValue) then
   begin
     TMessageUtil.Alerta('Quantidade do produto não pode ser 0.');
@@ -645,12 +656,11 @@ begin
       edtQuantidade.SetFocus;
     exit;
   end;
-
-  if Trim(edtDescricaoProd.Text) = '' then
+  if (CompareValue(edtPreco.Value, 0) = EqualsValue) then
   begin
-    TMessageUtil.Alerta('Decrição do produto não pode ficar em branco.');
-    if edtDescricaoProd.CanFocus then
-       edtDescricaoProd.SetFocus;
+    TMessageUtil.Alerta('Preço do produto não pode ser 0.');
+    if edtPreco.CanFocus then
+      edtPreco.SetFocus;
     exit;
   end;
   Result := True;
@@ -667,24 +677,10 @@ begin
    edtDescricaoProd.Text          := vObjProduto.Descricao;
    edtQuantidade.Value            := vObjProduto.QuantidadeEstoque;
    edtPreco.Value                 := vObjProduto.PrecoVenda;
-   cmbUnidade.Text                := vObjProduto.UnidadeSaida;
-
-//   try
-//      if vObjProduto.ID <> 0 then
-//      begin
-//         xObjUnidadeProduto := nil;
-//         xObjUnidadeProduto := TUnidadeProduto.create;
-//         xObjUnidadeProduto := TUnidadeProdController.BuscaUnidadeProd(vObjProduto.ID);
-////         cmbUnidade.Text := xObjUnidadeProduto.Unidade;
-////         edtDescricaoUnidade.Text := xObjUnidadeProduto.Descricao;
-//         cmbUnidade.Text          := xObjUnidadeProduto.Unidade;
-//         if  xObjUnidadeProduto <> nil then
-//             edtDescricaoUnidade.Text :=  xObjUnidadeProduto.Descricao;
-//      end;
-//   finally
-//      if xObjUnidadeProduto <> nil then
-//         FreeAndNil(xObjUnidadeProduto);
-//   end;
+   cmbUnidade.Items.Clear;
+   CarregaDadoscmb;
+   cmbUnidade.ItemIndex := cmbUnidade.Items.IndexOf(vObjProduto.UnidadeSaida);
+   edtDescricaoUnidade.Enabled    := False;
 
    btnCancelar.Enabled := True;
    btnAlterar.Enabled  := True;
@@ -716,6 +712,9 @@ var
 
 begin
    xListaUnidades := TColUnidadeProd.Create;
+
+   if cmbUnidade.Items.Count > 0 then
+      Exit;
 
     xListaUnidades :=
             TUnidadeProdController.getInstancia.PesquisaUnidade(Trim(cmbUnidade.Text));
@@ -758,9 +757,12 @@ begin
 end;
 
 
-procedure TfrmProduto.btnSpeedClick(Sender: TObject);
+procedure TfrmProduto.btnSpeedClick(Sender: TObject);    
+var
+   xUnidadeCmb: string;
 begin
    try
+      xUnidadeCmb := '';
       Screen.Cursor := crHourGlass;
 
       if edtDescricaoUnidade.CanFocus then
@@ -769,6 +771,19 @@ begin
       if frmUnidadeProd  = nil then
             frmUnidadeProd := TfrmUnidadeProd.Create(Application);
          frmUnidadeProd.Show;
+
+      if cmbUnidade.Text = '' then
+      begin
+         cmbUnidade.Items.Clear;
+         CarregaDadoscmb;
+      end
+      else
+      begin
+         xUnidadeCmb := cmbUnidade.Text;
+         cmbUnidade.Items.Clear;
+         CarregaDadoscmb;
+         cmbUnidade.ItemIndex := cmbUnidade.Items.IndexOf(cmbUnidade.Text);
+      end;
    finally
       Screen.Cursor := crDefault;
    end;
@@ -802,14 +817,18 @@ begin
       if vObjProduto.UnidadeSaida <> '' then
       begin
          xUnidadeProduto := TUnidadeProdController.getInstancia.BuscaDescUnidade(vObjProduto.UnidadeSaida);
+         edtDescricaoUnidade.Enabled := True;
          edtDescricaoUnidade.Text := xUnidadeProduto.Descricao;
+         edtDescricaoUnidade.Enabled := False;
       end
       else
          edtDescricaoUnidade.Text := '';
+
+
    finally
       if xUnidadeProduto <> nil then
          FreeAndNil(xUnidadeProduto);
- end
+   end
 end;
 
 procedure TfrmProduto.cmbUnidadeKeyPress(Sender: TObject; var Key: Char);
@@ -821,6 +840,27 @@ end;
 procedure TfrmProduto.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
    LimpaTela;
+end;
+
+procedure TfrmProduto.edtCodigoChange(Sender: TObject);
+begin
+   edtCodigo.Text := TFuncoes.SoNumero(edtCodigo.Text);
+end;
+
+procedure TfrmProduto.edtDescricaoProdChange(Sender: TObject);
+begin
+   edtDescricaoProd.Text := TFuncoes.removeCaracterEspecial(edtDescricaoProd.Text, true);
+end;
+
+procedure TfrmProduto.cmbUnidadeClick(Sender: TObject);
+begin
+//   cmbUnidade.Style := csDropDownList;
+end;
+
+procedure TfrmProduto.cmbUnidadeExit(Sender: TObject);
+begin
+   if Trim(cmbUnidade.Text) = '' then
+      edtDescricaoUnidade.Text := EmptyStr;
 end;
 
 end.

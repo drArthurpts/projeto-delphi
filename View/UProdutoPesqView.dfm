@@ -1,8 +1,9 @@
 object frmProdutoPesqView: TfrmProdutoPesqView
   Left = 422
   Top = 309
-  Width = 509
+  Width = 533
   Height = 259
+  BorderIcons = [biSystemMenu]
   Caption = 'Pesquisa de Produto'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -10,33 +11,36 @@ object frmProdutoPesqView: TfrmProdutoPesqView
   Font.Height = -11
   Font.Name = 'MS Sans Serif'
   Font.Style = []
+  KeyPreview = True
   OldCreateOrder = False
   Position = poScreenCenter
   OnKeyDown = FormKeyDown
+  OnKeyUp = FormKeyUp
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object stbBarraStatus: TStatusBar
     Left = 0
     Top = 201
-    Width = 493
+    Width = 517
     Height = 19
     Panels = <>
   end
   object pnlBotoes: TPanel
     Left = 0
     Top = 160
-    Width = 493
+    Width = 517
     Height = 41
     Align = alBottom
     TabOrder = 1
     object btnConfirmar: TBitBtn
-      Left = 199
+      Left = 249
       Top = 8
       Width = 75
       Height = 25
       Caption = 'C&onfirmar'
       TabOrder = 0
+      OnClick = btnConfirmarClick
       Glyph.Data = {
         36030000424D3603000000000000360000002800000010000000100000000100
         18000000000000030000C40E0000C40E00000000000000000000FFFFFFFFFFFF
@@ -66,7 +70,7 @@ object frmProdutoPesqView: TfrmProdutoPesqView
         8637288637247C3267A567B7CDB7FFFFFFFFFFFFFFFFFFFFFFFF}
     end
     object btnLimpar: TBitBtn
-      Left = 286
+      Left = 336
       Top = 8
       Width = 75
       Height = 25
@@ -102,7 +106,7 @@ object frmProdutoPesqView: TfrmProdutoPesqView
         AF8DC2AA84AA9161A98B5DFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
     end
     object btnSair: TBitBtn
-      Left = 376
+      Left = 426
       Top = 8
       Width = 75
       Height = 25
@@ -141,14 +145,14 @@ object frmProdutoPesqView: TfrmProdutoPesqView
   object pnlFiltro: TPanel
     Left = 0
     Top = 0
-    Width = 493
+    Width = 517
     Height = 57
     Align = alTop
     TabOrder = 2
     object grbFiltrar: TGroupBox
       Left = 1
       Top = 1
-      Width = 491
+      Width = 515
       Height = 55
       Align = alClient
       Caption = 'Filtrar'
@@ -170,13 +174,13 @@ object frmProdutoPesqView: TfrmProdutoPesqView
       object edtNome: TEdit
         Left = 51
         Top = 24
-        Width = 278
+        Width = 342
         Height = 21
         CharCase = ecUpperCase
         TabOrder = 0
       end
       object btnFiltrar: TBitBtn
-        Left = 350
+        Left = 417
         Top = 20
         Width = 75
         Height = 25
@@ -216,14 +220,14 @@ object frmProdutoPesqView: TfrmProdutoPesqView
   object pnlResultado: TPanel
     Left = 0
     Top = 57
-    Width = 493
+    Width = 517
     Height = 103
     Align = alClient
     TabOrder = 3
     object dbgProduto: TGroupBox
       Left = 1
       Top = 1
-      Width = 491
+      Width = 515
       Height = 101
       Align = alClient
       Caption = 'Resultado da busca: '
@@ -232,10 +236,11 @@ object frmProdutoPesqView: TfrmProdutoPesqView
       object DBGrid1: TDBGrid
         Left = 2
         Top = 15
-        Width = 487
+        Width = 511
         Height = 84
         Align = alClient
         DataSource = dtsProduto
+        Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgConfirmDelete, dgCancelOnExit]
         TabOrder = 0
         TitleFont.Charset = DEFAULT_CHARSET
         TitleFont.Color = clWindowText

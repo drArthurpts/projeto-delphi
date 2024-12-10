@@ -853,7 +853,6 @@ begin
 
       Exit;
    end;
-
    if (Trim(edtCidade.Text) = EmptyStr) then
    begin
       TMessageUtil.Alerta(
@@ -861,7 +860,6 @@ begin
 
       if (edtCidade.CanFocus) then
          edtCidade.SetFocus;
-
       Exit;
    end;
 

@@ -80,9 +80,9 @@ object frmUnidadeProd: TfrmUnidadeProd
     end
     object btnAlterar: TBitBtn
       Left = 99
-      Top = 12
+      Top = 16
       Width = 75
-      Height = 25
+      Height = 21
       Caption = '&Alterar'
       TabOrder = 1
       OnClick = btnAlterarClick
@@ -187,7 +187,7 @@ object frmUnidadeProd: TfrmUnidadeProd
         CFCFDFDFDFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
     end
     object btnPesquisar: TBitBtn
-      Left = 190
+      Left = 101
       Top = 47
       Width = 75
       Height = 25
@@ -374,7 +374,7 @@ object frmUnidadeProd: TfrmUnidadeProd
       ParentFont = False
     end
     object edtCodigo: TEdit
-      Left = 48
+      Left = 50
       Top = 14
       Width = 68
       Height = 21

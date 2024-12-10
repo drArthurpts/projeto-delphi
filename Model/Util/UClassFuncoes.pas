@@ -1332,10 +1332,10 @@ const
                                      'O','u',   'u', 'u', 'u', 'u', 'u', 'c', 'C',
                                      'n','N', ' / ', 'e', 'E');
   //Lista de Caracteres Extras
-  xCarExt: array[1..39] of string = ('¨','&','~','^','´','`','¨','æ','Æ','ø','£',
+  xCarExt: array[1..41] of string = ('¨','&','~','^','´','`','¨','æ','Æ','ø','£',
                                      'Ø','ƒ','ª','º','¿','®','½','¼','ß','µ','þ',
                                      'ý','Ý','-', '.', '+', ';', ':', '(', ')',
-                                     '@', '#','=', '[', ']', '!', '$', '*');
+                                     '@', '#','=', '[', ']', '!', '$', '*','%','"');
 var
   xTexto : string;
   xCount : Integer;
@@ -1349,7 +1349,7 @@ begin
                               [rfreplaceall]);
 
    if (pCaracterExtra) then
-      for xCount := 1 to 39 do
+      for xCount := 1 to 41 do
           xTexto := StringReplace(xTexto,
                                   xCarExt[xCount],
                                   '',

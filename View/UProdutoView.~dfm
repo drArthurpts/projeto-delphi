@@ -193,7 +193,7 @@ object frmProduto: TfrmProduto
         CFCFDFDFDFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
     end
     object btnPesquisar: TBitBtn
-      Left = 233
+      Left = 142
       Top = 47
       Width = 75
       Height = 26
@@ -345,7 +345,7 @@ object frmProduto: TfrmProduto
     Width = 618
     Height = 73
     Align = alClient
-    TabOrder = 2
+    TabOrder = 3
     object lblUnidade: TLabel
       Left = 6
       Top = 45
@@ -380,7 +380,7 @@ object frmProduto: TfrmProduto
       ParentFont = False
     end
     object btnSpeed: TSpeedButton
-      Left = 111
+      Left = 110
       Top = 41
       Width = 15
       Height = 16
@@ -461,10 +461,12 @@ object frmProduto: TfrmProduto
     object edtDescricaoProd: TEdit
       Left = 161
       Top = 8
-      Width = 296
+      Width = 426
       Height = 21
       CharCase = ecUpperCase
+      MaxLength = 100
       TabOrder = 0
+      OnChange = edtDescricaoProdChange
       OnKeyPress = edtDescricaoProdKeyPress
     end
     object edtPreco: TNumEdit
@@ -475,7 +477,7 @@ object frmProduto: TfrmProduto
       Alignment = taRightJustify
       Decimals = 2
       ShowSeparator = True
-      TabOrder = 1
+      TabOrder = 3
     end
     object edtQuantidade: TNumEdit
       Left = 531
@@ -485,18 +487,23 @@ object frmProduto: TfrmProduto
       Alignment = taRightJustify
       Decimals = 2
       ShowSeparator = True
-      TabOrder = 2
+      TabOrder = 4
     end
     object cmbUnidade: TComboBox
-      Left = 53
+      Left = 54
       Top = 41
-      Width = 49
+      Width = 45
       Height = 21
+      AutoComplete = False
+      Style = csDropDownList
       CharCase = ecUpperCase
+      Enabled = False
       ItemHeight = 13
-      TabOrder = 3
+      TabOrder = 1
       OnChange = cmbUnidadeChange
+      OnClick = cmbUnidadeClick
       OnEnter = cmbUnidadeEnter
+      OnExit = cmbUnidadeExit
       OnKeyPress = cmbUnidadeKeyPress
       Items.Strings = (
         '')
@@ -504,10 +511,10 @@ object frmProduto: TfrmProduto
     object edtCodigo: TEdit
       Left = 53
       Top = 9
-      Width = 43
+      Width = 44
       Height = 21
       CharCase = ecUpperCase
-      TabOrder = 4
+      TabOrder = 2
       OnExit = edtCodigoExit
     end
   end
@@ -517,6 +524,6 @@ object frmProduto: TfrmProduto
     Width = 217
     Height = 21
     CharCase = ecUpperCase
-    TabOrder = 3
+    TabOrder = 2
   end
 end

@@ -81,6 +81,7 @@ type
     procedure edtNumVendaKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure dbgProdutoKeyPress(Sender: TObject; var Key: Char);
+    procedure cdsProdutosQuantValidate(Sender: TField);
 
 
   private
@@ -88,7 +89,7 @@ type
     vKey : Word;
     vGridEditavel     : Boolean;
     vEstadoTela       : TEstadoTela;
-    vObjVenda         : TVenda;
+    vObjVenda         : TVenda;                                                        
     vObjColVenda      : TColVenda;
     vObjPessoa        : TPessoa;
     vObjVendaItem     :  TVendaItem;
@@ -167,6 +168,7 @@ begin
    case vEstadoTela of
       etPadrao:
       begin
+         dbgProduto.Options := dbgProduto.Options - [dgEditing];
          CamposEnabled(False);
          cmbPagamento.Enabled        := False;
          edtDesconto.Enabled         := False;
@@ -195,7 +197,6 @@ begin
          dbgProduto.Options := dbgProduto.Options + [dgEditing];
          if edtCodigo.CanFocus then
             edtCodigo.SetFocus;
-
          edtData.Clear;
          edtData.Text := FormatDateTime('dd/mm/yyyy',Now);
          edtData.Enabled := False;
@@ -671,18 +672,12 @@ end;
 function TfrmVenda.ProcessaVendaItem: Boolean;
 var
    xVendaItem  : TVendaItem;
-   xPrecoTotal : Double;
 begin
    try
       try
          Result := False;
          xVendaItem := nil;
          vObjColVendaItem := nil;
-         xPrecoTotal := 0;
-
-         xPrecoTotal :=
-            dbgProduto.DataSource.DataSet.FieldByName('Preço Uni.').AsFloat *
-            dbgProduto.DataSource.DataSet.FieldByName('Quant.').AsFloat;
 
          if not ValidaCampos then
             exit;
@@ -704,13 +699,14 @@ begin
          begin
             xVendaItem := TVendaItem.Create;
 
-            xVendaItem.ID_Venda          := vObjVenda.ID;
-            xVendaItem.ID_Produto        := dbgProduto.DataSource.DataSet.FieldByName('Código').AsInteger;
-            xVendaItem.Quantidade        := dbgProduto.DataSource.DataSet.FieldByName('Quant.').AsInteger;
-            xVendaItem.UnidadeSaida      := dbgProduto.DataSource.DataSet.FieldByName('Unidade de Saída').AsString;
-            xVendaItem.Descricao_Produto := dbgProduto.DataSource.DataSet.FieldByName('Descrição').AsString;
-            xVendaItem.ValorUnitario     := dbgProduto.DataSource.DataSet.FieldByName('Preço Uni.').AsFloat;
-            xVendaItem.TotalItem         := xPrecoTotal;
+            xVendaItem.ID_Venda      := vObjVenda.ID;
+            xVendaItem.ID_Produto    := dbgProduto.DataSource.DataSet.FieldByName('Código').AsInteger;
+            xVendaItem.Quantidade    := dbgProduto.DataSource.DataSet.FieldByName('Quant.').AsInteger;
+            xVendaItem.UnidadeSaida  := dbgProduto.DataSource.DataSet.FieldByName('Unidade de Saída').AsString;
+            xVendaItem.Descricao_Produto  := dbgProduto.DataSource.DataSet.FieldByName('Descrição').AsString;
+            xVendaItem.ValorDesconto := edtValorComDesconto.Value;
+            xVendaItem.ValorUnitario := dbgProduto.DataSource.DataSet.FieldByName('Preço Uni.').AsFloat;
+            xVendaItem.TotalItem     := dbgProduto.DataSource.DataSet.FieldByName('Preço Total').AsFloat;
 
             vObjColVendaItem.Adiciona(xVendaItem);
             cdsProdutos.Next;
@@ -729,11 +725,12 @@ begin
       on E : Exception do
       begin
          raise Exception.Create(
-         'Falha ao processar os dados do produto vendido[View]'#13 +
+         'Falha ao processar os dados do produto vendido. [View]'#13 +
          e.Message);
       end;
    end;
 end;
+
 
 
 function TfrmVenda.ValidaCamposItem: Boolean;
@@ -866,8 +863,7 @@ begin
          TMessageUtil.Alerta('Nenhum cliente encontrado para o código informado.');
          LimpaTela;
          if (edtCodigo.CanFocus) then
-            edtCodigo.SetFocus;
-
+             edtCodigo.SetFocus;
          Exit;
       end;
       DefineEstadoTela;
@@ -967,8 +963,8 @@ begin
             dbgProduto.DataSource.DataSet.FieldByName('Código').AsString := '';
             exit
          end;
-
          dbgProduto.SelectedIndex := 4;
+
          exit;
       end;
 
@@ -1133,6 +1129,7 @@ begin
                dbgProduto.DataSource.DataSet.FieldByName('Preço Uni.').AsFloat *
                dbgProduto.DataSource.DataSet.FieldByName('Quant.').AsFloat;
             dbgProduto.DataSource.DataSet.Post;
+            dbgProduto.DataSource.DataSet.Append;
 
             if (dbgProduto.DataSource.DataSet.FieldByName('Descrição').AsString <> EmptyStr)
                and (dbgProduto.SelectedIndex = 4) then
@@ -1170,6 +1167,16 @@ begin
          FreeAndNil(xProduto);
    end;
 end;
+procedure TfrmVenda.cdsProdutosQuantValidate(Sender: TField);
+begin
+    if Sender.AsInteger > 10000 then
+  begin
+    TMessageUtil.Alerta('Quantidade máxima permitida é 10.000!');
+    Sender.Clear;
+    Abort;
+  end;
+end;
+
 end.
 
 

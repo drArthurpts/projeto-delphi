@@ -3,6 +3,7 @@ object TfrmVendaPesqView: TTfrmVendaPesqView
   Top = 273
   Width = 528
   Height = 297
+  BorderIcons = [biSystemMenu]
   Caption = 'Pesquisa de Venda'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -10,6 +11,7 @@ object TfrmVendaPesqView: TTfrmVendaPesqView
   Font.Height = -11
   Font.Name = 'MS Sans Serif'
   Font.Style = []
+  KeyPreview = True
   OldCreateOrder = False
   OnCreate = FormCreate
   OnKeyDown = FormKeyDown
@@ -74,7 +76,7 @@ object TfrmVendaPesqView: TTfrmVendaPesqView
       Width = 70
       Height = 25
       Caption = '&Filtrar'
-      TabOrder = 1
+      TabOrder = 3
       OnClick = btnFiltrarClick
       Glyph.Data = {
         36030000424D3603000000000000360000002800000010000000100000000100
@@ -111,7 +113,7 @@ object TfrmVendaPesqView: TTfrmVendaPesqView
       Height = 21
       EditMask = '!99/99/9999;1;_'
       MaxLength = 10
-      TabOrder = 2
+      TabOrder = 1
       Text = '  /  /    '
     end
     object edtDataFim: TMaskEdit
@@ -121,7 +123,7 @@ object TfrmVendaPesqView: TTfrmVendaPesqView
       Height = 21
       EditMask = '!99/99/9999;1;_'
       MaxLength = 10
-      TabOrder = 3
+      TabOrder = 2
       Text = '  /  /    '
     end
   end
@@ -141,7 +143,7 @@ object TfrmVendaPesqView: TTfrmVendaPesqView
       Align = alClient
       DataSource = dtsVenda
       ReadOnly = True
-      TabOrder = 0
+      TabOrder = 1
       TitleFont.Charset = DEFAULT_CHARSET
       TitleFont.Color = clWindowText
       TitleFont.Height = -11
@@ -156,7 +158,7 @@ object TfrmVendaPesqView: TTfrmVendaPesqView
       Width = 508
       Height = 51
       Align = alBottom
-      TabOrder = 1
+      TabOrder = 0
       object btnConfirmar: TBitBtn
         Left = 257
         Top = 12

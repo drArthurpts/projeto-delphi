@@ -83,8 +83,6 @@ begin
                RetornaCondicaoProduto(pProduto.ID));
 
          end;
-
-
          TConexao.get.confirmaTransacao;
 
          Result := True;
@@ -116,27 +114,23 @@ end;
 function TProdutoController.GravaProduto(pProduto: TProduto): Boolean;
 var
    xProdutoDAO : TProdutoDAO;
-   xAux : Integer;
 begin
    try
       try
          TConexao.get.iniciaTransacao;
          Result := False;
          xProdutoDAO := TProdutoDAO.Create(TConexao.get.getConn);
-
+         
          if pProduto.ID = 0 then
          begin
-            xProdutoDAO.Insere(pProduto);
-         end
-         else
-         begin
-            xProdutoDAO.Atualiza(
-            pProduto, RetornaCondicaoProduto(pProduto.ID));
+            pProduto.ID := xProdutoDAO.;
          end;
+
+         xProdutoDAO.Insere(pProduto);
 
          TConexao.get.confirmaTransacao;
       finally
-          if (xProdutoDAO <> nil) then
+          if Assigned(xProdutoDAO) then
                FreeAndNil(xProdutoDAO);
       end;
    except
@@ -148,6 +142,20 @@ begin
          e.Message);
       end;
    end;
+end;
+
+
+
+
+function TProdutoController.ObterProximoID: Integer;
+begin
+  Query.SQL.Text := 'SELECT MAX(ID_PRODUTO) FROM Produto';
+  Query.Open;
+  if not Query.Fields[0].IsNull then
+    Result := Query.Fields[0].AsInteger + 1
+  else
+    Result := 1;
+  Query.Close;
 end;
 
 function TProdutoController.PesquisaProduto(
@@ -166,7 +174,7 @@ begin
             IfThen(pProduto <> EmptyStr,
                'WHERE  ' + #13+
                '    (DESCRICAO LIKE ''%' + pProduto + '%'') '+ #13
-               + 'ORDER BY DESCRICAO, ID', EmptyStr);
+               + 'ORDER BY ID', EmptyStr);
 
 
          Result := xProdutoDAO.RetornaLista(xCondicao);

@@ -38,6 +38,9 @@ type
     procedure dbgProdutoDblClick(Sender: TObject);
     procedure DBGrid1DblClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure btnConfirmarClick(Sender: TObject);
+    procedure FormKeyUp(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
 
 
   private
@@ -77,6 +80,7 @@ begin
       begin
          if TMessageUtil.Pergunta('Deseja sair da rotina? ') then
             Close;
+         vKey := 0;
       end;
 
       VK_UP:
@@ -204,7 +208,7 @@ begin
       mProdutoID        := cdsProdutoID.Value;
       mProdutoDescricao := cdsProdutoDescricao.Value;
       Self.ModalResult  := mrOk;
-      LimparTela;
+//      LimparTela;
       Close;
    end
    else
@@ -222,11 +226,20 @@ begin
    ModalResult := mrOk;
 end;
 
-
-
 procedure TfrmProdutoPesqView.FormShow(Sender: TObject);
 begin
    LimparTela;
+end;
+
+procedure TfrmProdutoPesqView.btnConfirmarClick(Sender: TObject);
+begin
+  ProcessaConfirmacao;
+end;
+
+procedure TfrmProdutoPesqView.FormKeyUp(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+   vKey := 0;
 end;
 
 end.

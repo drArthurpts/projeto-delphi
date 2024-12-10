@@ -547,6 +547,7 @@ object frmVenda: TfrmVenda
       Height = 109
       Align = alClient
       DataSource = dtsProdutoVenda
+      Options = [dgEditing, dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgCancelOnExit]
       TabOrder = 0
       TitleFont.Charset = DEFAULT_CHARSET
       TitleFont.Color = clWindowText
@@ -631,6 +632,7 @@ object frmVenda: TfrmVenda
       DisplayWidth = 8
       FieldName = 'Quant.'
       OnChange = cdsProdutosQuantChange
+      OnValidate = cdsProdutosQuantValidate
     end
     object cdsProdutosPreoTotal: TFloatField
       DisplayWidth = 12

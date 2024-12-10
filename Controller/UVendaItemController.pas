@@ -76,30 +76,31 @@ end;
 function TVendaItemController.GravaVenda(pColVendaItem: TColVendaItem): Boolean;
 var
    xVendaItemDAO : TVendaItemDAO;
-   xAux : Integer;
+   xAux          : Integer;
 begin
    try
       try
          TConexao.get.iniciaTransacao;
          Result := False;
+         xVendaItemDAO := nil;
          xVendaItemDAO := TVendaItemDAO.Create(TConexao.get.getConn);
 
-         if pColVendaItem.Retorna(0).ID = 0 then
+         if (pColVendaItem.Retorna(0).ID = 0) then
             xVendaItemDAO.InsereLista(pColVendaItem);
-         TConexao.get.confirmaTransacao;
 
+         TConexao.get.confirmaTransacao;
       finally
-          if (xVendaItemDAO <> nil) then
-               FreeAndNil(xVendaItemDAO);
-      end;
+         if (xVendaItemDAO <> nil) then
+            FreeAndNil(xVendaItemDAO)
+      end
    except
-      on E : Exception do
-      begin
+      on E: Exception do
+       begin
          TConexao.get.cancelaTransacao;
          Raise Exception.Create(
-         'Falha ao gravar os dados do Item Venda [Controller]. ' + #13 +
-         e.Message);
-      end;
+            'Falha ao gravar dados do Item Venda. [Controller]'+ #13 +
+            e.Message);
+       end;
    end;
 end;
 
