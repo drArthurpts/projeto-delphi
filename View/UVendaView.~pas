@@ -235,22 +235,25 @@ begin
       begin
          stbBarraStatus.Panels[0].Text := 'Pesquisar';
          if (frmVendaPesqView = nil) then
-         frmVendaPesqView := TTfrmVendaPesqView.Create(Application);
-
-         frmVendaPesqView.ShowModal;
-
-         if (frmVendaPesqView.mVendaID <> 0) then
-         begin
-            edtNumVenda.Text := IntToStr(frmVendaPesqView.mVendaID);
-            vEstadoTela := etConsultar;
-            ProcessaConsulta;
-         end
-         else
-         begin
-            vEstadoTela := etPadrao;
-            DefineEstadoTela;
+             frmVendaPesqView := TTfrmVendaPesqView.Create(Application);
+         try
+             frmVendaPesqView.ShowModal;
+             if (frmVendaPesqView.mVendaID <> 0) then
+              begin
+              edtNumVenda.Text := IntToStr(frmVendaPesqView.mVendaID);
+              vEstadoTela := etConsultar;
+              ProcessaConsulta;
+          end
+          else
+          begin
+          vEstadoTela := etPadrao;
+          DefineEstadoTela;
+          LimpaTela;
+          end;
+          finally
+              FreeAndNil(frmVendaPesqView);
          end;
-      end;
+end;
 end;
 end;
 
@@ -361,7 +364,7 @@ begin
       try
         if (ProcessaVenda) and (ProcessaVendaItem)  then
         begin
-           TMessageUtil.Informacao('Venda cadastrada com sucesso'#13 +
+           TMessageUtil.Informacao('Venda cadastrada com sucesso!'#13 +
              'Código cadastrado: ' + IntToStr(vObjVenda.ID));
 
            vEstadoTela := etPadrao;

@@ -1108,24 +1108,26 @@ begin
       end;
 
       Screen.Cursor := crHourGlass;
+      try
+         if (frmProdutoPesqView = nil) then
+            frmProdutoPesqView := TfrmProdutoPesqView.Create(Application);
 
-      if (frmProdutoPesqView = nil) then
-         frmProdutoPesqView := TfrmProdutoPesqView.Create(Application);
+         frmProdutoPesqView.ShowModal;
 
-      frmProdutoPesqView.ShowModal;
+         if (frmProdutoPesqView.mProdutoID <> 0) then
+         begin
+            pIDproduto := frmProdutoPesqView.mProdutoID;
+            CarregaDadosProduto;
+            dbgProduto.DataSource.DataSet.Append;
+         end;
 
-      if (frmProdutoPesqView.mProdutoID <> 0) then
-      begin
-         pIDproduto := frmProdutoPesqView.mProdutoID;
-         CarregaDadosProduto;
-         dbgProduto.DataSource.DataSet.Append;
+      finally
+         FreeAndNil(frmProdutoPesqView); // Libera o objeto e define como nil
+         Screen.Cursor := crDefault;
       end;
-
-      Screen.Cursor := crDefault;
 
       Result := True;
    end;
-
    vKey := VK_CLEAR;
 end;
 
