@@ -730,10 +730,9 @@ begin
         end;
 
     except
-         TMessageUtil.Alerta('Decrição do produto não pode ficar em branco.');
-    end;
-    end;
 
+    end;
+    end;
 
 procedure TfrmProduto.cmbUnidadeChange(Sender: TObject);
 var

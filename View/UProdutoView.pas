@@ -771,6 +771,7 @@ begin
       if frmUnidadeProd  = nil then
             frmUnidadeProd := TfrmUnidadeProd.Create(Application);
          frmUnidadeProd.ShowModal;
+         CarregaDadoscmb;
 
       if cmbUnidade.Text = '' then
       begin

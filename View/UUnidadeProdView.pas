@@ -78,7 +78,6 @@ type
 
 var
   frmUnidadeProd: TfrmUnidadeProd;
-
 implementation
 
 uses
@@ -534,35 +533,50 @@ try
 end;
 
 function TfrmUnidadeProd.ProcessaInclusao: Boolean;
+var
+   xUnidadeProduto : TUnidadeProduto;
 begin
    try
       try
-         Result := False;
+         Result   := False;
+         xUnidadeProduto := nil;
+
+         xUnidadeProduto := TUnidadeProduto.Create;
+         xUnidadeProduto :=
+            TUnidadeProdController.getInstancia.BuscaUnidadeStr(Trim(edtUnidade.Text));
+
+         if (xUnidadeProduto <> nil) then
+         begin
+            TMessageUtil.Alerta('Unidade de Produto já existente.');
+            edtUnidade.Clear;
+            edtDescricao.Clear;
+            if (edtUnidade.CanFocus) then
+               edtUnidade.SetFocus;
+            exit;
+         end;
 
          if ProcessaProduto then
          begin
-            TMessageUtil.Informacao('Unidade cadastrada com sucesso! ' + #13 +
-                                    'Código cadastrado: '+
-                                    IntToStr(vObjUnidadeProd.Id));
+            TMessageUtil.Informacao('Unidade cadastrada com sucesso.');
+
             vEstadoTela := etPadrao;
             DefineEstadoTela;
 
             Result := True;
          end;
       except
-          on E : Exception do
-          begin
-             Raise Exception.Create(
-             'Falha ao incluir os dados da Unidade [View]: '#13 +
-             e.Message);
-          end;
+         on E : Exception do
+         begin
+            Raise Exception.Create(
+               'Falha ao incluir dados da Unidade de Produto. [View]:'+ #13 +
+               e.Message);
+         end;
       end;
    finally
-      if vObjUnidadeProd <> nil then
+      if (vObjUnidadeProd <> nil) then
          FreeAndNil(vObjUnidadeProd);
    end;
 end;
-
 function TfrmUnidadeProd.ProcessaProduto: Boolean;
 begin
    try

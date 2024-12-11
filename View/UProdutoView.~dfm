@@ -1,8 +1,8 @@
 object frmProduto: TfrmProduto
   Left = 502
-  Top = 327
+  Top = 336
   Width = 634
-  Height = 222
+  Height = 213
   BorderIcons = [biSystemMenu]
   Caption = 'Produto'
   Color = clBtnFace
@@ -31,7 +31,7 @@ object frmProduto: TfrmProduto
   end
   object stbBarraStatus: TStatusBar
     Left = 0
-    Top = 164
+    Top = 155
     Width = 618
     Height = 19
     Panels = <
@@ -44,13 +44,13 @@ object frmProduto: TfrmProduto
   end
   object pnlBotoes: TPanel
     Left = 0
-    Top = 73
+    Top = 75
     Width = 618
-    Height = 91
+    Height = 80
     Align = alBottom
     TabOrder = 1
     object btnIncluir: TBitBtn
-      Left = 53
+      Left = 5
       Top = 15
       Width = 75
       Height = 25
@@ -86,7 +86,7 @@ object frmProduto: TfrmProduto
         8637288637247C3267A567B7CDB7FFFFFFFFFFFFFFFFFFFFFFFF}
     end
     object btnAlterar: TBitBtn
-      Left = 142
+      Left = 94
       Top = 15
       Width = 75
       Height = 25
@@ -122,7 +122,7 @@ object frmProduto: TfrmProduto
         FFFFFFFFFFFFFFFFFFFFFF427BDB44AFF7378AEEE2E7FCFFFFFF}
     end
     object btnExcluir: TBitBtn
-      Left = 229
+      Left = 181
       Top = 15
       Width = 75
       Height = 25
@@ -158,7 +158,7 @@ object frmProduto: TfrmProduto
         74170A74170A74170A74171B7E2742944C76B17DFFFFFFFFFFFF}
     end
     object btnConsultar: TBitBtn
-      Left = 53
+      Left = 5
       Top = 47
       Width = 75
       Height = 25
@@ -194,7 +194,7 @@ object frmProduto: TfrmProduto
         CFCFDFDFDFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
     end
     object btnPesquisar: TBitBtn
-      Left = 142
+      Left = 94
       Top = 47
       Width = 75
       Height = 26
@@ -230,7 +230,7 @@ object frmProduto: TfrmProduto
         A780BBA077A890608D652DFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
     end
     object btnConfirmar: TBitBtn
-      Left = 430
+      Left = 458
       Top = 16
       Width = 75
       Height = 25
@@ -267,7 +267,7 @@ object frmProduto: TfrmProduto
         8637288637247C3267A567B7CDB7FFFFFFFFFFFFFFFFFFFFFFFF}
     end
     object btnCancelar: TBitBtn
-      Left = 511
+      Left = 539
       Top = 15
       Width = 75
       Height = 25
@@ -304,7 +304,7 @@ object frmProduto: TfrmProduto
         79F47179F47279F47178F4727AF4727AF47279F49499F6FFFFFF}
     end
     object btnSair: TBitBtn
-      Left = 511
+      Left = 539
       Top = 47
       Width = 75
       Height = 25
@@ -344,7 +344,7 @@ object frmProduto: TfrmProduto
     Left = 0
     Top = 0
     Width = 618
-    Height = 73
+    Height = 75
     Align = alClient
     TabOrder = 3
     object lblUnidade: TLabel
@@ -355,7 +355,7 @@ object frmProduto: TfrmProduto
       Caption = 'Unidade'
     end
     object lblQuantidade: TLabel
-      Left = 465
+      Left = 483
       Top = 41
       Width = 70
       Height = 13
@@ -368,7 +368,7 @@ object frmProduto: TfrmProduto
       ParentFont = False
     end
     object lblPreco: TLabel
-      Left = 362
+      Left = 380
       Top = 42
       Width = 38
       Height = 13
@@ -462,7 +462,7 @@ object frmProduto: TfrmProduto
     object edtDescricaoProd: TEdit
       Left = 161
       Top = 8
-      Width = 426
+      Width = 448
       Height = 21
       CharCase = ecUpperCase
       MaxLength = 100
@@ -471,7 +471,7 @@ object frmProduto: TfrmProduto
       OnKeyPress = edtDescricaoProdKeyPress
     end
     object edtPreco: TNumEdit
-      Left = 400
+      Left = 418
       Top = 37
       Width = 57
       Height = 21
@@ -481,7 +481,7 @@ object frmProduto: TfrmProduto
       TabOrder = 3
     end
     object edtQuantidade: TNumEdit
-      Left = 531
+      Left = 552
       Top = 37
       Width = 57
       Height = 21
@@ -522,7 +522,7 @@ object frmProduto: TfrmProduto
   object edtDescricaoUnidade: TEdit
     Left = 138
     Top = 39
-    Width = 217
+    Width = 231
     Height = 21
     CharCase = ecUpperCase
     TabOrder = 2

@@ -16,8 +16,10 @@ type
          function BuscaDescUnidade(pUnidade : string) : TUnidadeProduto;
          function BuscaUnidadeProd(pID : Integer)                  :
          TUnidadeProduto;
+         function BuscaUnidadeStr(pUnidade : string) : TUnidadeProduto;
          function RetornaCondicaoUnidadeProd(
                           pID_Produto : Integer)                   : String;
+         function RetornaCondicaoStr(pUnidade : string)            : string;
          function RetornaDescUnidade (pUnidade : String)           : String;
          published
             class function getInstancia                            :
@@ -89,6 +91,33 @@ begin
             e.Message);
       end;
    end;
+end;
+
+function TUnidadeProdController.BuscaUnidadeStr(
+  pUnidade: string): TUnidadeProduto;
+var
+   xUnidadeDAO : TUnidadeProdutoDAO;
+begin
+   try
+      try
+         Result := nil;
+
+         xUnidadeDAO := TUnidadeProdutoDAO.Create(TConexao.getInstance.getConn);
+
+         Result := xUnidadeDAO.Retorna(RetornaCondicaoStr(pUnidade));
+
+      finally
+         if (xUnidadeDAO <> nil) then
+            FreeAndNil(xUnidadeDAO);
+      end;
+   except
+      on E : Exception do
+      begin
+         raise Exception.Create(
+         'Falha ao retornar dados da Unidade de Produto. [Controller]'#13 +
+         e.Message);
+      end;
+   end;  
 end;
 
 constructor TUnidadeProdController.Create;
@@ -216,6 +245,18 @@ begin
             e.Message);
       end;
    end;
+end;
+
+function TUnidadeProdController.RetornaCondicaoStr(
+  pUnidade: string): string;
+var
+   xChave : string;
+begin
+   xChave := 'UNIDADE';
+
+   Result :=
+   'WHERE                                             '#13+
+   '    '+xChave+ ' = ' + QuotedStr(pUnidade)+ ' '#13;
 end;
 
 function TUnidadeProdController.RetornaCondicaoUnidadeProd(
