@@ -318,9 +318,6 @@ object TfrmVendaPesqView: TTfrmVendaPesqView
     object cdsVendaValor: TFloatField
       FieldName = 'Valor'
     end
-    object cdsVendaDesconto: TFloatField
-      FieldName = 'Desconto'
-    end
     object cdsVendaNomeCliente: TStringField
       FieldName = 'NomeCliente'
     end

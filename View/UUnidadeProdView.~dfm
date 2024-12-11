@@ -14,7 +14,6 @@ object frmUnidadeProd: TfrmUnidadeProd
   KeyPreview = True
   OldCreateOrder = False
   Position = poScreenCenter
-  Visible = True
   OnClose = FormClose
   OnCreate = FormCreate
   OnKeyDown = FormKeyDown

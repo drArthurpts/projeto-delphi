@@ -246,13 +246,12 @@ begin
          if (edtCodigo.Text <> EmptyStr) then
          begin
             CamposEnabled(True);
-
+            chkAtivo.Checked        := vObjUnidadeProd.Ativo;
             edtCodigo.Enabled    := False;
             btnAlterar.Enabled   := False;
             btnConfirmar.Enabled := True;
-            chkAtivo.Checked     := True;
-            if (chkAtivo.CanFocus) then
-               chkAtivo.SetFocus;
+            if (edtUnidade.CanFocus) then
+                edtUnidade.SetFocus;
          end
          else
          begin

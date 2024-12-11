@@ -250,7 +250,8 @@ begin
             edtCodigo.Enabled    := False;
             btnAlterar.Enabled   := False;
             btnConfirmar.Enabled := True;
-
+            if (edtUnidade.CanFocus) then
+                edtUnidade.SetFocus;
          end
          else
          begin
@@ -695,5 +696,4 @@ procedure TfrmUnidadeProd.edtCodigoChange(Sender: TObject);
 begin
    edtCodigo.Text := TFuncoes.SoNumero(edtCodigo.Text);
 end;
-
 end.

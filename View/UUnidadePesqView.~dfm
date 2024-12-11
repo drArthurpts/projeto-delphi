@@ -3,6 +3,7 @@ object frmUnidadePesq: TfrmUnidadePesq
   Top = 255
   Width = 477
   Height = 271
+  BorderIcons = [biSystemMenu]
   Caption = 'Pesquisa de Unidade'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET

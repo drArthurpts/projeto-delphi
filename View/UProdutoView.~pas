@@ -59,6 +59,7 @@ type
     procedure edtDescricaoProdChange(Sender: TObject);
     procedure cmbUnidadeClick(Sender: TObject);
     procedure cmbUnidadeExit(Sender: TObject);
+    procedure FormActivate(Sender: TObject);
 
 
   private
@@ -400,7 +401,6 @@ end;
 function TfrmProduto.ProcessaConfirmacao: Boolean;
 begin
   Result := False;
-
   try
     case vEstadoTela of
       etIncluir:
@@ -550,26 +550,31 @@ end;
 
 function TfrmProduto.ProcessaInclusao: Boolean;
 begin
-  try
-    Result := False;
+   Result := False;
+   try
+      try
+         if ProcessaUnidadeProduto then
+         begin
+            TMessageUtil.Informacao('Produto cadastrado com sucesso.'#13 +
+               'Código cadastrado: ' + IntToStr(vObjProduto.ID));
 
+            vEstadoTela := etPadrao;
+            DefineEstadoTela;
 
-    if ProcessaUnidadeProduto then
-    begin
-      TMessageUtil.Informacao('Produto cadastrado com sucesso! ' + #13+
-                              'Código cadastrado: ' + IntToStr(vObjProduto.ID));
-
-      vEstadoTela := etPadrao;
-      DefineEstadoTela;
-
-      Result := True;
-    end;
-  except
-    on E: Exception do
-    begin
-      raise Exception.Create('Falha ao incluir os dados do Produto [View]: '#13 + e.Message);
-    end;
-  end;
+            Result := True;
+         end;
+      except
+         on E : Exception do
+         begin
+            Raise Exception.Create(
+               'Falha ao incluir os dados do produto[View]: '#13 +
+               e.Message);
+         end;
+      end;
+   finally
+      if vObjProduto <> nil then
+         FreeAndNil(vObjProduto);
+   end;
 end;
 
 function TfrmProduto.ProcessaListagem: Boolean;
@@ -766,7 +771,7 @@ begin
 
       if frmUnidadeProd  = nil then
             frmUnidadeProd := TfrmUnidadeProd.Create(Application);
-         frmUnidadeProd.Show;
+         frmUnidadeProd.ShowModal;
 
       if cmbUnidade.Text = '' then
       begin
@@ -776,8 +781,8 @@ begin
       else
       begin
          xUnidadeCmb := cmbUnidade.Text;
-         cmbUnidade.Items.Clear;
-         CarregaDadoscmb;         ]
+//         cmbUnidade.Items.Clear;
+         CarregaDadoscmb;
          cmbUnidade.ItemIndex := cmbUnidade.Items.IndexOf(cmbUnidade.Text);
       end;
    finally
@@ -857,6 +862,11 @@ procedure TfrmProduto.cmbUnidadeExit(Sender: TObject);
 begin
    if Trim(cmbUnidade.Text) = '' then
       edtDescricaoUnidade.Text := EmptyStr;
+end;
+
+procedure TfrmProduto.FormActivate(Sender: TObject);
+begin
+   CarregaDadoscmb;
 end;
 
 end.

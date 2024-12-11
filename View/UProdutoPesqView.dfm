@@ -1,7 +1,7 @@
 object frmProdutoPesqView: TfrmProdutoPesqView
   Left = 422
   Top = 309
-  Width = 533
+  Width = 596
   Height = 259
   BorderIcons = [biSystemMenu]
   Caption = 'Pesquisa de Produto'
@@ -22,19 +22,19 @@ object frmProdutoPesqView: TfrmProdutoPesqView
   object stbBarraStatus: TStatusBar
     Left = 0
     Top = 201
-    Width = 517
+    Width = 580
     Height = 19
     Panels = <>
   end
   object pnlBotoes: TPanel
     Left = 0
     Top = 160
-    Width = 517
+    Width = 580
     Height = 41
     Align = alBottom
     TabOrder = 1
     object btnConfirmar: TBitBtn
-      Left = 249
+      Left = 305
       Top = 8
       Width = 75
       Height = 25
@@ -70,7 +70,7 @@ object frmProdutoPesqView: TfrmProdutoPesqView
         8637288637247C3267A567B7CDB7FFFFFFFFFFFFFFFFFFFFFFFF}
     end
     object btnLimpar: TBitBtn
-      Left = 336
+      Left = 392
       Top = 8
       Width = 75
       Height = 25
@@ -106,7 +106,7 @@ object frmProdutoPesqView: TfrmProdutoPesqView
         AF8DC2AA84AA9161A98B5DFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
     end
     object btnSair: TBitBtn
-      Left = 426
+      Left = 482
       Top = 8
       Width = 75
       Height = 25
@@ -145,14 +145,14 @@ object frmProdutoPesqView: TfrmProdutoPesqView
   object pnlFiltro: TPanel
     Left = 0
     Top = 0
-    Width = 517
+    Width = 580
     Height = 57
     Align = alTop
     TabOrder = 2
     object grbFiltrar: TGroupBox
       Left = 1
       Top = 1
-      Width = 515
+      Width = 578
       Height = 55
       Align = alClient
       Caption = 'Filtrar'
@@ -174,13 +174,13 @@ object frmProdutoPesqView: TfrmProdutoPesqView
       object edtNome: TEdit
         Left = 51
         Top = 24
-        Width = 342
+        Width = 414
         Height = 21
         CharCase = ecUpperCase
         TabOrder = 0
       end
       object btnFiltrar: TBitBtn
-        Left = 417
+        Left = 478
         Top = 20
         Width = 75
         Height = 25
@@ -220,14 +220,14 @@ object frmProdutoPesqView: TfrmProdutoPesqView
   object pnlResultado: TPanel
     Left = 0
     Top = 57
-    Width = 517
+    Width = 580
     Height = 103
     Align = alClient
     TabOrder = 3
     object dbgProduto: TGroupBox
       Left = 1
       Top = 1
-      Width = 515
+      Width = 578
       Height = 101
       Align = alClient
       Caption = 'Resultado da busca: '
@@ -236,7 +236,7 @@ object frmProdutoPesqView: TfrmProdutoPesqView
       object DBGrid1: TDBGrid
         Left = 2
         Top = 15
-        Width = 511
+        Width = 574
         Height = 84
         Align = alClient
         DataSource = dtsProduto
@@ -299,6 +299,7 @@ object frmProdutoPesqView: TfrmProdutoPesqView
     object cdsProdutoPreco: TFloatField
       DisplayWidth = 8
       FieldName = 'Preco'
+      DisplayFormat = '#,##0.00'
     end
     object cdsProdutoQuantidade: TFloatField
       FieldName = 'Quantidade'

@@ -117,12 +117,8 @@ begin
                RetornaCondicaoUnidadeProd(pUnidadeProduto.Id));
 
          end;
-
-
          TConexao.get.confirmaTransacao;
-
          Result := True;
-
       finally
          if xUnidadeProdutoDAO <> nil then
             FreeAndNil(xUnidadeProdutoDAO);
@@ -138,6 +134,7 @@ begin
 
    end;
 end;
+
 
 class function TUnidadeProdController.getInstancia: TUnidadeProdController;
 begin

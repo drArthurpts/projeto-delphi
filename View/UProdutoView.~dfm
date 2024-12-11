@@ -14,6 +14,7 @@ object frmProduto: TfrmProduto
   KeyPreview = True
   OldCreateOrder = False
   Position = poScreenCenter
+  OnActivate = FormActivate
   OnClose = FormClose
   OnCreate = FormCreate
   OnKeyDown = FormKeyDown
@@ -121,7 +122,7 @@ object frmProduto: TfrmProduto
         FFFFFFFFFFFFFFFFFFFFFF427BDB44AFF7378AEEE2E7FCFFFFFF}
     end
     object btnExcluir: TBitBtn
-      Left = 233
+      Left = 229
       Top = 15
       Width = 75
       Height = 25

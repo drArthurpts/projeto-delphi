@@ -30,7 +30,6 @@ type
     cdsVendaID: TIntegerField;
     cdsVendaValor: TFloatField;
     cdsVendaData: TDateField;
-    cdsVendaDesconto: TFloatField;
     cdsVendaNomeCliente: TStringField;
     procedure FormKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
@@ -55,7 +54,6 @@ type
     mNomeCliente : string;
     vKey         : Word;
   end;
-
 var
     frmVendaPesqView : TTfrmVendaPesqView;
 

@@ -3,6 +3,7 @@ object TfrmVendaPesqView: TTfrmVendaPesqView
   Top = 273
   Width = 528
   Height = 297
+  BorderIcons = [biSystemMenu]
   Caption = 'Pesquisa de Venda'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -316,9 +317,6 @@ object TfrmVendaPesqView: TTfrmVendaPesqView
     end
     object cdsVendaValor: TFloatField
       FieldName = 'Valor'
-    end
-    object cdsVendaDesconto: TFloatField
-      FieldName = 'Desconto'
     end
     object cdsVendaNomeCliente: TStringField
       FieldName = 'NomeCliente'

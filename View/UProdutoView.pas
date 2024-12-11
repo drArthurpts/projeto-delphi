@@ -59,6 +59,7 @@ type
     procedure edtDescricaoProdChange(Sender: TObject);
     procedure cmbUnidadeClick(Sender: TObject);
     procedure cmbUnidadeExit(Sender: TObject);
+    procedure FormActivate(Sender: TObject);
 
 
   private
@@ -729,10 +730,9 @@ begin
         end;
 
     except
-         TMessageUtil.Alerta('Decrição do produto não pode ficar em branco.');
-    end;
-    end;
 
+    end;
+    end;
 
 procedure TfrmProduto.cmbUnidadeChange(Sender: TObject);
 var
@@ -770,7 +770,7 @@ begin
 
       if frmUnidadeProd  = nil then
             frmUnidadeProd := TfrmUnidadeProd.Create(Application);
-         frmUnidadeProd.Show;
+         frmUnidadeProd.ShowModal;
 
       if cmbUnidade.Text = '' then
       begin
@@ -780,7 +780,7 @@ begin
       else
       begin
          xUnidadeCmb := cmbUnidade.Text;
-         cmbUnidade.Items.Clear;
+//         cmbUnidade.Items.Clear;
          CarregaDadoscmb;
          cmbUnidade.ItemIndex := cmbUnidade.Items.IndexOf(cmbUnidade.Text);
       end;
@@ -861,6 +861,11 @@ procedure TfrmProduto.cmbUnidadeExit(Sender: TObject);
 begin
    if Trim(cmbUnidade.Text) = '' then
       edtDescricaoUnidade.Text := EmptyStr;
+end;
+
+procedure TfrmProduto.FormActivate(Sender: TObject);
+begin
+   CarregaDadoscmb;
 end;
 
 end.

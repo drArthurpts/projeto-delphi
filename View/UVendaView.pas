@@ -112,6 +112,7 @@ type
     function ValidaCampos                          : Boolean;
     function ValidaCamposItem                      : Boolean;
     function CarregaCliente                        : Boolean;
+    function ClienteValido                         : Boolean;
 
   public
     { Public declarations }
@@ -234,22 +235,25 @@ begin
       begin
          stbBarraStatus.Panels[0].Text := 'Pesquisar';
          if (frmVendaPesqView = nil) then
-         frmVendaPesqView := TTfrmVendaPesqView.Create(Application);
-
-         frmVendaPesqView.ShowModal;
-
-         if (frmVendaPesqView.mVendaID <> 0) then
-         begin
-            edtNumVenda.Text := IntToStr(frmVendaPesqView.mVendaID);
-            vEstadoTela := etConsultar;
-            ProcessaConsulta;
-         end
-         else
-         begin
-            vEstadoTela := etPadrao;
-            DefineEstadoTela;
+             frmVendaPesqView := TTfrmVendaPesqView.Create(Application);
+         try
+             frmVendaPesqView.ShowModal;
+             if (frmVendaPesqView.mVendaID <> 0) then
+              begin
+              edtNumVenda.Text := IntToStr(frmVendaPesqView.mVendaID);
+              vEstadoTela := etConsultar;
+              ProcessaConsulta;
+          end
+          else
+          begin
+          vEstadoTela := etPadrao;
+          DefineEstadoTela;
+          LimpaTela;
+          end;
+          finally
+              FreeAndNil(frmVendaPesqView);
          end;
-      end;
+end;
 end;
 end;
 
@@ -360,7 +364,7 @@ begin
       try
         if (ProcessaVenda) and (ProcessaVendaItem)  then
         begin
-           TMessageUtil.Informacao('Venda cadastrada com sucesso'#13 +
+           TMessageUtil.Informacao('Venda cadastrada com sucesso!'#13 +
              'Código cadastrado: ' + IntToStr(vObjVenda.ID));
 
            vEstadoTela := etPadrao;
@@ -482,41 +486,63 @@ procedure TfrmVenda.edtCodigoKeyDown(Sender: TObject; var Key: Word;
 begin
    if Key = VK_RETURN then
    begin
-      if (edtCodigo.Text = EmptyStr) Then
+      if Trim(edtCodigo.Text) = '' then
       begin
          Screen.Cursor := crHourGlass;
-         if frmClientesPesq  = nil then
-            frmClientesPesq := TfrmClientesPesq.Create(Application);
+         try
+           if frmClientesPesq = nil then
+              frmClientesPesq := TfrmClientesPesq.Create(Application);
 
-         frmClientesPesq.ShowModal;
-         if (frmClientesPesq.mClienteID <> 0) then
+           frmClientesPesq.ShowModal;
+
+           if (frmClientesPesq.mClienteID <> 0) then
+           begin
+              edtCodigo.Text := IntToStr(frmClientesPesq.mClienteID);
+              CarregaCliente;
+              edtNome.Enabled := False;
+              if dbgProduto.CanFocus then
+              begin
+                 dbgProduto.SetFocus;
+                 dbgProduto.SelectedIndex := 0;
+              end;
+           end
+           else
+           begin
+//              TMessageUtil.Alerta('Nenhum cliente encontrado para o código informado.');
+//              edtNome.Clear;
+//              edtCodigo.Clear;
+//              if edtCodigo.CanFocus then
+//                 edtCodigo.SetFocus;
+           end;
+         finally
+           Screen.Cursor := crDefault;
+         end;
+      end
+      else
+      begin
+         CarregaCliente;
+         if ClienteValido then
          begin
-            edtCodigo.Text := IntToStr(frmClientesPesq.mClienteID);
-            CarregaCliente;
-            edtNome.Enabled   := False;
+            edtNome.Enabled := False;
             if dbgProduto.CanFocus then
             begin
                dbgProduto.SetFocus;
                dbgProduto.SelectedIndex := 0;
             end;
+         end
+         else
+         begin
+            TMessageUtil.Alerta('Nenhum cliente encontrado para o código informado.');
+            edtNome.Clear;
+            edtCodigo.Clear;
+            if edtCodigo.CanFocus then
+               edtCodigo.SetFocus;
          end;
-         Screen.Cursor := crDefault;
-      end
-      else
-      begin
-         CarregaCliente;
-         edtNome.Enabled   := False;
-         if dbgProduto.CanFocus then
-            begin
-               dbgProduto.SetFocus;
-               dbgProduto.SelectedIndex := 0;
-            end;
       end;
-
    end;
+
    Key := VK_CLEAR;
 end;
-
 
 
 procedure TfrmVenda.FormClose(Sender: TObject; var Action: TCloseAction);
@@ -816,6 +842,7 @@ begin
       edtTotal.Value             := vObjVenda.TotalVenda;
       cmbPagamento.Text          := vObjVenda.FormaPagamento;
       edtValorComDesconto.Value  := vObjVenda.ValorSemDesconto;
+      cmbPagamento.ItemIndex     := cmbPagamento.Items.IndexOf(vObjVenda.FormaPagamento);
       edtTotal.Enabled           := False;
       edtValorComDesconto.Enabled:= False;
       edtDesconto.Enabled        := False;
@@ -859,8 +886,9 @@ begin
 
       else
       begin
-         TMessageUtil.Alerta('Nenhum cliente encontrado para o código informado.');
-         LimpaTela;
+//         TMessageUtil.Alerta('Nenhum cliente encontrado para o código informado.');
+         edtNome.Clear;
+         edtCodigo.Clear;
          if (edtCodigo.CanFocus) then
              edtCodigo.SetFocus;
          Exit;
@@ -919,11 +947,8 @@ end;
 
 procedure TfrmVenda.cmbPagamentoKeyPress(Sender: TObject; var Key: Char);
 begin
-   if (Key in ['0'..'9']) or (Length(cmbPagamento.Text) >= 20) then
-   begin
-      if not (Key in [#8, #13]) then
-         Key := #0;
-   end;
+  Key := #0;
+
 end;
 
 
@@ -1066,33 +1091,42 @@ end;
 
 
 function TfrmVenda.PesquisaProduto(pIDproduto: Integer): Boolean;
+var
+   xLinhaAtualVazia: Boolean;
 begin
    Result := False;
-   pIDproduto := 0;
-
-   pIDproduto :=
-               dbgProduto.DataSource.DataSet.FieldByName('Código').AsInteger;
 
    if (vKey = VK_RETURN) then
    begin
+      xLinhaAtualVazia := 
+         (dbgProduto.DataSource.DataSet.FieldByName('Código').AsInteger = 0) and 
+         (dbgProduto.DataSource.DataSet.FieldByName('Descrição').AsString = '');
 
-      if (pIDproduto = 0) then
+      if xLinhaAtualVazia then
       begin
-         Screen.Cursor := crHourGlass;
-         if (frmProdutoPesqView = nil) then
-            frmProdutoPesqView := TfrmProdutoPesqView.Create(Application);
-
-         frmProdutoPesqView.ShowModal;
-         if (frmProdutoPesqView.mProdutoID <> 0) then
-         begin
-            pIDproduto := frmProdutoPesqView.mProdutoID;
-            CarregaDadosProduto;
-         end;
-         Screen.Cursor := crDefault;
+         dbgProduto.DataSource.DataSet.Cancel;
       end;
-      vKey := VK_CLEAR;
+
+      Screen.Cursor := crHourGlass;
+
+      if (frmProdutoPesqView = nil) then
+         frmProdutoPesqView := TfrmProdutoPesqView.Create(Application);
+
+      frmProdutoPesqView.ShowModal;
+
+      if (frmProdutoPesqView.mProdutoID <> 0) then
+      begin
+         pIDproduto := frmProdutoPesqView.mProdutoID;
+         CarregaDadosProduto;
+         dbgProduto.DataSource.DataSet.Append;
+      end;
+
+      Screen.Cursor := crDefault;
+
       Result := True;
    end;
+
+   vKey := VK_CLEAR;
 end;
 
 procedure TfrmVenda.CarregaDadosProduto;
@@ -1128,7 +1162,6 @@ begin
                dbgProduto.DataSource.DataSet.FieldByName('Preço Uni.').AsFloat *
                dbgProduto.DataSource.DataSet.FieldByName('Quant.').AsFloat;
             dbgProduto.DataSource.DataSet.Post;
-            dbgProduto.DataSource.DataSet.Append;
 
             if (dbgProduto.DataSource.DataSet.FieldByName('Descrição').AsString <> EmptyStr)
                and (dbgProduto.SelectedIndex = 4) then
@@ -1175,6 +1208,12 @@ begin
     Abort;
   end;
 end;
+
+function TfrmVenda.ClienteValido: Boolean;
+begin
+    Result := (Trim(edtNome.Text) <> '');
+end;
+
 
 end.
 

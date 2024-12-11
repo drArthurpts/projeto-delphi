@@ -3,6 +3,7 @@ object frmProdutoPesqView: TfrmProdutoPesqView
   Top = 309
   Width = 533
   Height = 259
+  BorderIcons = [biSystemMenu]
   Caption = 'Pesquisa de Produto'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -298,6 +299,7 @@ object frmProdutoPesqView: TfrmProdutoPesqView
     object cdsProdutoPreco: TFloatField
       DisplayWidth = 8
       FieldName = 'Preco'
+      DisplayFormat = '#,##0.00'
     end
     object cdsProdutoQuantidade: TFloatField
       FieldName = 'Quantidade'
