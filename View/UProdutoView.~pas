@@ -257,13 +257,13 @@ begin
             edtCodigo.Text := IntToStr(frmProdutoPesqView.mProdutoID);
             vEstadoTela    := etConsultar;
             ProcessaConsulta;
+
          end
          else
          begin
             vEstadoTela := etPadrao;
             DefineEstadoTela;
          end;
-
          edtCodigo.Enabled := False;
 //         if edtCodigo.CanFocus then
 //            edtCodigo.SetFocus;
@@ -771,6 +771,7 @@ begin
       if frmUnidadeProd  = nil then
             frmUnidadeProd := TfrmUnidadeProd.Create(Application);
          frmUnidadeProd.ShowModal;
+         CarregaDadoscmb;
 
       if cmbUnidade.Text = '' then
       begin
@@ -820,6 +821,7 @@ begin
          edtDescricaoUnidade.Enabled := True;
          edtDescricaoUnidade.Text := xUnidadeProduto.Descricao;
          edtDescricaoUnidade.Enabled := False;
+         CarregaDadoscmb;
       end
       else
          edtDescricaoUnidade.Text := '';
@@ -828,6 +830,7 @@ begin
    finally
       if xUnidadeProduto <> nil then
          FreeAndNil(xUnidadeProduto);
+         CarregaDadoscmb;
    end
 end;
 

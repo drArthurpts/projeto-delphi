@@ -820,7 +820,6 @@ begin
    edtCodigo.Text := xCodigoReplace;
 end;
 
-
 procedure TfrmVenda.btnConsultarClick(Sender: TObject);
 begin
    vEstadoTela := etConsultar;
@@ -1055,12 +1054,10 @@ begin
                   dbgProduto.DataSource.DataSet.FieldByName('Preço Uni.').AsFloat *
                   dbgProduto.DataSource.DataSet.FieldByName('Quant.').AsFloat;
                dbgProduto.DataSource.DataSet.Post;
-
                exit;
             end;
             dbgProduto.DataSource.DataSet.Next;
          end;
-
          if(xProduto <> nil) then
          begin
             dbgProduto.DataSource.DataSet.Edit;
@@ -1091,42 +1088,47 @@ end;
 
 
 function TfrmVenda.PesquisaProduto(pIDproduto: Integer): Boolean;
-var
-   xLinhaAtualVazia: Boolean;
 begin
-   Result := False;
-
    if (vKey = VK_RETURN) then
    begin
-      xLinhaAtualVazia := 
-         (dbgProduto.DataSource.DataSet.FieldByName('Código').AsInteger = 0) and 
-         (dbgProduto.DataSource.DataSet.FieldByName('Descrição').AsString = '');
-
-      if xLinhaAtualVazia then
+      if (dbgProduto.SelectedIndex = 0) then
       begin
-         dbgProduto.DataSource.DataSet.Cancel;
-      end;
+         dbgProduto.DataSource.DataSet.Edit;
+         dbgProduto.DataSource.DataSet.FieldByName('Código').Clear;
+         dbgProduto.DataSource.DataSet.FieldByName('Descrição').Clear;
+         dbgProduto.DataSource.DataSet.FieldByName('Preço Uni.').Clear;
+         dbgProduto.DataSource.DataSet.FieldByName('Quant.').Clear;
+         dbgProduto.DataSource.DataSet.FieldByName('Preço Total').Clear;
+         dbgProduto.DataSource.DataSet.Post;
+         Screen.Cursor := crHourGlass;
 
-      Screen.Cursor := crHourGlass;
-      try
          if (frmProdutoPesqView = nil) then
             frmProdutoPesqView := TfrmProdutoPesqView.Create(Application);
 
          frmProdutoPesqView.ShowModal;
 
          if (frmProdutoPesqView.mProdutoID <> 0) then
-         begin
-            pIDproduto := frmProdutoPesqView.mProdutoID;
             CarregaDadosProduto;
-            dbgProduto.DataSource.DataSet.Append;
-         end;
 
-      finally
-         FreeAndNil(frmProdutoPesqView); // Libera o objeto e define como nil
          Screen.Cursor := crDefault;
+         exit;
       end;
 
-      Result := True;
+      if (dbgProduto.SelectedIndex = 4) then
+      begin
+         dbgProduto.DataSource.DataSet.Edit;
+         dbgProduto.DataSource.DataSet.FieldByName('Preço Total').AsFloat :=
+            dbgProduto.DataSource.DataSet.FieldByName('Preço Uni.').AsFloat *
+            dbgProduto.DataSource.DataSet.FieldByName('Quant.').AsFloat;
+         dbgProduto.DataSource.DataSet.Post;
+      end;
+
+      if (dbgProduto.DataSource.DataSet.FieldByName('Descrição').AsString <> EmptyStr)
+         and (dbgProduto.SelectedIndex = 4) then
+      begin
+         dbgProduto.DataSource.DataSet.Append;
+         dbgProduto.SelectedIndex := 0;
+      end;
    end;
    vKey := VK_CLEAR;
 end;
