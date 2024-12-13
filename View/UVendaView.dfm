@@ -12,6 +12,7 @@ object frmVenda: TfrmVenda
   Font.Height = -11
   Font.Name = 'MS Sans Serif'
   Font.Style = []
+  KeyPreview = True
   OldCreateOrder = False
   Position = poScreenCenter
   OnClose = FormClose
@@ -420,7 +421,7 @@ object frmVenda: TfrmVenda
       Decimals = 2
       ReadOnly = True
       ShowSeparator = True
-      TabOrder = 2
+      TabOrder = 3
     end
     object edtValorComDesconto: TNumEdit
       Left = 578
@@ -430,7 +431,7 @@ object frmVenda: TfrmVenda
       Alignment = taRightJustify
       Decimals = 2
       ShowSeparator = True
-      TabOrder = 3
+      TabOrder = 2
     end
   end
   object grbPedido: TGroupBox

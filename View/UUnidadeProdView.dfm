@@ -1,7 +1,7 @@
 object frmUnidadeProd: TfrmUnidadeProd
   Left = 576
   Top = 342
-  Width = 600
+  Width = 538
   Height = 229
   BorderIcons = [biSystemMenu]
   Caption = 'Unidade de Produto'
@@ -24,7 +24,7 @@ object frmUnidadeProd: TfrmUnidadeProd
   object StbBarraStatus: TStatusBar
     Left = 0
     Top = 171
-    Width = 584
+    Width = 522
     Height = 19
     Panels = <
       item
@@ -37,7 +37,7 @@ object frmUnidadeProd: TfrmUnidadeProd
   object pnlBotoes: TPanel
     Left = 0
     Top = 88
-    Width = 584
+    Width = 522
     Height = 83
     Align = alBottom
     TabOrder = 1
@@ -114,8 +114,8 @@ object frmUnidadeProd: TfrmUnidadeProd
         FFFFFFFFFFFFFFFFFFFFFF427BDB44AFF7378AEEE2E7FCFFFFFF}
     end
     object btnExcluir: TBitBtn
-      Left = 190
-      Top = 12
+      Left = 185
+      Top = 13
       Width = 75
       Height = 25
       Caption = '&Excluir'
@@ -335,7 +335,7 @@ object frmUnidadeProd: TfrmUnidadeProd
   object pnlArea: TPanel
     Left = 0
     Top = 0
-    Width = 584
+    Width = 522
     Height = 88
     Align = alClient
     TabOrder = 2

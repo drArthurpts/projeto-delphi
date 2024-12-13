@@ -245,7 +245,7 @@ begin
          if (edtCodigo.Text <> EmptyStr) then
          begin
             CamposEnabled(True);
-            chkAtivo.Checked        := vObjUnidadeProd.Ativo;
+            chkAtivo.Checked     := vObjUnidadeProd.Ativo;
             edtCodigo.Enabled    := False;
             btnAlterar.Enabled   := False;
             btnConfirmar.Enabled := True;
@@ -557,7 +557,8 @@ begin
 
          if ProcessaProduto then
          begin
-            TMessageUtil.Informacao('Unidade cadastrada com sucesso.');
+            TMessageUtil.Informacao('Unidade cadastrada com sucesso!' + #13 +
+                                    'Código cadastrado: ' + IntToStr(vObjUnidadeProd.Id));
 
             vEstadoTela := etPadrao;
             DefineEstadoTela;

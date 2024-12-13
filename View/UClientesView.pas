@@ -77,10 +77,18 @@ type
     procedure rdgTipoPessoaClick(Sender: TObject);
     procedure edtCPFCNPJKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
-    procedure edtCPFCNPJChange(Sender: TObject);
     procedure edtNomeKeyPress(Sender: TObject; var Key: Char);
     procedure edtEnderecoKeyPress(Sender: TObject; var Key: Char);
     procedure edtNumeroChange(Sender: TObject);
+    procedure cmbUFKeyPress(Sender: TObject; var Key: Char);
+    procedure edtNomeChange(Sender: TObject);
+    procedure edtEnderecoChange(Sender: TObject);
+    procedure edtComplementoChange(Sender: TObject);
+    procedure edtBairroKeyPress(Sender: TObject; var Key: Char);
+    procedure edtBairroChange(Sender: TObject);
+    procedure edtCidadeChange(Sender: TObject);
+    procedure edtCidadeKeyPress(Sender: TObject; var Key: Char);
+    procedure FormActivate(Sender: TObject);
    
   private
     { Private declarations }
@@ -95,6 +103,7 @@ type
     procedure LimpaTela;
     procedure DefineEstadoTela;
     procedure CarregaDadosTela;
+    procedure Preenchercmb;
     function ProcessaConfirmacao   : Boolean;
     function ProcessaInclusao      : Boolean;
     function ProcessaConsulta      : Boolean;
@@ -106,7 +115,7 @@ type
     function ProcessaEndereco      : Boolean;
     function ValidaCliente         : Boolean;
     function ValidaEndereco        : Boolean;
-
+    function ConfirmaValidacaoCPFCNPJ : Boolean;
 
 
   public
@@ -182,9 +191,6 @@ begin
 
       if (Components[i] is TComboBox) then
          (Components[i] as TComboBox).Enabled := pOpcao;
-
-      if (Components[i] is TCheckBox) then
-         (Components[i] as TCheckBox).Checked := False;
 
       if (Components[i] is TCheckBox) then
          (Components[i] as TCheckBox).Enabled := pOpcao;
@@ -280,7 +286,7 @@ begin
          if (edtCodigo.Text <> EmptyStr) then
          begin
             CamposEnabled(True);
-
+            Preenchercmb;
             edtCodigo.Enabled    := False;
             btnAlterar.Enabled   := False;
             btnConfirmar.Enabled := True;
@@ -318,6 +324,7 @@ begin
       begin
          stbBarraStatus.Panels[0].Text := 'Consulta';
          CamposEnabled(False);
+
          if (edtCodigo.Text <> EmptyStr) then
          begin
             edtCodigo.Enabled    := False;
@@ -325,7 +332,7 @@ begin
             btnExcluir.Enabled   := True;
             btnListar.Enabled    := True;
             btnConfirmar.Enabled := False;
-            chkAtivo.Enabled     := False;
+            
             if (btnAlterar.CanFocus) then
                btnAlterar.SetFocus;
          end
@@ -450,6 +457,11 @@ end;
 procedure TfrmClientes.FormShow(Sender: TObject);
 begin
    DefineEstadoTela;
+   cmbUF.Items.Clear;
+   cmbUF.Items.Add('MG');
+   cmbUF.Items.Add('RJ');
+   cmbUF.Items.Add('SP');
+   cmbUF.Items.Add('ES');
 end;
 
 procedure TfrmClientes.FormKeyUp(Sender: TObject; var Key: Word;
@@ -485,7 +497,7 @@ begin
    try
       Result := False;
 
-      if ProcessaCliente then
+      if ProcessaCliente and ConfirmaValidacaoCPFCNPJ then
       begin
          TMessageUtil.Informacao('Cliente cadastrado com sucesso! ' + #13 +
                                  'Código cadastrado: ' + IntToStr(vObjCliente.Id));
@@ -632,9 +644,7 @@ begin
       if edtNome.CanFocus then
       edtNome.SetFocus;
     Exit;
-
    end;
-
    Result := True;
 end;
 
@@ -726,7 +736,7 @@ begin
    try
       Result := False;
 
-      if ProcessaCliente then
+      if ProcessaCliente and ConfirmaValidacaoCPFCNPJ then
       begin
          TMessageUtil.Informacao('Dados foram alterados com sucesso.');
 
@@ -744,7 +754,6 @@ begin
       end;
 
    end;
-
 end;
 
 procedure TfrmClientes.edtCodigoExit(Sender: TObject);
@@ -791,10 +800,7 @@ begin
          Screen.Cursor := crDefault;
          Application.ProcessMessages;
       end;
-
       Result := True;
-
-      
       LimpaTela;
       vEstadoTela := etPadrao;
       DefineEstadoTela;
@@ -811,7 +817,6 @@ end;
 function TfrmClientes.ValidaEndereco: Boolean;
 begin
    Result := False;
-
    if (Trim(edtEndereco.Text) = EmptyStr) then
    begin
       TMessageUtil.Alerta('Endereço do cliente não pode ficar em branco.');
@@ -862,8 +867,6 @@ begin
          edtCidade.SetFocus;
       Exit;
    end;
-
-
    Result := True;
 end;
 
@@ -913,14 +916,8 @@ begin
             if edtCPFCNPJ.CanFocus then
             edtCPFCNPJ.SetFocus;
          end
-
     end;
   end;
-end;
-
-procedure TfrmClientes.edtCPFCNPJChange(Sender: TObject);
-begin
-//
 end;
 
 function TfrmClientes.ProcessaListagem: Boolean;
@@ -975,6 +972,89 @@ end;
 procedure TfrmClientes.edtNumeroChange(Sender: TObject);
 begin
    edtNumero.Text := TFuncoes.SoNumero(edtNumero.Text);
+end;
+
+procedure TfrmClientes.cmbUFKeyPress(Sender: TObject; var Key: Char);
+begin
+   Key := #0;
+end;
+
+function TfrmClientes.ConfirmaValidacaoCPFCNPJ: Boolean;
+begin
+   Result := False;
+
+   if (rdgTipoPessoa.ItemIndex = 0) then
+   if (TPessoaController.getInstancia.ValidaCPF(TFuncoes.SoNumero(edtCPFCNPJ.Text)))then
+   begin
+      Result := True;
+      exit
+   end
+   else
+      TMessageUtil.Alerta('CPF inválido, favor informar um novo número.');
+
+   if (rdgTipoPessoa.ItemIndex = 1) then
+   if (TPessoaController.getInstancia.ValidaCNPJ(TFuncoes.SoNumero(edtCPFCNPJ.Text))) then
+   begin
+      Result := True;
+      exit;
+   end
+   else
+     TMessageUtil.Alerta('CNPJ inválido, favor informar um novo número.');
+
+   edtCPFCNPJ.Text := '';
+
+   if edtCPFCNPJ.CanFocus then
+      edtCPFCNPJ.SetFocus;
+end;
+
+procedure TfrmClientes.edtNomeChange(Sender: TObject);
+begin
+   edtNome.Text := TFuncoes.removeCaracterEspecial(edtNome.Text, true);
+end;
+
+procedure TfrmClientes.edtEnderecoChange(Sender: TObject);
+begin
+   edtEndereco.Text := TFuncoes.removeCaracterEspecial(edtEndereco.Text, true);
+end;
+
+procedure TfrmClientes.edtComplementoChange(Sender: TObject);
+begin
+   edtComplemento.Text := TFuncoes.removeCaracterEspecial(edtComplemento.Text, true);
+end;
+
+procedure TfrmClientes.edtBairroKeyPress(Sender: TObject; var Key: Char);
+begin
+   if Key in ['0'..'9'] then
+      Key := #0;
+end;
+
+procedure TfrmClientes.edtBairroChange(Sender: TObject);
+begin
+   edtBairro.Text := TFuncoes.removeCaracterEspecial(edtBairro.Text, true);
+end;
+
+procedure TfrmClientes.edtCidadeChange(Sender: TObject);
+begin
+   edtCidade.Text := TFuncoes.removeCaracterEspecial(edtCidade.Text, true);
+end;
+
+procedure TfrmClientes.edtCidadeKeyPress(Sender: TObject; var Key: Char);
+begin
+   if Key in ['0'..'9'] then
+      Key := #0;
+end;
+
+procedure TfrmClientes.Preenchercmb;
+begin
+  cmbUF.Items.Clear;
+  cmbUF.Items.Add('SP');
+  cmbUF.Items.Add('MG');
+  cmbUF.Items.Add('RJ');
+end;
+
+procedure TfrmClientes.FormActivate(Sender: TObject);
+begin
+   Preenchercmb;
 end;
 
 end.

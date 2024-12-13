@@ -78,7 +78,6 @@ type
 
 var
   frmUnidadeProd: TfrmUnidadeProd;
-
 implementation
 
 uses
@@ -246,7 +245,7 @@ begin
          if (edtCodigo.Text <> EmptyStr) then
          begin
             CamposEnabled(True);
-            chkAtivo.Checked        := vObjUnidadeProd.Ativo;
+            chkAtivo.Checked     := vObjUnidadeProd.Ativo;
             edtCodigo.Enabled    := False;
             btnAlterar.Enabled   := False;
             btnConfirmar.Enabled := True;
@@ -549,6 +548,8 @@ begin
          if (xUnidadeProduto <> nil) then
          begin
             TMessageUtil.Alerta('Unidade de Produto já existente.');
+            edtUnidade.Clear;
+            edtDescricao.Clear;
             if (edtUnidade.CanFocus) then
                edtUnidade.SetFocus;
             exit;

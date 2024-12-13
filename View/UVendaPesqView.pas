@@ -86,7 +86,6 @@ begin
 
          if (ActiveControl = dbgVenda) then
          exit;
-
          Perform(WM_NEXTDLGCTL, 1, 0);
       end;
 end;

@@ -1,8 +1,8 @@
 object frmProdutoPesqView: TfrmProdutoPesqView
-  Left = 422
-  Top = 309
-  Width = 596
-  Height = 259
+  Left = 400
+  Top = 182
+  Width = 598
+  Height = 440
   BorderIcons = [biSystemMenu]
   Caption = 'Pesquisa de Produto'
   Color = clBtnFace
@@ -21,15 +21,15 @@ object frmProdutoPesqView: TfrmProdutoPesqView
   TextHeight = 13
   object stbBarraStatus: TStatusBar
     Left = 0
-    Top = 201
-    Width = 580
+    Top = 382
+    Width = 582
     Height = 19
     Panels = <>
   end
   object pnlBotoes: TPanel
     Left = 0
-    Top = 160
-    Width = 580
+    Top = 341
+    Width = 582
     Height = 41
     Align = alBottom
     TabOrder = 1
@@ -145,14 +145,14 @@ object frmProdutoPesqView: TfrmProdutoPesqView
   object pnlFiltro: TPanel
     Left = 0
     Top = 0
-    Width = 580
+    Width = 582
     Height = 57
     Align = alTop
     TabOrder = 2
     object grbFiltrar: TGroupBox
       Left = 1
       Top = 1
-      Width = 578
+      Width = 580
       Height = 55
       Align = alClient
       Caption = 'Filtrar'
@@ -220,15 +220,15 @@ object frmProdutoPesqView: TfrmProdutoPesqView
   object pnlResultado: TPanel
     Left = 0
     Top = 57
-    Width = 580
-    Height = 103
+    Width = 582
+    Height = 284
     Align = alClient
     TabOrder = 3
     object dbgProduto: TGroupBox
       Left = 1
       Top = 1
-      Width = 578
-      Height = 101
+      Width = 580
+      Height = 282
       Align = alClient
       Caption = 'Resultado da busca: '
       TabOrder = 0
@@ -236,8 +236,8 @@ object frmProdutoPesqView: TfrmProdutoPesqView
       object DBGrid1: TDBGrid
         Left = 2
         Top = 15
-        Width = 574
-        Height = 84
+        Width = 576
+        Height = 265
         Align = alClient
         DataSource = dtsProduto
         Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgConfirmDelete, dgCancelOnExit]
@@ -289,20 +289,22 @@ object frmProdutoPesqView: TfrmProdutoPesqView
       000200140005507265636F08000400000000000A5175616E7469646164650800
       0400000000000000}
     object cdsProdutoID: TIntegerField
-      DisplayWidth = 12
+      DisplayWidth = 15
       FieldName = 'ID'
     end
     object cdsProdutoDescricao: TStringField
-      DisplayWidth = 46
+      DisplayWidth = 50
       FieldName = 'Descricao'
     end
     object cdsProdutoPreco: TFloatField
-      DisplayWidth = 8
+      DisplayWidth = 13
       FieldName = 'Preco'
       DisplayFormat = '#,##0.00'
     end
     object cdsProdutoQuantidade: TFloatField
+      DisplayWidth = 12
       FieldName = 'Quantidade'
+      DisplayFormat = '#,##0.00'
     end
   end
 end

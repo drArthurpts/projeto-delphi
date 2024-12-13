@@ -1,8 +1,8 @@
 object frmUnidadePesq: TfrmUnidadePesq
   Left = 455
-  Top = 255
+  Top = 195
   Width = 477
-  Height = 271
+  Height = 435
   BorderIcons = [biSystemMenu]
   Caption = 'Pesquisa de Unidade'
   Color = clBtnFace
@@ -20,14 +20,14 @@ object frmUnidadePesq: TfrmUnidadePesq
   TextHeight = 13
   object stbBarraStatus: TStatusBar
     Left = 0
-    Top = 213
+    Top = 377
     Width = 461
     Height = 19
     Panels = <>
   end
   object pnlBotoes: TPanel
     Left = 0
-    Top = 172
+    Top = 336
     Width = 461
     Height = 41
     Align = alBottom
@@ -220,14 +220,14 @@ object frmUnidadePesq: TfrmUnidadePesq
     Left = 0
     Top = 54
     Width = 461
-    Height = 118
+    Height = 282
     Align = alClient
     TabOrder = 3
     object grbGrid: TGroupBox
       Left = 1
       Top = 1
       Width = 459
-      Height = 116
+      Height = 280
       Align = alClient
       Caption = 'Resultado da busca'
       TabOrder = 0
@@ -235,7 +235,7 @@ object frmUnidadePesq: TfrmUnidadePesq
         Left = 2
         Top = 15
         Width = 455
-        Height = 99
+        Height = 263
         Align = alClient
         DataSource = dtsUnidade
         Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgConfirmDelete, dgCancelOnExit]

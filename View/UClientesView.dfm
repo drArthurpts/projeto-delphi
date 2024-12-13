@@ -1,10 +1,10 @@
 object frmClientes: TfrmClientes
-  Left = 353
+  Left = 329
   Top = 230
-  Width = 627
+  Width = 626
   Height = 357
   BorderIcons = [biSystemMenu]
-  Caption = 'Clientes'
+  Caption = 'Cliente'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -15,6 +15,7 @@ object frmClientes: TfrmClientes
   OldCreateOrder = False
   Position = poScreenCenter
   Visible = True
+  OnActivate = FormActivate
   OnClose = FormClose
   OnCreate = FormCreate
   OnKeyDown = FormKeyDown
@@ -25,7 +26,7 @@ object frmClientes: TfrmClientes
   object stbBarraStatus: TStatusBar
     Left = 0
     Top = 299
-    Width = 611
+    Width = 610
     Height = 19
     Panels = <
       item
@@ -38,7 +39,7 @@ object frmClientes: TfrmClientes
   object pnlBotoes: TPanel
     Left = 0
     Top = 228
-    Width = 611
+    Width = 610
     Height = 71
     Align = alBottom
     TabOrder = 1
@@ -372,7 +373,7 @@ object frmClientes: TfrmClientes
   object pnlArea: TPanel
     Left = 0
     Top = 0
-    Width = 611
+    Width = 610
     Height = 228
     Align = alClient
     Font.Charset = DEFAULT_CHARSET
@@ -383,21 +384,21 @@ object frmClientes: TfrmClientes
     ParentFont = False
     TabOrder = 2
     object lblCodigo: TLabel
-      Left = 32
+      Left = 13
       Top = 39
       Width = 33
       Height = 13
       Caption = 'C'#243'digo'
     end
     object lblCPFCNPJ: TLabel
-      Left = 424
+      Left = 405
       Top = 39
       Width = 52
       Height = 13
       Caption = 'CPF/CNPJ'
     end
     object edtCodigo: TEdit
-      Left = 72
+      Left = 53
       Top = 31
       Width = 67
       Height = 21
@@ -406,7 +407,7 @@ object frmClientes: TfrmClientes
       OnExit = edtCodigoExit
     end
     object chkAtivo: TCheckBox
-      Left = 152
+      Left = 133
       Top = 31
       Width = 49
       Height = 18
@@ -414,7 +415,7 @@ object frmClientes: TfrmClientes
       TabOrder = 1
     end
     object rdgTipoPessoa: TRadioGroup
-      Left = 224
+      Left = 205
       Top = 31
       Width = 185
       Height = 27
@@ -428,7 +429,7 @@ object frmClientes: TfrmClientes
       OnClick = rdgTipoPessoaClick
     end
     object edtCPFCNPJ: TMaskEdit
-      Left = 480
+      Left = 461
       Top = 31
       Width = 118
       Height = 21
@@ -436,11 +437,10 @@ object frmClientes: TfrmClientes
       MaxLength = 14
       TabOrder = 3
       Text = '   .   .   -  '
-      OnChange = edtCPFCNPJChange
       OnKeyDown = edtCPFCNPJKeyDown
     end
     object lblNome: TStaticText
-      Left = 34
+      Left = 13
       Top = 72
       Width = 36
       Height = 17
@@ -454,18 +454,19 @@ object frmClientes: TfrmClientes
       TabOrder = 4
     end
     object edtNome: TEdit
-      Left = 75
+      Left = 54
       Top = 67
       Width = 526
       Height = 21
       CharCase = ecUpperCase
       TabOrder = 5
+      OnChange = edtNomeChange
       OnKeyPress = edtNomeKeyPress
     end
     object grbEndereco: TGroupBox
-      Left = 32
+      Left = 16
       Top = 104
-      Width = 569
+      Width = 585
       Height = 121
       Caption = ' Endere'#231'o'
       TabOrder = 6
@@ -549,6 +550,7 @@ object frmClientes: TfrmClientes
         CharCase = ecUpperCase
         MaxLength = 100
         TabOrder = 0
+        OnChange = edtEnderecoChange
         OnKeyPress = edtEnderecoKeyPress
       end
       object edtNumero: TEdit
@@ -567,6 +569,7 @@ object frmClientes: TfrmClientes
         Height = 21
         CharCase = ecUpperCase
         TabOrder = 2
+        OnChange = edtComplementoChange
       end
       object edtBairro: TEdit
         Left = 80
@@ -575,6 +578,8 @@ object frmClientes: TfrmClientes
         Height = 21
         CharCase = ecUpperCase
         TabOrder = 3
+        OnChange = edtBairroChange
+        OnKeyPress = edtBairroKeyPress
       end
       object cmbUF: TComboBox
         Left = 80
@@ -584,6 +589,7 @@ object frmClientes: TfrmClientes
         CharCase = ecUpperCase
         ItemHeight = 13
         TabOrder = 4
+        OnKeyPress = cmbUFKeyPress
         Items.Strings = (
           'SP'
           'MG'
@@ -597,6 +603,8 @@ object frmClientes: TfrmClientes
         Height = 21
         CharCase = ecUpperCase
         TabOrder = 5
+        OnChange = edtCidadeChange
+        OnKeyPress = edtCidadeKeyPress
       end
     end
   end

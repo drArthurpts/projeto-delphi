@@ -1,8 +1,8 @@
 object TfrmVendaPesqView: TTfrmVendaPesqView
-  Left = 416
-  Top = 273
+  Left = 425
+  Top = 180
   Width = 528
-  Height = 297
+  Height = 444
   BorderIcons = [biSystemMenu]
   Caption = 'Pesquisa de Venda'
   Color = clBtnFace
@@ -20,7 +20,7 @@ object TfrmVendaPesqView: TTfrmVendaPesqView
   TextHeight = 13
   object StatusBar1: TStatusBar
     Left = 0
-    Top = 239
+    Top = 386
     Width = 512
     Height = 19
     Panels = <>
@@ -131,7 +131,7 @@ object TfrmVendaPesqView: TTfrmVendaPesqView
     Left = 0
     Top = 73
     Width = 512
-    Height = 166
+    Height = 313
     Align = alClient
     Caption = 'Resultado Busca'
     TabOrder = 2
@@ -139,7 +139,7 @@ object TfrmVendaPesqView: TTfrmVendaPesqView
       Left = 2
       Top = 15
       Width = 508
-      Height = 98
+      Height = 245
       Align = alClient
       DataSource = dtsVenda
       ReadOnly = True
@@ -154,7 +154,7 @@ object TfrmVendaPesqView: TTfrmVendaPesqView
     end
     object pnlBotoes: TPanel
       Left = 2
-      Top = 113
+      Top = 260
       Width = 508
       Height = 51
       Align = alBottom
@@ -310,15 +310,20 @@ object TfrmVendaPesqView: TTfrmVendaPesqView
       48020002003200044461746104000600000000000556616C6F72080004000000
       000008446573636F6E746F08000400000000000000}
     object cdsVendaID: TIntegerField
+      DisplayWidth = 12
       FieldName = 'ID'
     end
     object cdsVendaData: TDateField
+      DisplayWidth = 14
       FieldName = 'Data'
     end
     object cdsVendaValor: TFloatField
+      DisplayWidth = 14
       FieldName = 'Valor'
+      DisplayFormat = '#,##0.00'
     end
     object cdsVendaNomeCliente: TStringField
+      DisplayWidth = 59
       FieldName = 'NomeCliente'
     end
   end

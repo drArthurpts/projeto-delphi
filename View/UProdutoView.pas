@@ -250,13 +250,12 @@ begin
             frmProdutoPesqView := TfrmProdutoPesqView.Create(Application);
          end;
         frmProdutoPesqView.ShowModal;
-         CarregaDadoscmb;
+
          if (frmProdutoPesqView.mProdutoID <> 0) then
          begin
             edtCodigo.Text := IntToStr(frmProdutoPesqView.mProdutoID);
             vEstadoTela    := etConsultar;
             ProcessaConsulta;
-
          end
          else
          begin
@@ -478,7 +477,7 @@ begin
     end
     else
     begin
-      TMessageUtil.Alerta('Nenhum Produto encontrado');
+      TMessageUtil.Alerta('Nenhum Produto encontrado.');
       LimpaTela;
 
       if (edtCodigo.CanFocus) then
@@ -757,38 +756,39 @@ begin
 end;
 
 
-procedure TfrmProduto.btnSpeedClick(Sender: TObject);    
+procedure TfrmProduto.btnSpeedClick(Sender: TObject);
 var
    xUnidadeCmb: string;
+   xIndex: Integer;
 begin
    try
-      xUnidadeCmb := '';
       Screen.Cursor := crHourGlass;
 
-      if edtDescricaoUnidade.CanFocus then
-         edtDescricaoUnidade.SetFocus;
+      
+      xUnidadeCmb := cmbUnidade.Text;
 
-      if frmUnidadeProd  = nil then
-            frmUnidadeProd := TfrmUnidadeProd.Create(Application);
-         frmUnidadeProd.ShowModal;
-         CarregaDadoscmb;
 
-      if cmbUnidade.Text = '' then
-      begin
-         cmbUnidade.Items.Clear;
-         CarregaDadoscmb;
-      end
+      if frmUnidadeProd = nil then
+         frmUnidadeProd := TfrmUnidadeProd.Create(Application);
+         
+      frmUnidadeProd.ShowModal;
+
+
+      cmbUnidade.Items.Clear;
+      CarregaDadoscmb;
+
+
+      xIndex := cmbUnidade.Items.IndexOf(xUnidadeCmb);
+      if xIndex <> -1 then
+         cmbUnidade.ItemIndex := xIndex
       else
-      begin
-         xUnidadeCmb := cmbUnidade.Text;
-//         cmbUnidade.Items.Clear;
-         CarregaDadoscmb;
-         cmbUnidade.ItemIndex := cmbUnidade.Items.IndexOf(cmbUnidade.Text);
-      end;
+         cmbUnidade.ItemIndex := 0;
+
    finally
       Screen.Cursor := crDefault;
    end;
 end;
+
 
 procedure TfrmProduto.cmbUnidadeEnter(Sender: TObject);
 begin

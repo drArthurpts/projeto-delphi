@@ -2,7 +2,7 @@ object frmClientesPesq: TfrmClientesPesq
   Left = 394
   Top = 248
   Width = 546
-  Height = 262
+  Height = 399
   BorderIcons = [biSystemMenu]
   Caption = 'Pesquisa de Cliente'
   Color = clBtnFace
@@ -19,14 +19,14 @@ object frmClientesPesq: TfrmClientesPesq
   TextHeight = 13
   object stbBarraStatus: TStatusBar
     Left = 0
-    Top = 204
+    Top = 341
     Width = 530
     Height = 19
     Panels = <>
   end
   object pnlBotoes: TPanel
     Left = 0
-    Top = 163
+    Top = 300
     Width = 530
     Height = 41
     Align = alBottom
@@ -219,14 +219,14 @@ object frmClientesPesq: TfrmClientesPesq
     Left = 0
     Top = 57
     Width = 530
-    Height = 106
+    Height = 243
     Align = alClient
     TabOrder = 3
     object grbGrid: TGroupBox
       Left = 1
       Top = 1
       Width = 528
-      Height = 104
+      Height = 241
       Align = alClient
       Caption = 'Resultado da busca '
       TabOrder = 0
@@ -234,7 +234,7 @@ object frmClientesPesq: TfrmClientesPesq
         Left = 2
         Top = 15
         Width = 524
-        Height = 87
+        Height = 224
         Align = alClient
         DataSource = dtsCliente
         Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgCancelOnExit]
@@ -251,19 +251,20 @@ object frmClientesPesq: TfrmClientesPesq
             Expanded = False
             FieldName = 'ID'
             Title.Caption = 'C'#243'digo'
-            Width = 45
+            Width = 64
             Visible = True
           end
           item
             Expanded = False
             FieldName = 'Nome'
+            Width = 380
             Visible = True
           end
           item
             Expanded = False
             FieldName = 'DescricaoAtivo'
             Title.Caption = 'Ativo'
-            Width = 44
+            Width = 70
             Visible = True
           end>
       end
