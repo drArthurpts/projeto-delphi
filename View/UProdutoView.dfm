@@ -479,6 +479,7 @@ object frmProduto: TfrmProduto
       Decimals = 2
       ShowSeparator = True
       TabOrder = 3
+      OnExit = edtPrecoExit
     end
     object edtQuantidade: TNumEdit
       Left = 552
@@ -489,6 +490,7 @@ object frmProduto: TfrmProduto
       Decimals = 2
       ShowSeparator = True
       TabOrder = 4
+      OnExit = edtQuantidadeExit
     end
     object cmbUnidade: TComboBox
       Left = 54

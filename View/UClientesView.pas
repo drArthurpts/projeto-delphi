@@ -198,7 +198,6 @@ begin
    end;
 
    grbEndereco.Enabled := pOpcao;
-
 end;
 
 procedure TfrmClientes.LimpaTela;
@@ -228,7 +227,7 @@ begin
 
    end;
    if (vObjCliente <> nil) then
-   FreeAndNil(vObjCliente);
+   FreeAndNil(vObjCliente);                                   //CPNPJ
 
    if (vObjColEndereco <> nil) then
    FreeAndNil(vObjColEndereco);
@@ -255,7 +254,7 @@ begin
       begin
          CamposEnabled(False);
          LimpaTela;
-
+         Preenchercmb;
          stbBarraStatus.Panels[0].Text := EmptyStr;
          stbBarraStatus.Panels[1].Text := EmptyStr;
 
@@ -272,7 +271,7 @@ begin
          CamposEnabled(True);
 
          edtCodigo.Enabled := False;
-
+         chkAtivo.Enabled  := False;
          chkAtivo.Checked := True;
 
          if edtNome.CanFocus then
@@ -884,14 +883,11 @@ begin
    end;
 end;
 
-
-procedure TfrmClientes.edtCPFCNPJKeyDown(Sender: TObject; var Key: Word;
-  Shift: TShiftState);
+procedure TfrmClientes.edtCPFCNPJKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
 var
-   xCPFReplace : string;
-   xCNPJReplace : string;
+  xCPFReplace: string;
+  xCNPJReplace: string;
 begin
-
   if Key = VK_RETURN then
   begin
     xCPFReplace := TFuncoes.SoNumero(edtCPFCNPJ.Text);
@@ -899,26 +895,44 @@ begin
 
     if (rdgTipoPessoa.ItemIndex = 0) then
     begin
-       if not TPessoaController.getInstancia.ValidaCPF(xCPFReplace) then
-       begin
-         TMessageUtil.Alerta('CPF inválido! Verifique e tente novamente.');
+      if Length(xCPFReplace) <> 11 then
+      begin
+        TMessageUtil.Alerta('O CPF deve conter exatamente 11 dígitos!');
+        if edtCPFCNPJ.CanFocus then
+          edtCPFCNPJ.SetFocus;
+          edtCPFCNPJ.Clear;
+        Exit;
+      end;
 
-         if edtCPFCNPJ.CanFocus then
-         edtCPFCNPJ.SetFocus;
-       end;
+      if not TPessoaController.getInstancia.ValidaCPF(xCPFReplace) then
+      begin
+        TMessageUtil.Alerta('CPF inválido! Verifique e tente novamente.');
+        if edtCPFCNPJ.CanFocus then
+          edtCPFCNPJ.SetFocus;
+        Exit;
+      end;
     end
     else
     begin
+      if Length(xCNPJReplace) <> 14 then
+      begin
+        TMessageUtil.Alerta('O CNPJ deve conter exatamente 14 dígitos!');
+        if edtCPFCNPJ.CanFocus then
+          edtCPFCNPJ.SetFocus;
+          edtCPFCNPJ.Clear;
+        Exit;
+      end;
       if not TPessoaController.getInstancia.ValidaCNPJ(xCNPJReplace) then
-         begin
-            ShowMessage('CPNPJ inválido! Verifique e tente novamente.');
-
-            if edtCPFCNPJ.CanFocus then
-            edtCPFCNPJ.SetFocus;
-         end
+      begin
+        TMessageUtil.Alerta('CNPJ inválido! Verifique e tente novamente.');
+        if edtCPFCNPJ.CanFocus then
+          edtCPFCNPJ.SetFocus;
+        Exit;
+      end;
     end;
   end;
 end;
+
 
 function TfrmClientes.ProcessaListagem: Boolean;
 begin
@@ -990,7 +1004,7 @@ begin
       exit
    end
    else
-      TMessageUtil.Alerta('CPF inválido, favor informar um novo número.');
+      TMessageUtil.Alerta('CPF inválido! Verifique e tente novamente.');
 
    if (rdgTipoPessoa.ItemIndex = 1) then
    if (TPessoaController.getInstancia.ValidaCNPJ(TFuncoes.SoNumero(edtCPFCNPJ.Text))) then
@@ -999,7 +1013,7 @@ begin
       exit;
    end
    else
-     TMessageUtil.Alerta('CNPJ inválido, favor informar um novo número.');
+     TMessageUtil.Alerta('CNPJ inválido! Verifique e tente novamente.');
 
    edtCPFCNPJ.Text := '';
 

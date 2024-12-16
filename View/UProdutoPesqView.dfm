@@ -1,7 +1,7 @@
 object frmProdutoPesqView: TfrmProdutoPesqView
   Left = 400
   Top = 182
-  Width = 598
+  Width = 615
   Height = 440
   BorderIcons = [biSystemMenu]
   Caption = 'Pesquisa de Produto'
@@ -22,14 +22,14 @@ object frmProdutoPesqView: TfrmProdutoPesqView
   object stbBarraStatus: TStatusBar
     Left = 0
     Top = 382
-    Width = 582
+    Width = 599
     Height = 19
     Panels = <>
   end
   object pnlBotoes: TPanel
     Left = 0
     Top = 341
-    Width = 582
+    Width = 599
     Height = 41
     Align = alBottom
     TabOrder = 1
@@ -145,14 +145,14 @@ object frmProdutoPesqView: TfrmProdutoPesqView
   object pnlFiltro: TPanel
     Left = 0
     Top = 0
-    Width = 582
+    Width = 599
     Height = 57
     Align = alTop
     TabOrder = 2
     object grbFiltrar: TGroupBox
       Left = 1
       Top = 1
-      Width = 580
+      Width = 597
       Height = 55
       Align = alClient
       Caption = 'Filtrar'
@@ -220,14 +220,14 @@ object frmProdutoPesqView: TfrmProdutoPesqView
   object pnlResultado: TPanel
     Left = 0
     Top = 57
-    Width = 582
+    Width = 599
     Height = 284
     Align = alClient
     TabOrder = 3
     object dbgProduto: TGroupBox
       Left = 1
       Top = 1
-      Width = 580
+      Width = 597
       Height = 282
       Align = alClient
       Caption = 'Resultado da busca: '
@@ -236,7 +236,7 @@ object frmProdutoPesqView: TfrmProdutoPesqView
       object DBGrid1: TDBGrid
         Left = 2
         Top = 15
-        Width = 576
+        Width = 593
         Height = 265
         Align = alClient
         DataSource = dtsProduto

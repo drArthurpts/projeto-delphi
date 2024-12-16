@@ -88,6 +88,7 @@ type
     procedure edtBairroChange(Sender: TObject);
     procedure edtCidadeChange(Sender: TObject);
     procedure edtCidadeKeyPress(Sender: TObject; var Key: Char);
+    procedure FormActivate(Sender: TObject);
    
   private
     { Private declarations }
@@ -102,6 +103,7 @@ type
     procedure LimpaTela;
     procedure DefineEstadoTela;
     procedure CarregaDadosTela;
+    procedure Preenchercmb;
     function ProcessaConfirmacao   : Boolean;
     function ProcessaInclusao      : Boolean;
     function ProcessaConsulta      : Boolean;
@@ -196,7 +198,6 @@ begin
    end;
 
    grbEndereco.Enabled := pOpcao;
-
 end;
 
 procedure TfrmClientes.LimpaTela;
@@ -226,7 +227,7 @@ begin
 
    end;
    if (vObjCliente <> nil) then
-   FreeAndNil(vObjCliente);
+   FreeAndNil(vObjCliente);                                   //CPNPJ
 
    if (vObjColEndereco <> nil) then
    FreeAndNil(vObjColEndereco);
@@ -253,7 +254,7 @@ begin
       begin
          CamposEnabled(False);
          LimpaTela;
-
+         Preenchercmb;
          stbBarraStatus.Panels[0].Text := EmptyStr;
          stbBarraStatus.Panels[1].Text := EmptyStr;
 
@@ -270,7 +271,7 @@ begin
          CamposEnabled(True);
 
          edtCodigo.Enabled := False;
-
+         chkAtivo.Enabled  := False;
          chkAtivo.Checked := True;
 
          if edtNome.CanFocus then
@@ -284,7 +285,7 @@ begin
          if (edtCodigo.Text <> EmptyStr) then
          begin
             CamposEnabled(True);
-
+            Preenchercmb;
             edtCodigo.Enabled    := False;
             btnAlterar.Enabled   := False;
             btnConfirmar.Enabled := True;
@@ -909,8 +910,7 @@ begin
     begin
       if not TPessoaController.getInstancia.ValidaCNPJ(xCNPJReplace) then
          begin
-            ShowMessage('CPNPJ inválido! Verifique e tente novamente.');
-
+            TMessageUtil.Alerta('CNPJ inválido! Verifique e tente novamente.');
             if edtCPFCNPJ.CanFocus then
             edtCPFCNPJ.SetFocus;
          end
@@ -988,7 +988,7 @@ begin
       exit
    end
    else
-      TMessageUtil.Alerta('CPF inválido, favor informar um novo número.');
+      TMessageUtil.Alerta('CPF inválido! Verifique e tente novamente.');
 
    if (rdgTipoPessoa.ItemIndex = 1) then
    if (TPessoaController.getInstancia.ValidaCNPJ(TFuncoes.SoNumero(edtCPFCNPJ.Text))) then
@@ -997,7 +997,7 @@ begin
       exit;
    end
    else
-     TMessageUtil.Alerta('CNPJ inválido, favor informar um novo número.');
+     TMessageUtil.Alerta('CNPJ inválido! Verifique e tente novamente.');
 
    edtCPFCNPJ.Text := '';
 
@@ -1040,6 +1040,19 @@ procedure TfrmClientes.edtCidadeKeyPress(Sender: TObject; var Key: Char);
 begin
    if Key in ['0'..'9'] then
       Key := #0;
+end;
+
+procedure TfrmClientes.Preenchercmb;
+begin
+  cmbUF.Items.Clear;
+  cmbUF.Items.Add('SP');
+  cmbUF.Items.Add('MG');
+  cmbUF.Items.Add('RJ');
+end;
+
+procedure TfrmClientes.FormActivate(Sender: TObject);
+begin
+   Preenchercmb;
 end;
 
 end.

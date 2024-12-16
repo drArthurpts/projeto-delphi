@@ -60,6 +60,8 @@ type
     procedure cmbUnidadeClick(Sender: TObject);
     procedure cmbUnidadeExit(Sender: TObject);
     procedure FormActivate(Sender: TObject);
+    procedure edtPrecoExit(Sender: TObject);
+    procedure edtQuantidadeExit(Sender: TObject);
 
 
   private
@@ -477,7 +479,7 @@ begin
     end
     else
     begin
-      TMessageUtil.Alerta('Nenhum Produto encontrado');
+      TMessageUtil.Alerta('Nenhum Produto encontrado.');
       LimpaTela;
 
       if (edtCodigo.CanFocus) then
@@ -869,6 +871,18 @@ end;
 procedure TfrmProduto.FormActivate(Sender: TObject);
 begin
    CarregaDadoscmb;
+end;
+
+procedure TfrmProduto.edtPrecoExit(Sender: TObject);
+begin
+   if edtPreco.Value < 0 then
+      edtPreco.Value := 0;
+end;
+
+procedure TfrmProduto.edtQuantidadeExit(Sender: TObject);
+begin
+   if edtQuantidade.Value < 0 then
+      edtQuantidade.Value := 0;
 end;
 
 end.

@@ -60,6 +60,8 @@ type
     procedure cmbUnidadeClick(Sender: TObject);
     procedure cmbUnidadeExit(Sender: TObject);
     procedure FormActivate(Sender: TObject);
+    procedure edtPrecoExit(Sender: TObject);
+    procedure edtQuantidadeExit(Sender: TObject);
 
 
   private
@@ -134,9 +136,9 @@ begin
         stbBarraStatus.Panels[0].Text := EmptyStr;
         stbBarraStatus.Panels[1].Text := EmptyStr;
         cmbUnidade.Enabled := False;
+        btnSpeed.Enabled := False;
         if (frmProduto <> nil) and (frmProduto.Active) and (frmProduto.CanFocus) then
           btnIncluir.SetFocus;
-
         Application.ProcessMessages;
       end;
 
@@ -149,6 +151,7 @@ begin
         edtDescricaoUnidade.Enabled := False;
         edtCodigo.Enabled  := False;
         cmbUnidade.Enabled := True;
+        btnSpeed.Enabled := True;
         if edtDescricaoProd.CanFocus then
           edtDescricaoProd.SetFocus;
 
@@ -168,6 +171,7 @@ begin
         cmbUnidade.Enabled := False;
         edtDescricaoUnidade.Enabled := False;
         edtPreco.Enabled := False;
+        btnSpeed.Enabled := False;
         edtQuantidade.Enabled := False;
         if (edtCodigo.Text <> EmptyStr) then
         begin
@@ -200,6 +204,7 @@ begin
           btnAlterar.Enabled := False;
           btnConfirmar.Enabled := True;
           cmbUnidade.Enabled   := True;
+          btnSpeed.Enabled := True;
 
         end
         else
@@ -215,7 +220,7 @@ begin
       etExcluir:
       begin
         stbBarraStatus.Panels[0].text := 'Exclusão';
-
+        btnSpeed.Enabled := False;
         if (edtCodigo.Text <> EmptyStr) then
            ProcessaExclusao
         else
@@ -649,18 +654,18 @@ begin
        edtDescricaoProd.SetFocus;
     exit;
   end;
+   if (CompareValue(edtPreco.Value, 0) = EqualsValue) then
+  begin
+    TMessageUtil.Alerta('Preço do produto não pode ser 0.');
+    if edtPreco.CanFocus then
+      edtPreco.SetFocus;
+    exit;
+  end;
   if (CompareValue(edtQuantidade.Value, 0) = EqualsValue) then
   begin
     TMessageUtil.Alerta('Quantidade do produto não pode ser 0.');
     if edtQuantidade.CanFocus then
       edtQuantidade.SetFocus;
-    exit;
-  end;
-  if (CompareValue(edtPreco.Value, 0) = EqualsValue) then
-  begin
-    TMessageUtil.Alerta('Preço do produto não pode ser 0.');
-    if edtPreco.CanFocus then
-      edtPreco.SetFocus;
     exit;
   end;
   Result := True;
@@ -809,30 +814,39 @@ end;
 
 procedure TfrmProduto.CarregaUnidadeDesc;
 var
-   xUnidadeProduto : TUnidadeProduto;
+  xUnidadeProduto: TUnidadeProduto;
 begin
-   try
-      xUnidadeProduto := nil;
-      xUnidadeProduto := TUnidadeProduto.create;
-
-      if vObjProduto.UnidadeSaida <> '' then
+  try
+    xUnidadeProduto := nil;
+    if vObjProduto.UnidadeSaida <> '' then
+    begin
+      xUnidadeProduto := TUnidadeProdController.getInstancia.BuscaDescUnidade(vObjProduto.UnidadeSaida);
+      if xUnidadeProduto <> nil then
       begin
-         xUnidadeProduto := TUnidadeProdController.getInstancia.BuscaDescUnidade(vObjProduto.UnidadeSaida);
-         edtDescricaoUnidade.Enabled := True;
-         edtDescricaoUnidade.Text := xUnidadeProduto.Descricao;
-         edtDescricaoUnidade.Enabled := False;
-         CarregaDadoscmb;
+        edtDescricaoUnidade.Enabled := True;
+        edtDescricaoUnidade.Text := xUnidadeProduto.Descricao;
+        edtDescricaoUnidade.Enabled := False;
+        CarregaDadoscmb;
       end
       else
-         edtDescricaoUnidade.Text := '';
-
-
-   finally
-      if xUnidadeProduto <> nil then
-         FreeAndNil(xUnidadeProduto);
-         CarregaDadoscmb;
-   end
+      begin
+        TMessageUtil.Alerta('Nenhuma unidade encontrada para o produto informado.');
+        edtDescricaoUnidade.Text := '';
+        LimpaTela;
+      end;
+    end
+    else
+    begin
+      edtDescricaoUnidade.Text := '';
+    end;
+    
+  finally
+    if xUnidadeProduto <> nil then
+      FreeAndNil(xUnidadeProduto);
+    CarregaDadoscmb;
+  end;
 end;
+
 
 procedure TfrmProduto.cmbUnidadeKeyPress(Sender: TObject; var Key: Char);
 begin
@@ -869,6 +883,18 @@ end;
 procedure TfrmProduto.FormActivate(Sender: TObject);
 begin
    CarregaDadoscmb;
+end;
+
+procedure TfrmProduto.edtPrecoExit(Sender: TObject);
+begin
+   if edtPreco.Value < 0 then
+      edtPreco.Value := 0;
+end;
+
+procedure TfrmProduto.edtQuantidadeExit(Sender: TObject);
+begin
+   if edtQuantidade.Value < 0 then
+      edtQuantidade.Value := 0;
 end;
 
 end.

@@ -5,14 +5,13 @@ object frmVenda: TfrmVenda
   BorderStyle = bsSingle
   Caption = 'Venda'
   ClientHeight = 383
-  ClientWidth = 882
+  ClientWidth = 889
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -11
   Font.Name = 'MS Sans Serif'
   Font.Style = []
-  KeyPreview = True
   OldCreateOrder = False
   Position = poScreenCenter
   OnClose = FormClose
@@ -24,7 +23,7 @@ object frmVenda: TfrmVenda
   object pnlBotoes: TPanel
     Left = 0
     Top = 283
-    Width = 882
+    Width = 889
     Height = 81
     Align = alBottom
     TabOrder = 0
@@ -137,7 +136,7 @@ object frmVenda: TfrmVenda
         A780BBA077A890608D652DFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
     end
     object btnFaturar: TBitBtn
-      Left = 536
+      Left = 583
       Top = 8
       Width = 87
       Height = 25
@@ -173,7 +172,7 @@ object frmVenda: TfrmVenda
         8637288637247C3267A567B7CDB7FFFFFFFFFFFFFFFFFFFFFFFF}
     end
     object btnCancelar: TBitBtn
-      Left = 731
+      Left = 778
       Top = 8
       Width = 86
       Height = 25
@@ -210,7 +209,7 @@ object frmVenda: TfrmVenda
         79F47179F47279F47178F4727AF4727AF47279F49499F6FFFFFF}
     end
     object btnSair: TBitBtn
-      Left = 731
+      Left = 778
       Top = 42
       Width = 86
       Height = 25
@@ -246,7 +245,7 @@ object frmVenda: TfrmVenda
         A851CF9D4EC59346B98A40B38139CE9A47DFAB53E8B863E4B25F}
     end
     object btnLimpar: TBitBtn
-      Left = 634
+      Left = 681
       Top = 8
       Width = 86
       Height = 25
@@ -283,7 +282,7 @@ object frmVenda: TfrmVenda
         AF8DC2AA84AA9161A98B5DFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
     end
     object btnConfirmar: TBitBtn
-      Left = 635
+      Left = 682
       Top = 41
       Width = 86
       Height = 26
@@ -322,7 +321,7 @@ object frmVenda: TfrmVenda
   object StbBarraStatus: TStatusBar
     Left = 0
     Top = 364
-    Width = 882
+    Width = 889
     Height = 19
     Panels = <
       item
@@ -334,9 +333,9 @@ object frmVenda: TfrmVenda
   end
   object pnlValores: TPanel
     Left = 0
-    Top = 216
-    Width = 882
-    Height = 67
+    Top = 218
+    Width = 889
+    Height = 65
     Align = alBottom
     TabOrder = 2
     object lblPagamento: TLabel
@@ -410,6 +409,7 @@ object frmVenda: TfrmVenda
       ShowSeparator = True
       TabOrder = 1
       OnChange = edtDescontoChange
+      OnExit = edtDescontoExit
       OnKeyDown = edtDescontoKeyDown
     end
     object edtTotal: TNumEdit
@@ -430,21 +430,23 @@ object frmVenda: TfrmVenda
       Height = 21
       Alignment = taRightJustify
       Decimals = 2
+      ReadOnly = True
       ShowSeparator = True
       TabOrder = 2
+      OnExit = edtValorComDescontoExit
     end
   end
   object grbPedido: TGroupBox
     Left = 0
     Top = 0
-    Width = 882
-    Height = 90
+    Width = 889
+    Height = 65
     Align = alTop
     Caption = 'Pedido'
     TabOrder = 3
     object lblNumVenda: TLabel
       Left = 6
-      Top = 17
+      Top = 29
       Width = 55
       Height = 13
       Caption = 'N'#176' Venda'
@@ -457,7 +459,7 @@ object frmVenda: TfrmVenda
     end
     object lblData: TLabel
       Left = 152
-      Top = 16
+      Top = 28
       Width = 23
       Height = 13
       Caption = 'Data'
@@ -470,7 +472,7 @@ object frmVenda: TfrmVenda
     end
     object lblCodigo: TLabel
       Left = 334
-      Top = 16
+      Top = 28
       Width = 33
       Height = 13
       Caption = 'C'#243'digo'
@@ -483,7 +485,7 @@ object frmVenda: TfrmVenda
     end
     object lblNome: TLabel
       Left = 439
-      Top = 15
+      Top = 27
       Width = 33
       Height = 13
       Caption = 'Nome'
@@ -496,17 +498,18 @@ object frmVenda: TfrmVenda
     end
     object edtNumVenda: TEdit
       Left = 65
-      Top = 9
+      Top = 21
       Width = 63
       Height = 21
       CharCase = ecUpperCase
       TabOrder = 0
       OnChange = edtNumVendaChange
+      OnExit = edtNumVendaExit
       OnKeyDown = edtNumVendaKeyDown
     end
     object edtData: TMaskEdit
       Left = 183
-      Top = 8
+      Top = 20
       Width = 71
       Height = 21
       EditMask = '!99/99/9999;1;_'
@@ -516,7 +519,7 @@ object frmVenda: TfrmVenda
     end
     object edtCodigo: TEdit
       Left = 373
-      Top = 8
+      Top = 20
       Width = 46
       Height = 21
       CharCase = ecUpperCase
@@ -526,8 +529,8 @@ object frmVenda: TfrmVenda
     end
     object edtNome: TEdit
       Left = 474
-      Top = 8
-      Width = 348
+      Top = 20
+      Width = 391
       Height = 21
       CharCase = ecUpperCase
       TabOrder = 3
@@ -535,17 +538,17 @@ object frmVenda: TfrmVenda
   end
   object grbProdutos: TGroupBox
     Left = 0
-    Top = 90
-    Width = 882
-    Height = 126
+    Top = 65
+    Width = 889
+    Height = 153
     Align = alClient
     Caption = 'Produtos'
     TabOrder = 4
     object dbgProduto: TDBGrid
       Left = 2
       Top = 15
-      Width = 878
-      Height = 109
+      Width = 885
+      Height = 136
       Align = alClient
       DataSource = dtsProdutoVenda
       Options = [dgEditing, dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgCancelOnExit]
@@ -614,6 +617,8 @@ object frmVenda: TfrmVenda
     object cdsProdutosCodigo: TIntegerField
       DisplayWidth = 12
       FieldName = 'C'#243'digo'
+      OnSetText = cdsProdutosCodigoSetText
+      OnValidate = cdsProdutosCodigoValidate
     end
     object cdsProdutosDesc: TStringField
       DisplayWidth = 66

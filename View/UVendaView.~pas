@@ -77,6 +77,11 @@ type
     procedure edtNumVendaKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure dbgProdutoKeyPress(Sender: TObject; var Key: Char);
     procedure cdsProdutosQuantValidate(Sender: TField);
+    procedure edtDescontoExit(Sender: TObject);
+    procedure edtValorComDescontoExit(Sender: TObject);
+    procedure edtNumVendaExit(Sender: TObject);
+    procedure cdsProdutosCodigoValidate(Sender: TField);
+    procedure cdsProdutosCodigoSetText(Sender: TField; const Text: String);
 
   private
     { Private declarations }
@@ -175,7 +180,6 @@ begin
         cmbPagamento.Items.Add('Cartão de Débito');
         cmbPagamento.Items.Add('Dinheiro');
         cmbPagamento.Items.Add('Pix');
-        Application.ProcessMessages;
       end;
 
     etIncluir:
@@ -340,10 +344,36 @@ begin
 end;
 
 function TfrmVenda.ProcessaInclusao: Boolean;
+var
+  vClienteID: Integer;
+  vPessoa: TPessoa;
 begin
   Result := False;
   try
     try
+      // Captura o ID do cliente da tela
+      vClienteID := StrToIntDef(edtCodigo.Text, 0);
+
+      // Valida se o cliente foi informado
+      if vClienteID = 0 then
+      begin
+        TMessageUtil.Alerta('Informe o código do cliente antes de salvar a venda.');
+        Exit;
+      end;
+
+      // Valida se o cliente existe no banco de dados usando o controller TPessoaController
+      vPessoa := TPessoaController.Create.BuscaPessoa(vClienteID);
+      if vPessoa = nil then
+      begin
+        TMessageUtil.Alerta('O cliente informado não existe. Verifique o código do cliente.');
+        edtCodigo.Clear;
+        edtNome.Clear;
+        if edtCodigo.CanFocus then
+           edtCodigo.SetFocus;
+        Exit;
+      end;
+
+      // Se o cliente for válido, prossegue com a venda
       if (ProcessaVenda) and (ProcessaVendaItem) then
       begin
         TMessageUtil.Informacao('Venda cadastrada com sucesso!'#13 + 'Código cadastrado: ' + IntToStr(vObjVenda.ID));
@@ -357,7 +387,7 @@ begin
     except
       on E: Exception do
       begin
-        raise Exception.Create('Falha ao incluir os dados da venda[View]: '#13 + e.Message);
+        raise Exception.Create('Falha ao incluir os dados da venda [View]: '#13 + e.Message);
       end;
     end;
   finally
@@ -365,6 +395,7 @@ begin
       FreeAndNil(vObjVenda);
   end;
 end;
+
 
 function TfrmVenda.ProcessaVenda: Boolean;
 begin
@@ -869,7 +900,7 @@ end;
 
 procedure TfrmVenda.dbgProdutoKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
 begin
-  Key := 0;
+   Key := 0;
 end;
 
 procedure TfrmVenda.btnPesquisarClick(Sender: TObject);
@@ -899,8 +930,8 @@ end;
 
 procedure TfrmVenda.cdsProdutosAfterOpen(DataSet: TDataSet);
 begin
-//   (dbgProduto.DataSource.DataSet.FieldByName('Preço Uni.') as TFloatField).DisplayFormat := 'R$ ##,##0.00';
-//   (dbgProduto.DataSource.DataSet.FieldByName('Preço Total') as TFloatField).DisplayFormat := 'R$ ##,##0.00';
+  (dbgProduto.DataSource.DataSet.FieldByName('Preço Uni.') as TFloatField).DisplayFormat := 'R$ ##,##0.00';
+  (dbgProduto.DataSource.DataSet.FieldByName('Preço Total') as TFloatField).DisplayFormat := 'R$ ##,##0.00';
 end;
 
 procedure TfrmVenda.edtNumVendaChange(Sender: TObject);
@@ -1136,6 +1167,61 @@ end;
 function TfrmVenda.ClienteValido: Boolean;
 begin
   Result := (Trim(edtNome.Text) <> '');
+end;
+
+procedure TfrmVenda.edtDescontoExit(Sender: TObject);
+begin
+    if edtDesconto.Value < 0 then
+      edtDesconto.Value := 0;
+end;
+
+procedure TfrmVenda.edtValorComDescontoExit(Sender: TObject);
+begin
+    if edtValorComDesconto.Value < 0 then
+       edtValorComDesconto.Value := 0;
+end;
+
+
+
+procedure TfrmVenda.edtNumVendaExit(Sender: TObject);
+var
+  xValor: Integer;
+begin
+  if TryStrToInt(edtNumVenda.Text, xValor) then
+  begin
+    if xValor > 10000 then
+      edtNumVenda.Text := '';
+  end
+  else
+  begin
+    edtNumVenda.Text := '0'; // Se o valor for inválido, define como 0
+  end;
+end;
+
+procedure TfrmVenda.cdsProdutosCodigoValidate(Sender: TField);
+begin
+//   if Sender.AsInteger > 10000 then
+//  begin
+//    TMessageUtil.Alerta('Código  máximo é de 10.000!');
+//    Sender.Clear;
+//    Abort;
+//  end;
+end;
+
+procedure TfrmVenda.cdsProdutosCodigoSetText(Sender: TField;
+  const Text: String);
+var
+  Valor: Double;
+begin
+  if TryStrToFloat(Text, Valor) then
+  begin
+    if Valor > 10000 then
+      Sender.AsFloat := 10000
+    else
+      Sender.AsFloat := Valor;
+  end
+  else
+    Sender.Clear;
 end;
 
 end.

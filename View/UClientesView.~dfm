@@ -1,8 +1,8 @@
 object frmClientes: TfrmClientes
   Left = 329
   Top = 230
-  Width = 626
-  Height = 357
+  Width = 602
+  Height = 336
   BorderIcons = [biSystemMenu]
   Caption = 'Cliente'
   Color = clBtnFace
@@ -15,6 +15,7 @@ object frmClientes: TfrmClientes
   OldCreateOrder = False
   Position = poScreenCenter
   Visible = True
+  OnActivate = FormActivate
   OnClose = FormClose
   OnCreate = FormCreate
   OnKeyDown = FormKeyDown
@@ -24,8 +25,8 @@ object frmClientes: TfrmClientes
   TextHeight = 13
   object stbBarraStatus: TStatusBar
     Left = 0
-    Top = 299
-    Width = 610
+    Top = 278
+    Width = 586
     Height = 19
     Panels = <
       item
@@ -37,13 +38,13 @@ object frmClientes: TfrmClientes
   end
   object pnlBotoes: TPanel
     Left = 0
-    Top = 228
-    Width = 610
+    Top = 207
+    Width = 586
     Height = 71
     Align = alBottom
     TabOrder = 1
     object btnIncluir: TBitBtn
-      Left = 30
+      Left = 15
       Top = 8
       Width = 75
       Height = 25
@@ -79,7 +80,7 @@ object frmClientes: TfrmClientes
         8637288637247C3267A567B7CDB7FFFFFFFFFFFFFFFFFFFFFFFF}
     end
     object btnAlterar: TBitBtn
-      Left = 119
+      Left = 104
       Top = 8
       Width = 75
       Height = 25
@@ -115,7 +116,7 @@ object frmClientes: TfrmClientes
         FFFFFFFFFFFFFFFFFFFFFF427BDB44AFF7378AEEE2E7FCFFFFFF}
     end
     object btnExcluir: TBitBtn
-      Left = 210
+      Left = 195
       Top = 8
       Width = 75
       Height = 25
@@ -151,7 +152,7 @@ object frmClientes: TfrmClientes
         74170A74170A74170A74171B7E2742944C76B17DFFFFFFFFFFFF}
     end
     object btnConsultar: TBitBtn
-      Left = 30
+      Left = 15
       Top = 40
       Width = 75
       Height = 25
@@ -187,7 +188,7 @@ object frmClientes: TfrmClientes
         CFCFDFDFDFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
     end
     object btnListar: TBitBtn
-      Left = 118
+      Left = 103
       Top = 40
       Width = 75
       Height = 25
@@ -223,7 +224,7 @@ object frmClientes: TfrmClientes
         E8DBEFE8DBEFE8DBEFE8DBE8DFD0FFFFFFFFFFFFFFFFFFFFFFFF}
     end
     object btnPesquisar: TBitBtn
-      Left = 210
+      Left = 195
       Top = 40
       Width = 75
       Height = 25
@@ -259,7 +260,7 @@ object frmClientes: TfrmClientes
         A780BBA077A890608D652DFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
     end
     object btnConfirmar: TBitBtn
-      Left = 445
+      Left = 420
       Top = 9
       Width = 75
       Height = 25
@@ -296,7 +297,7 @@ object frmClientes: TfrmClientes
         8637288637247C3267A567B7CDB7FFFFFFFFFFFFFFFFFFFFFFFF}
     end
     object btnCancelar: TBitBtn
-      Left = 526
+      Left = 501
       Top = 8
       Width = 75
       Height = 25
@@ -333,7 +334,7 @@ object frmClientes: TfrmClientes
         79F47179F47279F47178F4727AF4727AF47279F49499F6FFFFFF}
     end
     object btnSair: TBitBtn
-      Left = 526
+      Left = 501
       Top = 40
       Width = 75
       Height = 25
@@ -372,8 +373,8 @@ object frmClientes: TfrmClientes
   object pnlArea: TPanel
     Left = 0
     Top = 0
-    Width = 610
-    Height = 228
+    Width = 586
+    Height = 207
     Align = alClient
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
@@ -384,21 +385,27 @@ object frmClientes: TfrmClientes
     TabOrder = 2
     object lblCodigo: TLabel
       Left = 13
-      Top = 39
+      Top = 20
       Width = 33
       Height = 13
       Caption = 'C'#243'digo'
     end
     object lblCPFCNPJ: TLabel
-      Left = 405
-      Top = 39
-      Width = 52
+      Left = 396
+      Top = 20
+      Width = 61
       Height = 13
       Caption = 'CPF/CNPJ'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = [fsBold]
+      ParentFont = False
     end
     object edtCodigo: TEdit
       Left = 53
-      Top = 31
+      Top = 12
       Width = 67
       Height = 21
       CharCase = ecUpperCase
@@ -407,17 +414,17 @@ object frmClientes: TfrmClientes
     end
     object chkAtivo: TCheckBox
       Left = 133
-      Top = 31
+      Top = 12
       Width = 49
       Height = 18
       Caption = 'Ativo'
       TabOrder = 1
     end
     object rdgTipoPessoa: TRadioGroup
-      Left = 205
-      Top = 31
+      Left = 200
+      Top = 6
       Width = 185
-      Height = 27
+      Height = 30
       Caption = ' Tipo de Pessoa'
       Columns = 2
       ItemIndex = 0
@@ -428,8 +435,8 @@ object frmClientes: TfrmClientes
       OnClick = rdgTipoPessoaClick
     end
     object edtCPFCNPJ: TMaskEdit
-      Left = 461
-      Top = 31
+      Left = 460
+      Top = 12
       Width = 118
       Height = 21
       EditMask = '###\.###\.###\-##;1;_'
@@ -440,7 +447,7 @@ object frmClientes: TfrmClientes
     end
     object lblNome: TStaticText
       Left = 13
-      Top = 72
+      Top = 49
       Width = 36
       Height = 17
       Caption = 'Nome'
@@ -454,7 +461,7 @@ object frmClientes: TfrmClientes
     end
     object edtNome: TEdit
       Left = 54
-      Top = 67
+      Top = 44
       Width = 526
       Height = 21
       CharCase = ecUpperCase
@@ -463,9 +470,9 @@ object frmClientes: TfrmClientes
       OnKeyPress = edtNomeKeyPress
     end
     object grbEndereco: TGroupBox
-      Left = 16
-      Top = 104
-      Width = 585
+      Left = 4
+      Top = 72
+      Width = 573
       Height = 121
       Caption = ' Endere'#231'o'
       TabOrder = 6
@@ -623,7 +630,7 @@ object frmClientes: TfrmClientes
       ''
       'end.')
     Left = 296
-    Top = 236
+    Top = 212
     Datasets = <
       item
         DataSet = frxDBCliente
@@ -1022,7 +1029,7 @@ object frmClientes: TfrmClientes
     Aggregates = <>
     Params = <>
     Left = 373
-    Top = 236
+    Top = 212
     Data = {
       100100009619E0BD010000001800000009000000000003000000100102494401
       00490000000100055749445448020002000A00044E6F6D650100490000000100
@@ -1085,7 +1092,7 @@ object frmClientes: TfrmClientes
     DataSet = cdsCliente
     BCDToCurrency = False
     Left = 335
-    Top = 236
+    Top = 212
   end
   object frxPDF: TfrxPDFExport
     UseFileCache = True
@@ -1105,7 +1112,7 @@ object frmClientes: TfrmClientes
     CenterWindow = False
     PrintScaling = False
     Left = 297
-    Top = 268
+    Top = 244
   end
   object frxXLS: TfrxXLSExport
     UseFileCache = True
@@ -1120,6 +1127,6 @@ object frmClientes: TfrmClientes
     EmptyLines = True
     SuppressPageHeadersFooters = False
     Left = 337
-    Top = 268
+    Top = 244
   end
 end
