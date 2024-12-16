@@ -50,6 +50,7 @@ type
     cdsProdutosUnidadedeSada: TStringField;
     edtValorComDesconto: TNumEdit;
     Label2: TLabel;
+    btnSpeed: TSpeedButton;
     procedure btnConfirmarClick(Sender: TObject);
     procedure btnIncluirClick(Sender: TObject);
     procedure edtCodigoKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
@@ -82,6 +83,8 @@ type
     procedure edtNumVendaExit(Sender: TObject);
     procedure cdsProdutosCodigoValidate(Sender: TField);
     procedure cdsProdutosCodigoSetText(Sender: TField; const Text: String);
+    procedure dbgProdutoColEnter(Sender: TObject);
+    procedure btnSpeedClick(Sender: TObject);
 
   private
     { Private declarations }
@@ -1224,5 +1227,38 @@ begin
     Sender.Clear;
 end;
 
+procedure TfrmVenda.dbgProdutoColEnter(Sender: TObject);
+begin
+  if vEstadoTela = etConsultar then
+  begin
+    dbgProduto.Options := dbgProduto.Options - [dgEditing];
+    Exit;
+  end;
+
+  if (dbgProduto.SelectedField.FieldName <> 'Código')
+     and (dbgProduto.SelectedField.FieldName <> 'Quant.') then
+  begin
+    dbgProduto.Options := dbgProduto.Options - [dgEditing];
+  end
+  else
+  begin
+    dbgProduto.Options := dbgProduto.Options + [dgEditing];
+  end;
+end;
+
+
+procedure TfrmVenda.btnSpeedClick(Sender: TObject);
+begin
+   try
+      Screen.Cursor := crHourGlass;
+
+      if frmClientes  = nil then
+            frmClientes := TfrmClientes.Create(Application);
+
+         frmClientes.Show;
+   finally
+      Screen.Cursor := crDefault;
+   end;
+end;
 end.
 
