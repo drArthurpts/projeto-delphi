@@ -497,10 +497,10 @@ object frmVenda: TfrmVenda
       ParentFont = False
     end
     object btnSpeed: TSpeedButton
-      Left = 414
-      Top = 24
-      Width = 15
-      Height = 16
+      Left = 412
+      Top = 19
+      Width = 19
+      Height = 21
       Glyph.Data = {
         36060000424D3606000000000000360000002800000020000000100000000100
         180000000000000600003A0B00003A0B00000000000000000000FF00FFFF00FF
@@ -553,6 +553,7 @@ object frmVenda: TfrmVenda
         FFFF00FFFF00FFFF00FFFF00FF90909090909090909090909090909090909090
         9090898989FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF}
       NumGlyphs = 2
+      OnClick = btnSpeedClick
     end
     object edtNumVenda: TEdit
       Left = 65

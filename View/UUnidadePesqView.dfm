@@ -175,7 +175,7 @@ object frmUnidadePesq: TfrmUnidadePesq
         Top = 23
         Width = 288
         Height = 21
-        CharCase = ecLowerCase
+        CharCase = ecUpperCase
         TabOrder = 0
       end
       object btnFiltrar: TBitBtn
@@ -264,12 +264,13 @@ object frmUnidadePesq: TfrmUnidadePesq
           item
             Expanded = False
             FieldName = 'Descricao'
-            Width = 238
+            Width = 285
             Visible = True
           end
           item
             Expanded = False
             FieldName = 'Ativo'
+            Width = 56
             Visible = True
           end>
       end

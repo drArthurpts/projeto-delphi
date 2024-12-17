@@ -602,8 +602,6 @@ begin
 
        if vEstadoTela  = etAlterar then
           xID_Pessoa := StrToIntDef(edtCodigo.Text, 0);
-
-
        xEndereco               := TEndereco.Create;
        xEndereco.ID_Pessoa     := xID_Pessoa;
        xEndereco.Tipo_Endereco := 0;
@@ -613,12 +611,7 @@ begin
        xEndereco.Bairro        := edtNome.Text;
        xEndereco.UF            := cmbUF.Text;
        xEndereco.Cidade        := edtCidade.Text;
-
        vObjColEndereco.Add(xEndereco);
-
-
-
-
        Result := True;
    except
       on E : Exception do

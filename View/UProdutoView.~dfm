@@ -1,7 +1,7 @@
 object frmProduto: TfrmProduto
   Left = 502
   Top = 336
-  Width = 634
+  Width = 639
   Height = 213
   BorderIcons = [biSystemMenu]
   Caption = 'Produto'
@@ -32,7 +32,7 @@ object frmProduto: TfrmProduto
   object stbBarraStatus: TStatusBar
     Left = 0
     Top = 155
-    Width = 618
+    Width = 623
     Height = 19
     Panels = <
       item
@@ -45,7 +45,7 @@ object frmProduto: TfrmProduto
   object pnlBotoes: TPanel
     Left = 0
     Top = 75
-    Width = 618
+    Width = 623
     Height = 80
     Align = alBottom
     TabOrder = 1
@@ -343,7 +343,7 @@ object frmProduto: TfrmProduto
   object pnlArea: TPanel
     Left = 0
     Top = 0
-    Width = 618
+    Width = 623
     Height = 75
     Align = alClient
     TabOrder = 3

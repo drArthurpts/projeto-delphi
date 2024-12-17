@@ -114,7 +114,6 @@ begin
    try
       try
          Result := nil;
-
          xListaVendaC := nil;
          xListaVendaC := TColVenda.Create;
 

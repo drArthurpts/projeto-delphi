@@ -89,7 +89,7 @@ type
     procedure edtCidadeChange(Sender: TObject);
     procedure edtCidadeKeyPress(Sender: TObject; var Key: Char);
     procedure FormActivate(Sender: TObject);
-   
+
   private
     { Private declarations }
     vKey : Word;
@@ -733,7 +733,7 @@ end;
 function TfrmClientes.ProcessaAlteracao: Boolean;
 begin
    try
-      Result := False;
+      Result := False;                                     //rdg
 
       if ProcessaCliente and ConfirmaValidacaoCPFCNPJ then
       begin
@@ -874,12 +874,12 @@ begin
    if rdgTipoPessoa.ItemIndex = 1 then
    begin
       edtCPFCNPJ.Clear;
-      edtCPFCNPJ.EditMask := '00\.000\.000\/0000\-00;1;_'
+       edtCPFCNPJ.EditMask := '99\.999\.999\/9999\-99;9;_';
    end
    else
    begin
        edtCPFCNPJ.Clear;
-       edtCPFCNPJ.EditMask := '000\.000\.000\-00;1;_';
+       edtCPFCNPJ.EditMask := '999\.999\.999\-99;9;_';
    end;
 end;
 
@@ -890,48 +890,10 @@ var
 begin
   if Key = VK_RETURN then
   begin
-    xCPFReplace := TFuncoes.SoNumero(edtCPFCNPJ.Text);
-    xCNPJReplace := TFuncoes.SoNumero(edtCPFCNPJ.Text);
-
-    if (rdgTipoPessoa.ItemIndex = 0) then
-    begin
-      if Length(xCPFReplace) <> 11 then
-      begin
-        TMessageUtil.Alerta('O CPF deve conter exatamente 11 dígitos!');
-        if edtCPFCNPJ.CanFocus then
-          edtCPFCNPJ.SetFocus;
-          edtCPFCNPJ.Clear;
-        Exit;
-      end;
-
-      if not TPessoaController.getInstancia.ValidaCPF(xCPFReplace) then
-      begin
-        TMessageUtil.Alerta('CPF inválido! Verifique e tente novamente.');
-        if edtCPFCNPJ.CanFocus then
-          edtCPFCNPJ.SetFocus;
-        Exit;
-      end;
-    end
-    else
-    begin
-      if Length(xCNPJReplace) <> 14 then
-      begin
-        TMessageUtil.Alerta('O CNPJ deve conter exatamente 14 dígitos!');
-        if edtCPFCNPJ.CanFocus then
-          edtCPFCNPJ.SetFocus;
-          edtCPFCNPJ.Clear;
-        Exit;
-      end;
-      if not TPessoaController.getInstancia.ValidaCNPJ(xCNPJReplace) then
-      begin
-        TMessageUtil.Alerta('CNPJ inválido! Verifique e tente novamente.');
-        if edtCPFCNPJ.CanFocus then
-          edtCPFCNPJ.SetFocus;
-        Exit;
-      end;
-    end;
+     ConfirmaValidacaoCPFCNPJ;
   end;
 end;
+
 
 
 function TfrmClientes.ProcessaListagem: Boolean;
@@ -1013,7 +975,7 @@ begin
       exit;
    end
    else
-     TMessageUtil.Alerta('CNPJ inválido! Verifique e tente novamente.');
+     TMessageUtil.Alerta('CNPJ inválido! Verifique e tente novamente.');                 //rdg
 
    edtCPFCNPJ.Text := '';
 
@@ -1070,5 +1032,6 @@ procedure TfrmClientes.FormActivate(Sender: TObject);
 begin
    Preenchercmb;
 end;
+
 
 end.

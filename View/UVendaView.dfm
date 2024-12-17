@@ -497,7 +497,7 @@ object frmVenda: TfrmVenda
       ParentFont = False
     end
     object btnSpeed: TSpeedButton
-      Left = 413
+      Left = 412
       Top = 19
       Width = 19
       Height = 21

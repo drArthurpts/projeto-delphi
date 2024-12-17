@@ -917,6 +917,7 @@ begin
   cdsProdutos.Last;
   if (cdsProdutosDesc.Value = EmptyStr) and (cdsProdutos.RecordCount <> 0) then
     dbgProduto.DataSource.DataSet.Delete;
+    AtualizarValorTotal;
 end;
 
 procedure TfrmVenda.btnLimparClick(Sender: TObject);
@@ -1260,5 +1261,7 @@ begin
       Screen.Cursor := crDefault;
    end;
 end;
+
+
 end.
 

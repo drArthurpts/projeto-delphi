@@ -106,10 +106,10 @@ end;
 function TVendaController.PesquisaVenda(pCodigoVenda: Integer;
   pDataInicio : String ; pDataFim: String): TColVenda;
 var
-   xVendaDAO : TVendaDAO;
+   xVendaDAO    : TVendaDAO;
    xListaVendaC : TColVenda;
-   xCondicao : string;
-   xVenda    : TVenda;
+   xCondicao    : string;
+   xVenda       : TVenda;
 begin
    try
       try
@@ -141,7 +141,6 @@ end;
 function TVendaController.RetornaCondicaoVenda(pID: Integer): String;
 var
    xChave : String;
-
 begin
    xChave := 'ID';
 

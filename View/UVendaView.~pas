@@ -84,6 +84,7 @@ type
     procedure cdsProdutosCodigoValidate(Sender: TField);
     procedure cdsProdutosCodigoSetText(Sender: TField; const Text: String);
     procedure dbgProdutoColEnter(Sender: TObject);
+    procedure btnSpeedClick(Sender: TObject);
 
   private
     { Private declarations }
@@ -916,6 +917,7 @@ begin
   cdsProdutos.Last;
   if (cdsProdutosDesc.Value = EmptyStr) and (cdsProdutos.RecordCount <> 0) then
     dbgProduto.DataSource.DataSet.Delete;
+    AtualizarValorTotal;
 end;
 
 procedure TfrmVenda.btnLimparClick(Sender: TObject);
@@ -1243,6 +1245,21 @@ begin
   begin
     dbgProduto.Options := dbgProduto.Options + [dgEditing];
   end;
+end;
+
+
+procedure TfrmVenda.btnSpeedClick(Sender: TObject);
+begin
+   try
+      Screen.Cursor := crHourGlass;
+
+      if frmClientes  = nil then
+            frmClientes := TfrmClientes.Create(Application);
+
+         frmClientes.Show;
+   finally
+      Screen.Cursor := crDefault;
+   end;
 end;
 
 

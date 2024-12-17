@@ -418,7 +418,7 @@ begin
 
     end;
     if not Result then
-      Exit;
+      Exit;                                                             //Unidade
   except
     on E: Exception do
       TMessageUtil.Alerta(E.Message);
@@ -482,7 +482,7 @@ begin
     end
     else
     begin
-      TMessageUtil.Alerta('Nenhum Produto encontrado.');
+      TMessageUtil.Alerta('Nenhum Produto encontrado.');                          //nenhuma unidade
       LimpaTela;
 
       if (edtCodigo.CanFocus) then
@@ -753,8 +753,8 @@ begin
       edtDescricaoUnidade.Text := xDescricaoUnidade.Descricao;
    end
    else
-      edtDescricaoUnidade.Text := '';
 
+   edtDescricaoUnidade.Text := '';
    xCodigoReplace := TFuncoes.SoNumero(cmbUnidade.Text);
    cmbUnidade.Text := xCodigoReplace;
    cmbUnidade.Text := TFuncoes.removeCaracterEspecial(cmbUnidade.Text, True);
@@ -768,26 +768,21 @@ var
 begin
    try
       Screen.Cursor := crHourGlass;
-
-      
       xUnidadeCmb := cmbUnidade.Text;
-
-
       if frmUnidadeProd = nil then
          frmUnidadeProd := TfrmUnidadeProd.Create(Application);
-         
-      frmUnidadeProd.ShowModal;
 
+
+      frmUnidadeProd.ShowModal;
 
       cmbUnidade.Items.Clear;
       CarregaDadoscmb;
-
 
       xIndex := cmbUnidade.Items.IndexOf(xUnidadeCmb);
       if xIndex <> -1 then
          cmbUnidade.ItemIndex := xIndex
       else
-         cmbUnidade.ItemIndex := 0;
+         cmbUnidade.ItemIndex := -1;
 
    finally
       Screen.Cursor := crDefault;
@@ -830,9 +825,10 @@ begin
       end
       else
       begin
-        TMessageUtil.Alerta('Nenhuma unidade encontrada para o produto informado.');
+        TMessageUtil.Alerta('Esse Produto não possui mais nenhuma unidade vinculada');
         edtDescricaoUnidade.Text := '';
-        LimpaTela;
+        if cmbUnidade.CanFocus then
+           cmbUnidade.SetFocus
       end;
     end
     else
@@ -896,6 +892,5 @@ begin
    if edtQuantidade.Value < 0 then
       edtQuantidade.Value := 0;
 end;
-
 end.
 
