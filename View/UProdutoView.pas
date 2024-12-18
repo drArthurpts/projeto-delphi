@@ -155,13 +155,6 @@ begin
         if edtDescricaoProd.CanFocus then
           edtDescricaoProd.SetFocus;
 
-//         if edtPreco.CanFocus then
-//            edtPreco.SetFocus;
-//
-//         if edtQuantidade.CanFocus then
-//            edtQuantidade.SetFocus;
-
-
       end;
     etConsultar:
       begin
@@ -268,9 +261,6 @@ begin
             DefineEstadoTela;
          end;
          edtCodigo.Enabled := False;
-//         if edtCodigo.CanFocus then
-//            edtCodigo.SetFocus;
-
       end;
       end;
 
@@ -318,7 +308,6 @@ begin
       (Components[i] as TNumEdit).Value := 0;
 
       cmbUnidade.Clear;
-
   end;
 
 end;
@@ -590,7 +579,6 @@ function TfrmProduto.ProcessaUnidadeProduto: Boolean;
 begin
   try
     Result := False;
-
     if (ProcessaProduto) then
     begin
       TProdutoController.getInstancia.GravaProduto(vObjProduto);

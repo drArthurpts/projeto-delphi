@@ -142,9 +142,6 @@ begin
          (Components[i] as TCheckBox).Enabled := pOpcao;
 
    end;
-
-
-
 end;
 
 procedure TfrmUnidadeProd.LimpaTela;
@@ -158,10 +155,7 @@ begin
 
       if (Components[i] is TCheckBox) then
          (Components[i] as TCheckBox).Checked := False;
-
-
    end;
-
 end;
 
 
@@ -223,7 +217,6 @@ begin
             btnAlterar.Enabled   := True;
             btnExcluir.Enabled   := True;
             btnConfirmar.Enabled := False;
-//            chkAtivo.Enabled     := False;
 
             if (btnAlterar.CanFocus) then
                btnAlterar.SetFocus;
@@ -349,7 +342,7 @@ end;
 
 procedure TfrmUnidadeProd.btnSairClick(Sender: TObject);
 begin
-    if (vEstadoTela <> etPadrao) then
+   if (vEstadoTela <> etPadrao) then
    begin
       if (TMessageUtil.Pergunta('Deseja realmente abortar essa operação?')) then
       begin
@@ -459,21 +452,16 @@ begin
 
          if (edtCodigo.CanFocus) then
              edtCodigo.SetFocus;
-
-         Exit;
+         exit;
       end;
-
       DefineEstadoTela;
-
       Result := True;
-
    except
        on E : Exception do
        begin
          Raise Exception.Create(
          'Falha ao consultar os dados da Unidade [View].' + #13 +
          e.Message);
-
        end;
    end;
 end;

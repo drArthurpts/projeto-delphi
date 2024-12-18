@@ -251,19 +251,20 @@ object frmClientesPesq: TfrmClientesPesq
             Expanded = False
             FieldName = 'ID'
             Title.Caption = 'C'#243'digo'
-            Width = 45
+            Width = 64
             Visible = True
           end
           item
             Expanded = False
             FieldName = 'Nome'
+            Width = 380
             Visible = True
           end
           item
             Expanded = False
             FieldName = 'DescricaoAtivo'
             Title.Caption = 'Ativo'
-            Width = 44
+            Width = 70
             Visible = True
           end>
       end

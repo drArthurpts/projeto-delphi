@@ -81,7 +81,6 @@ type
     procedure edtDescontoExit(Sender: TObject);
     procedure edtValorComDescontoExit(Sender: TObject);
     procedure edtNumVendaExit(Sender: TObject);
-    procedure cdsProdutosCodigoValidate(Sender: TField);
     procedure cdsProdutosCodigoSetText(Sender: TField; const Text: String);
     procedure dbgProdutoColEnter(Sender: TObject);
     procedure btnSpeedClick(Sender: TObject);
@@ -144,13 +143,13 @@ begin
   for i := 0 to pred(ComponentCount) do
   begin
     if (Components[i] is TEdit) then
-      (Components[i] as TEdit).Enabled := pOpcao;
+       (Components[i] as TEdit).Enabled := pOpcao;
 
     if (Components[i] is TMaskEdit) then
-      (Components[i] as TMaskEdit).Enabled := pOpcao;
+       (Components[i] as TMaskEdit).Enabled := pOpcao;
 
     if (Components[i] is TComboBox) then
-      (Components[i] as TComboBox).Enabled := pOpcao;
+       (Components[i] as TComboBox).Enabled := pOpcao;
 
   end;
 
@@ -354,17 +353,15 @@ begin
   Result := False;
   try
     try
-      // Captura o ID do cliente da tela
+
       vClienteID := StrToIntDef(edtCodigo.Text, 0);
 
-      // Valida se o cliente foi informado
       if vClienteID = 0 then
       begin
         TMessageUtil.Alerta('Informe o código do cliente antes de salvar a venda.');
         Exit;
       end;
 
-      // Valida se o cliente existe no banco de dados usando o controller TPessoaController
       vPessoa := TPessoaController.Create.BuscaPessoa(vClienteID);
       if vPessoa = nil then
       begin
@@ -376,7 +373,6 @@ begin
         Exit;
       end;
 
-      // Se o cliente for válido, prossegue com a venda
       if (ProcessaVenda) and (ProcessaVendaItem) then
       begin
         TMessageUtil.Informacao('Venda cadastrada com sucesso!'#13 + 'Código cadastrado: ' + IntToStr(vObjVenda.ID));
@@ -415,7 +411,7 @@ begin
     end;
 
     if (vObjVenda = nil) then
-      Exit;
+      exit;
 
     vObjVenda.ID_Cliente := StrToInt(edtCodigo.Text);
     vObjVenda.TotalDesconto := edtDesconto.Value;
@@ -712,7 +708,7 @@ begin
       end;
 
       if (xVendaItem = nil) then
-        Exit;
+        exit;
 
       cdsProdutos.First;
       while not cdsProdutos.Eof do
@@ -768,7 +764,6 @@ begin
     if vObjVendaItem = nil then
       exit;
 
-//      vObjVenda.ID          := StrToInt(edtNumVenda.Text);
     vObjVendaItem.ID_Produto := StrToInt(cdsProdutosCodigo.Text);
     vObjVendaItem.Quantidade := cdsProdutosQuant.Value;
     vObjVendaItem.UnidadeSaida := cdsProdutosUnidadedeSada.Text;
@@ -870,12 +865,11 @@ begin
       edtNome.Text := xPessoa.Nome
     else
     begin
-//         TMessageUtil.Alerta('Nenhum cliente encontrado para o código informado.');
       edtNome.Clear;
       edtCodigo.Clear;
       if (edtCodigo.CanFocus) then
         edtCodigo.SetFocus;
-      Exit;
+      exit;
     end;
     DefineEstadoTela;
   finally
@@ -1185,8 +1179,6 @@ begin
        edtValorComDesconto.Value := 0;
 end;
 
-
-
 procedure TfrmVenda.edtNumVendaExit(Sender: TObject);
 var
   xValor: Integer;
@@ -1198,18 +1190,8 @@ begin
   end
   else
   begin
-    edtNumVenda.Text := '0'; // Se o valor for inválido, define como 0
+    edtNumVenda.Text := '0';
   end;
-end;
-
-procedure TfrmVenda.cdsProdutosCodigoValidate(Sender: TField);
-begin
-//   if Sender.AsInteger > 10000 then
-//  begin
-//    TMessageUtil.Alerta('Código  máximo é de 10.000!');
-//    Sender.Clear;
-//    Abort;
-//  end;
 end;
 
 procedure TfrmVenda.cdsProdutosCodigoSetText(Sender: TField;

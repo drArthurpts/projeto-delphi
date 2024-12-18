@@ -126,7 +126,6 @@ type
 
 var
   frmClientes: TfrmClientes;
-  
 
 implementation
 
@@ -196,7 +195,6 @@ begin
          (Components[i] as TCheckBox).Enabled := pOpcao;
 
    end;
-
    grbEndereco.Enabled := pOpcao;
 end;
 
@@ -223,8 +221,6 @@ begin
 
       if (Components[i] is TCheckBox) then
          (Components[i] as TCheckBox).Checked := False;
-
-
    end;
    if (vObjCliente <> nil) then
    FreeAndNil(vObjCliente);                                   //CPNPJ
@@ -482,7 +478,7 @@ begin
 
         end;
         if not Result then
-         Exit;
+         exit;
       except
          on E : Exception do
          TMessageUtil.Alerta(E.Message);
@@ -523,7 +519,6 @@ begin
       if (ProcessaPessoa) and
          (ProcessaEndereco) then
       begin
-         //Gravação no banco
          TPessoaController.getInstancia.GravaPessoa(
          vObjCliente, vObjColEndereco);
          Result := True;
@@ -556,9 +551,7 @@ begin
       begin
            if vObjCliente = nil then
               exit;
-
       end;
-
       if vObjCliente = nil then
          exit;
 
@@ -567,8 +560,6 @@ begin
       vObjCliente.Fisica_Juridica     := rdgTipoPessoa.ItemIndex;
       vObjCliente.Ativo               := chkAtivo.Checked;
       vObjCliente.IdentificadorPessoa := edtCPFCNPJ.Text;
-
-
       Result := True
    except
        on E : Exception do
@@ -608,7 +599,7 @@ begin
        xEndereco.Endereco      := edtEndereco.Text;
        xEndereco.Numero        := edtNumero.Text;
        xEndereco.Complemento   := edtComplemento.Text;
-       xEndereco.Bairro        := edtNome.Text;
+       xEndereco.Bairro        := edtBairro.Text;
        xEndereco.UF            := cmbUF.Text;
        xEndereco.Cidade        := edtCidade.Text;
        vObjColEndereco.Add(xEndereco);
@@ -619,8 +610,6 @@ begin
          Raise Exception.Create(
             'Falha ao preencher os dados de endereço do cliente [View]' + #13  +
             e.Message);
-
-            
       end;
    end;
 
@@ -726,7 +715,7 @@ end;
 function TfrmClientes.ProcessaAlteracao: Boolean;
 begin
    try
-      Result := False;                                     //rdg
+      Result := False;
 
       if ProcessaCliente and ConfirmaValidacaoCPFCNPJ then
       begin
@@ -867,7 +856,7 @@ begin
    if rdgTipoPessoa.ItemIndex = 1 then
    begin
       edtCPFCNPJ.Clear;
-       edtCPFCNPJ.EditMask := '99\.999\.999\/9999\-99;9;_';
+      edtCPFCNPJ.EditMask := '99\.999\.999\/9999\-99;9;_';
    end
    else
    begin
@@ -960,7 +949,6 @@ begin
    end
    else
       TMessageUtil.Alerta('CPF inválido! Verifique e tente novamente.');
-
    if (rdgTipoPessoa.ItemIndex = 1) then
    if (TPessoaController.getInstancia.ValidaCNPJ(TFuncoes.SoNumero(edtCPFCNPJ.Text))) then
    begin
@@ -968,7 +956,7 @@ begin
       exit;
    end
    else
-     TMessageUtil.Alerta('CNPJ inválido! Verifique e tente novamente.');                 //rdg
+     TMessageUtil.Alerta('CNPJ inválido! Verifique e tente novamente.');
 
    edtCPFCNPJ.Text := '';
 

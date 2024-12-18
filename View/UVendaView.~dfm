@@ -678,7 +678,6 @@ object frmVenda: TfrmVenda
       DisplayWidth = 12
       FieldName = 'C'#243'digo'
       OnSetText = cdsProdutosCodigoSetText
-      OnValidate = cdsProdutosCodigoValidate
     end
     object cdsProdutosDesc: TStringField
       DisplayWidth = 66

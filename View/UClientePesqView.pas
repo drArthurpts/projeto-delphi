@@ -83,10 +83,8 @@ begin
       VK_UP:
       begin
          vKey := VK_CLEAR;
-
          if (ActiveControl = dbgCliente) then
-         exit; 
-
+         exit;
          Perform(WM_NEXTDLGCTL, 1, 0);
       end;
 end;
@@ -107,8 +105,6 @@ begin
    if (edtNome.CanFocus) then
       edtNome.SetFocus;
 
-
-   
 end;
 
 procedure TfrmClientesPesq.ProcessaConfirmacao;

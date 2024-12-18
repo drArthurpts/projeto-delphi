@@ -258,20 +258,20 @@ end;
 
 function TPessoaController.ValidaCNPJ(const CNPJ: String): Boolean;
 var
-  Soma, Resto, DigitoVerificador1, DigitoVerificador2: Integer;
-  i: Integer;
-  Peso1: array[1..12] of Integer;
-  Peso2: array[1..13] of Integer;
+  xSoma, xResto, xDigitoVerificador1, xDigitoVerificador2: Integer;
+  xAux: Integer;
+  xPeso1: array[1..12] of Integer;
+  xPeso2: array[1..13] of Integer;
 begin
  
-  Peso1[1] := 5; Peso1[2] := 4; Peso1[3] := 3; Peso1[4] := 2;
-  Peso1[5] := 9; Peso1[6] := 8; Peso1[7] := 7; Peso1[8] := 6;
-  Peso1[9] := 5; Peso1[10] := 4; Peso1[11] := 3; Peso1[12] := 2;
+  xPeso1[1] := 5; xPeso1[2] := 4; xPeso1[3] := 3; xPeso1[4] := 2;
+  xPeso1[5] := 9; xPeso1[6] := 8; xPeso1[7] := 7; xPeso1[8] := 6;
+  xPeso1[9] := 5; xPeso1[10] := 4; xPeso1[11] := 3; xPeso1[12] := 2;
 
-  Peso2[1] := 6; Peso2[2] := 5; Peso2[3] := 4; Peso2[4] := 3;
-  Peso2[5] := 2; Peso2[6] := 9; Peso2[7] := 8; Peso2[8] := 7;
-  Peso2[9] := 6; Peso2[10] := 5; Peso2[11] := 4; Peso2[12] := 3;
-  Peso2[13] := 2;
+  xPeso2[1] := 6; xPeso2[2] := 5; xPeso2[3] := 4; xPeso2[4] := 3;
+  xPeso2[5] := 2; xPeso2[6] := 9; xPeso2[7] := 8; xPeso2[8] := 7;
+  xPeso2[9] := 6; xPeso2[10] := 5; xPeso2[11] := 4; xPeso2[12] := 3;
+  xPeso2[13] := 2;
 
   Result := False;
 
@@ -283,45 +283,43 @@ begin
   if CNPJ = StringOfChar(CNPJ[1], 14) then
     Exit;
 
-  Soma := 0;
-  for i := 1 to 12 do
-    Soma := Soma + StrToInt(CNPJ[i]) * Peso1[i];
+  xSoma := 0;
+  for xAux := 1 to 12 do
+    xSoma := xSoma + StrToInt(CNPJ[xAux]) * xPeso1[xAux];
 
-  Resto := Soma mod 11;
-  if Resto < 2 then
-    DigitoVerificador1 := 0
+  xResto := xSoma mod 11;
+  if xResto < 2 then
+    xDigitoVerificador1 := 0
   else
-    DigitoVerificador1 := 11 - Resto;
+    xDigitoVerificador1 := 11 - xResto;
 
 
-  if DigitoVerificador1 <> StrToInt(CNPJ[13]) then
+  if xDigitoVerificador1 <> StrToInt(CNPJ[13]) then
     Exit;
 
 
-  Soma := 0;
-  for i := 1 to 13 do
-    Soma := Soma + StrToInt(CNPJ[i]) * Peso2[i];
+  xSoma := 0;
+  for xAux := 1 to 13 do
+    xSoma := xSoma + StrToInt(CNPJ[xAux]) * xPeso2[xAux];
 
-  Resto := Soma mod 11;
-  if Resto < 2 then
-    DigitoVerificador2 := 0
+  xResto := xSoma mod 11;
+  if xResto < 2 then
+    xDigitoVerificador2 := 0
   else
-    DigitoVerificador2 := 11 - Resto;
+    xDigitoVerificador2 := 11 - xResto;
 
-
-  if DigitoVerificador2 = StrToInt(CNPJ[14]) then
+  if xDigitoVerificador2 = StrToInt(CNPJ[14]) then
     Result := True;
 end;
 
 function TPessoaController.ValidaCPF(const CPF: String): Boolean;
 var
-   Soma,
-   Resto,
-   DigitoVerificador1,
-   DigitoVerificador2 : Integer;
-   i: Integer;
+   xSoma,
+   xResto,
+   xDigitoVerificador1,
+   xDigitoVerificador2 : Integer;
+   xAux: Integer;
 begin
-
    Result := False;
 
    if Length(CPF) <> 11 then
@@ -334,20 +332,20 @@ begin
       (CPF = '99999999999') then
       exit;
 
-   Soma := 0;
+   xSoma := 0;
 
-   for i := 1 to 9 do
-      Soma := Soma + StrToInt(CPF[i]) * (11 - i);
+   for xAux := 1 to 9 do
+      xSoma := xSoma + StrToInt(CPF[xAux]) * (11 - xAux);
 
-   Resto := (Soma * 10) mod 11;
+   xResto := (xSoma * 10) mod 11;
 
-   if (Resto = 10) or (Resto = StrToInt(CPF[10])) then
+   if (xResto = 10) or (xResto = StrToInt(CPF[10])) then
    begin
-      Soma := 0;
-      for i := 1 to 10 do
-         Soma := Soma + StrToInt(CPF[i]) * (12 - i);
-      Resto := (Soma * 10 ) mod 11;
-      if (Resto = 10) or (Resto =  StrToInt(CPF[11])) then
+      xSoma := 0;
+      for xAux := 1 to 10 do
+         xSoma := xSoma + StrToInt(CPF[xAux]) * (12 - xAux);
+      xResto := (xSoma * 10 ) mod 11;
+      if (xResto = 10) or (xResto =  StrToInt(CPF[11])) then
       begin
          Result := True;
          exit;

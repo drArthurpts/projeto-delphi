@@ -1,7 +1,7 @@
 object frmUnidadePesq: TfrmUnidadePesq
   Left = 455
   Top = 195
-  Width = 477
+  Width = 503
   Height = 435
   BorderIcons = [biSystemMenu]
   Caption = 'Pesquisa de Unidade'
@@ -21,14 +21,14 @@ object frmUnidadePesq: TfrmUnidadePesq
   object stbBarraStatus: TStatusBar
     Left = 0
     Top = 377
-    Width = 461
+    Width = 487
     Height = 19
     Panels = <>
   end
   object pnlBotoes: TPanel
     Left = 0
     Top = 336
-    Width = 461
+    Width = 487
     Height = 41
     Align = alBottom
     TabOrder = 1
@@ -144,14 +144,14 @@ object frmUnidadePesq: TfrmUnidadePesq
   object pnlFiltro: TPanel
     Left = 0
     Top = 0
-    Width = 461
+    Width = 487
     Height = 54
     Align = alTop
     TabOrder = 2
     object grbFiltrar: TGroupBox
       Left = 1
       Top = 1
-      Width = 459
+      Width = 485
       Height = 52
       Align = alClient
       Caption = 'Filtrar'
@@ -219,14 +219,14 @@ object frmUnidadePesq: TfrmUnidadePesq
   object pnlResultado: TPanel
     Left = 0
     Top = 54
-    Width = 461
+    Width = 487
     Height = 282
     Align = alClient
     TabOrder = 3
     object grbGrid: TGroupBox
       Left = 1
       Top = 1
-      Width = 459
+      Width = 485
       Height = 280
       Align = alClient
       Caption = 'Resultado da busca'
@@ -234,7 +234,7 @@ object frmUnidadePesq: TfrmUnidadePesq
       object dbgUnidade: TDBGrid
         Left = 2
         Top = 15
-        Width = 455
+        Width = 481
         Height = 263
         Align = alClient
         DataSource = dtsUnidade

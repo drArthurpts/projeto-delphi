@@ -482,7 +482,7 @@ begin
     end
     else
     begin
-      TMessageUtil.Alerta('Nenhum Produto encontrado.');
+      TMessageUtil.Alerta('Nenhum Produto encontrado.');                          //nenhuma unidade
       LimpaTela;
 
       if (edtCodigo.CanFocus) then
@@ -753,8 +753,8 @@ begin
       edtDescricaoUnidade.Text := xDescricaoUnidade.Descricao;
    end
    else
-      edtDescricaoUnidade.Text := '';
 
+   edtDescricaoUnidade.Text := '';
    xCodigoReplace := TFuncoes.SoNumero(cmbUnidade.Text);
    cmbUnidade.Text := xCodigoReplace;
    cmbUnidade.Text := TFuncoes.removeCaracterEspecial(cmbUnidade.Text, True);
@@ -825,7 +825,7 @@ begin
       end
       else
       begin
-        TMessageUtil.Alerta('Nenhuma unidade encontrada para o produto informado.');
+        TMessageUtil.Alerta('Esse Produto não possui mais nenhuma unidade vinculada');
         edtDescricaoUnidade.Text := '';
         if cmbUnidade.CanFocus then
            cmbUnidade.SetFocus

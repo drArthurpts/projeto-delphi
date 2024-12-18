@@ -61,8 +61,6 @@ begin
       frmClientes := TfrmClientes.Create(Application);
 
   frmClientes.Show;
-
-
   finally
       Screen.Cursor := crDefault;
   end;
